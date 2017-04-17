@@ -1,0 +1,48 @@
+[OPTIONS]
+Compatibility=1.1
+Full-text search=Yes
+Contents file=index.hhc
+Default Window=main
+Default topic=index.html
+Index file=index.hhk
+Language=0x409 English (United States)
+Title=EC Salinity Class Implementation
+
+[WINDOWS]
+main="EC Salinity Class Implementation","index.hhc","index.hhk","index.html","index.html",,,,,0x23520,,0x10387e,,,,,,,,0
+
+[FILES]
+ec_8h_source.html
+mainpage_8h_source.html
+doxy-boot_8js.html
+ec_8cpp.html
+ec_8h.html
+mainpage_8h.html
+todo.html
+class_e_c___salinity.html
+class_e_c___salinity-members.html
+dir_e68e8157741866f444e17edd764ebbae.html
+index.html
+pages.html
+annotated.html
+classes.html
+functions.html
+functions_func.html
+functions_vars.html
+files.html
+globals.html
+globals_func.html
+globals_defs.html
+tab_a.png
+tab_b.png
+tab_h.png
+tab_s.png
+nav_h.png
+nav_f.png
+bc_s.png
+doxygen.png
+closed.png
+open.png
+bdwn.png
+sync_on.png
+sync_off.png
