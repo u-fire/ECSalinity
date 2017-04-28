@@ -17,12 +17,6 @@
 <script type="text/javascript">
   $(document).ready(function() { init_search(); });
 </script>
-        <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    extensions: ["tex2jax.js"],
-    jax: ["input/TeX","output/HTML-CSS"],
-});
-</script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
         <link href="doxygen.css" rel="stylesheet" type="text/css" />
         <link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
         <link href='https://fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
@@ -34,7 +28,7 @@
         <nav class="navbar navbar-default" role="navigation">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand">EC Salinity Class Implementation </a>
+                    <a class="navbar-brand">EC Salinity Class Implementation revision 1</a>
                 </div>
             </div>
         </nav>
@@ -52,8 +46,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li class="current"><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -92,52 +88,88 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">EC Salinity Class Implementation Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="intro"></a>
-Introduction</h1>
-<p>The EC-Salinity I2C device can measure electrical conductivity in the range of 0.5 - 62mS and salinity from 2 - 42.</p>
-<h1><a class="anchor" id="characteristics"></a>
-Characteristics</h1>
+<div class="textblock"><h1>Introduction</h1>
+<p>The EC-Salinity I2C device can measure electrical conductivity in the range of 0.5 - 62mS and salinity from 2 - 42. </p><hr/>
+<h1>Characteristics</h1>
 <ul>
-<li>EC range: 0.5 - 62mS</li>
-<li>Salinity range: 2 - 42</li>
-<li>Temperature range: -2 - 35C</li>
-<li>Interface: I2C</li>
-<li>Current use: 20mA peak</li>
-<li>Voltage range: 2.7 - 5.5V</li>
-<li>Operating temperature range: -65 - 125C</li>
+<li><b>EC range</b>: 0.5 - 62mS</li>
+<li><b>Salinity range</b>: 2 - 42</li>
+<li><b>Temperature range</b>: -2 - 35C</li>
+<li><b>Interface</b>: I2C</li>
+<li><b>Current use</b>: 10mA peak, low idle current ~1mA</li>
+<li><b>Voltage range</b>: 2.7 - 5.5V</li>
 </ul>
-<p>It uses the standard Arduino Wire library to interface with the device. It's operating principle is based on sending a very short-duration DC pulse from one probe pin and reading the voltage on the second probe pin. The voltage is then converted to a temperature compensated Siemen measure. Salinity is also derived from the measure and is in PSU.</p>
-<h1><a class="anchor" id="setup"></a>
-Setup</h1>
-<p>When the device is powered for the first time, it will be un-calibrated and must be calibrated to provide accurate readings. The calibration constant of the probe is referred to as the cell constant and represented by <a class="el" href="class_e_c___salinity.html#adc8011bc4befb5ba0879f22c614a15b8">EC_Salinity::K</a>. An uncalibrated device will show K = -1. To begin the calibration process, place the thermometer and probe in a calibration solution then call the <a class="el" href="class_e_c___salinity.html#ae3063ab09d83692263d7959fd9254f41" title="Calibrates the connected probe and saves the result in EEPROM numberProbeSamples measurements are mad...">EC_Salinity::calibrateProbe</a> function.</p>
+<p>It uses the standard Arduino Wire library to interface with the device. It's operating principle is based on sending a very short-duration DC pulse from one probe pin and measuring the conductivity on the other pin. The conductivity is then converted to a temperature compensated Siemen. Salinity is also derived from the measure and is in PSU, PPT, and PPM. </p><hr/>
+<h1>Connections</h1>
+<p>Making the connections to the device is as follows: </p><table class="doxtable">
+<tr>
+<th align="center">EC Salinity Probe </th><th align="center">Master device  </th></tr>
+<tr>
+<td align="center">GND </td><td align="center">GND </td></tr>
+<tr>
+<td align="center">SCL </td><td align="center">SCL </td></tr>
+<tr>
+<td align="center">SDA </td><td align="center">SDA </td></tr>
+<tr>
+<td align="center">VCC </td><td align="center">3 - 5V </td></tr>
+</table>
+<p>The temperature probe should be connected as follows: </p><table class="doxtable">
+<tr>
+<th align="center">EC Salinity Probe </th><th align="center">Temperature Probe  </th></tr>
+<tr>
+<td align="center">+ </td><td align="center">VCC </td></tr>
+<tr>
+<td align="center">D </td><td align="center">Data </td></tr>
+<tr>
+<td align="center">- </td><td align="center">GND </td></tr>
+</table>
+<p>The EC probe has two pins and can be connected either way. </p><hr/>
+<h1>Setup</h1>
+<p>When the device is powered for the first time, it will be uncalibrated and must be calibrated to provide accurate readings. The calibration setting of the probe is referred to as the cell constant and represented by <a class="el" href="class_e_c___salinity.html#adc8011bc4befb5ba0879f22c614a15b8">EC_Salinity::K</a>. An uncalibrated device will show K = -1. To begin the calibration process, place the thermometer and probe in a calibration solution then call the <a class="el" href="class_e_c___salinity.html#ae3063ab09d83692263d7959fd9254f41" title="Calibrates the connected probe and saves the result in EEPROM numberProbeSamples measurements are mad...">EC_Salinity::calibrateProbe</a> function.</p>
 <p>For best results, the probe should be cleaned with distilled water and then placed in the solution for 5-10 minutes before the probe is used. Note that any turbidity, air bubbles, large particles, etc will effect readings. An unstable temperature will decrease accuracy as well.</p>
-<h1><a class="anchor" id="probe"></a>
-Probe Selection</h1>
-<p>Any probe can be attached to the device. Polirity doesn't matter. Keep in mind that metal, water, and electricity don't cooperate. The probe will not last forever, regardless of how little it is used. Things that effect the lifespan include the chemicals it is exposed to, if it is occasionally exposed to air, the number of measurments taken, the types of metal used, and the connections between portions of the probe. Deposit buildup will effect readings as well as chemical reactions that take place on the probe surface. If the probe is meant to stay fully submerged, all these factors should be taken into account. It is very likley that it will require regular maintanence in the form of cleaning or recalibration.</p>
-<h1><a class="anchor" id="use"></a>
-Use</h1>
-<p>Once the probe has been calibrated, a reading can be taken. The probe should be placed in the solution to be measured and <a class="el" href="class_e_c___salinity.html#ac5eb05c6d52dcba0bb2d4785a51659bc" title="Starts an EC/Salinity measurement. ">EC_Salinity::measureEC</a> called to start a measurement. For best results, the probe should be cleaned with distilled water and left in the solution for 5 - 10 minutes. Be sure no air bubbles or debris are on the probe points.</p>
-<p>If the solution to be measured is seawater, be sure to use the temperature compensation coefficient <a class="el" href="class_e_c___salinity.html#a6dece08b650de2f4eecf7822dbaee34b">EC_Salinity::tempCoefSalinity</a>, otherwise use <a class="el" href="class_e_c___salinity.html#aa5a1d7c5924a3c09be48911756b8c64a">EC_Salinity::tempCoefEC</a> as the parameter. If another compensation value is desired, it can be provided as a regular float value.</p>
+<p>When calibrating the probe, it is important to consider the expected temperature range. EC measurements are very temperature dependent, effecting the results by approximately 2% per degree C. The probe should be calibrated at the median expected temperature.</p>
+<p>Likewise, the probe should be calibrated in the median expected EC range. For example, if you are planning to measure the salinity of an aquarium, you might expect readings ±5 from 35PPT (equivalent to 53mS). So a 53mS solution for calibration would be appropriate, whereas a hydroponic calibration might be 2.77mS.</p>
+<p>Another consideration is the placement of the probe. When the probe sends out a pulse of electricity, it leaves the probe in 360 degrees. If it is near a metal surface, you will experience fringing effects. Generally, if the probe is calibrated where it is to be used, fringing effects are not a concern, but if you calibrate the probe in, for example, a small cup of plastic solution, then place it in a solution that has a large amount of interference in the form of metal or electrical activity, the measurements will vary widely.</p>
+<h4>Dual Point Calibration</h4>
+<p>Once the probe itself is calibrated, you can optionally use dual point calibration for more accurate results between two predesignated points. Two calibration solutions are required for this calibration, the low and high values you expect to measure between.</p>
+<ol type="1">
+<li>Determine the lowest and highest measurement you expect in mS. For example, to measure salinity in an aquarium, the lowest level you would expect to measaure might be 30 PPT and the highest might be 38 PPT. These points are referred to as referenceLow and referenceHigh</li>
+<li>Using the calibrated probe and a calibration solution at referenceLow, call <a class="el" href="class_e_c___salinity.html#ac5eb05c6d52dcba0bb2d4785a51659bc" title="Starts an EC measurement. ">EC_Salinity::measureEC</a> and see what the actual reading is. Do the same for referenceHigh. These readings are referred to as readingLow and readingHigh. As an example, the readingLow might be 27 and readingHigh might be 40.</li>
+<li>Call <a class="el" href="class_e_c___salinity.html#a353fddb43c9932a7fb2037d3c3d2f802" title="Sets dual point calibration constants as provided by the master device. ">EC_Salinity::setDualPoint</a> <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;ec.setDualPoint(30, 38, 27, 40);</div></div><!-- fragment --></li>
+<li>Each call to <a class="el" href="class_e_c___salinity.html#ac5eb05c6d52dcba0bb2d4785a51659bc" title="Starts an EC measurement. ">EC_Salinity::measureEC</a> will use the provided numbers to adjust the reading. It can be disabled by <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;ec.useDualPointCalibration =  false;</div></div><!-- fragment --> <hr/>
+</li>
+</ol>
+<h1>Probe Selection</h1>
+<p>A basic, but adequate, probe is included with the device. It will work reliably and accurately within the specifications listed above, however it is not specifically designed to be an EC probe. A professional probe can cost up to several hundred dollars. If you need the advantages of such an accurate device, this hobby-level project is not appropriate for you. However, most people don't need to measure EC to within 0.1uS reliably every time, in fact, a relatively wide range in accuracy will still be quite acceptable for many use-cases.</p>
+<p>Any 2-electrode probe can be attached to the device. Keep in mind that metal, water, and electricity don't typically cooperate. Things that effect the lifespan include the chemicals it is exposed to, if it is occasionally exposed to air, the number of measurements taken, and the types of metal used. Deposit buildup will effect readings as well as chemical reactions that take place on the probe surface. It is very likely that it will require regular maintenance in the form of cleaning or recalibration. </p><hr/>
+ <h1>Use</h1>
+<p>Once the probe has been calibrated, a reading can be taken. The probe should be placed in the solution to be measured and <a class="el" href="class_e_c___salinity.html#ac5eb05c6d52dcba0bb2d4785a51659bc" title="Starts an EC measurement. ">EC_Salinity::measureEC</a> called to start a measurement. For best results, the probe should be cleaned with distilled water and left in the solution for 5 - 10 minutes. Be sure no air bubbles or debris are on the probe points.</p>
 <p>After the measurement is taken, the following class variables are updated:</p>
 <ul>
-<li><a class="el" href="class_e_c___salinity.html#a7d5cf279e9c0cd10cc3ced6d30d8f4ad">EC_Salinity::uS</a></li>
+<li><a class="el" href="class_e_c___salinity.html#a0ee529d0a7c75de0f2b019bd15991637">EC_Salinity::uS</a></li>
 <li><a class="el" href="class_e_c___salinity.html#ad835b40db253e61ad5898414eff3fc60">EC_Salinity::mS</a></li>
-<li><a class="el" href="class_e_c___salinity.html#aaa23d6f8e4c52448cbfae1b1a6688dbb">EC_Salinity::dS</a></li>
 <li><a class="el" href="class_e_c___salinity.html#af3274d7a8037d1eee998d1dd3f50ce91">EC_Salinity::S</a></li>
-<li><a class="el" href="class_e_c___salinity.html#ac2728a1569f3ea35748f7e499be42025">EC_Salinity::PPM_500</a></li>
-<li><a class="el" href="class_e_c___salinity.html#accb116b113ca4087d709c21c10c682e3">EC_Salinity::PPM_640</a></li>
-<li><a class="el" href="class_e_c___salinity.html#ac9a84178347e487901ff192c5ceeeec7">EC_Salinity::PPM_700</a></li>
+<li><a class="el" href="class_e_c___salinity.html#a05a42f334f67a657136d033a0a1d69d6">EC_Salinity::PPM_500</a></li>
+<li><a class="el" href="class_e_c___salinity.html#ae83ab780c294750919079477b871b2c9">EC_Salinity::PPM_640</a></li>
+<li><a class="el" href="class_e_c___salinity.html#a95969d31584e0afc0128909dfd39b932">EC_Salinity::PPM_700</a></li>
 <li><a class="el" href="class_e_c___salinity.html#a7e1c505419b7e8b2b9a4cb277701b6a3">EC_Salinity::salinityPSU</a></li>
 <li><a class="el" href="class_e_c___salinity.html#a99faa627b03c807a535b956e98eec46e">EC_Salinity::salinityPPT</a></li>
+<li><a class="el" href="class_e_c___salinity.html#a8b5bab63164f67830388f9065b40bc1d">EC_Salinity::salinityPPM</a></li>
 <li><a class="el" href="class_e_c___salinity.html#a2733418c3eee1adaf51a5edd5aaf20fa">EC_Salinity::tempC</a></li>
 <li><a class="el" href="class_e_c___salinity.html#a7abb032fef7156b3b99396ecf39cd731">EC_Salinity::tempF</a></li>
 <li><a class="el" href="class_e_c___salinity.html#adc8011bc4befb5ba0879f22c614a15b8">EC_Salinity::K</a></li>
 </ul>
-<h1><a class="anchor" id="notes"></a>
-Notes on Measuring Seawater</h1>
-<p>Salinity can be accurately measured between a range of 2 - 42, between the -2 - 35 C.</p>
-<h1><a class="anchor" id="references"></a>
-References</h1>
+<h4>Temperature Compensation</h4>
+<p>If the solution to be measured is seawater, be sure to use the temperature compensation coefficient <a class="el" href="class_e_c___salinity.html#a6dece08b650de2f4eecf7822dbaee34b">EC_Salinity::tempCoefSalinity</a>, otherwise use <a class="el" href="class_e_c___salinity.html#aa5a1d7c5924a3c09be48911756b8c64a">EC_Salinity::tempCoefEC</a> as the parameter. If another compensation value is desired, it can be provided as a regular float value.</p>
+<p>Temperature compensation can be disabled by setting <a class="el" href="class_e_c___salinity.html#a4ad41e4be7d9064d406f8e7de22dc616">EC_Salinity::useTempCompensation</a> to false. Readings can also be adjusted to a single temperature. In many modes of use, it is commonly adjusted to 25C. This can be done with the following:</p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;ec.tempCompensationConstant = 25;</div></div><!-- fragment --><p> At initialization, it is set to -1 and the actual temperature is used. To re-enable compensation, set it back to -1.</p>
+<h4>Accuracy</h4>
+<p>The accuracy of the device can be adjusted by modifying <a class="el" href="class_e_c___salinity.html#a23a54c1ee4681fd83f36e4c94bb45876">EC_Salinity::accuracy</a>. By default, it is set to what is considered high accuracy (EC_HIGH_ACCURACY). Nine measurements are taken. A running median sort is applied and the middle third of the nine measurements are averaged together to provide the final result. Any number of measurements can be taken as long as it is evenly divisible by 3. The least number of measures possible is 3, as defined by EC_LOW_ACCURACY.</p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;ec.accuracy = 15;</div></div><!-- fragment --><h4>Measurement Time</h4>
+<p>Each measurement takes approximately 1 second. A majority of the time is spent waiting for the temperature measurement to finish. The EC portion of the measurement is done extremely quickly to avoid electrolysis effects. </p><hr/>
+<h1>Notes on Measuring Seawater</h1>
+<p>Salinity can be accurately measured between a range of 2 - 42, between the -2 - 35 C. -1 is returned if it is not within the above limitations.</p>
+<h1>References</h1>
 <ul>
 <li>Concept: <a href="https://www.element14.com/community/community/design-challenges/vertical-farming/blog/2015/09/13/automated-green-house-blogs-main-page">https://www.element14.com/community/community/design-challenges/vertical-farming/blog/2015/09/13/automated-green-house-blogs-main-page</a></li>
 <li>Temperature coefficients: <a href="http://www.posiva.fi/files/2094/POSIVA-2001-15_Working-report_web.pdf">http://www.posiva.fi/files/2094/POSIVA-2001-15_Working-report_web.pdf</a></li>

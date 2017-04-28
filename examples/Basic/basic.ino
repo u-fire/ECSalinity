@@ -5,11 +5,9 @@ EC_Salinity ec;
 void setup()
 {
         Serial.begin(9600);
-        while (!Serial) {; }
-        Serial.println();
-        ec.sampleNumber = 6;
         Serial.println("Calibrating...");
-        ec.calibrateProbe(2.77, ec.tempCoefEC, 10);
+        ec.calibrateProbe(2.77, ec.tempCoefEC, 30);
+        delay(30000);
 }
 
 void loop()

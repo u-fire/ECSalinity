@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ds',['dS',['../class_e_c___salinity.html#aaa23d6f8e4c52448cbfae1b1a6688dbb',1,'EC_Salinity']]]
+  ['calibrateprobe',['calibrateProbe',['../class_e_c___salinity.html#ae3063ab09d83692263d7959fd9254f41',1,'EC_Salinity']]]
 ];

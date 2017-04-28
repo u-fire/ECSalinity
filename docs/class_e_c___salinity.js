@@ -1,0 +1,25 @@
+var class_e_c___salinity =
+[
+    [ "EC_Salinity", "class_e_c___salinity.html#ab1421417cd2bbd92dad82b315128a946", null ],
+    [ "~EC_Salinity", "class_e_c___salinity.html#a4f5b2354fb443a5928d2ec544472a4af", null ],
+    [ "calibrateProbe", "class_e_c___salinity.html#ae3063ab09d83692263d7959fd9254f41", null ],
+    [ "measureEC", "class_e_c___salinity.html#ac5eb05c6d52dcba0bb2d4785a51659bc", null ],
+    [ "setDualPoint", "class_e_c___salinity.html#a353fddb43c9932a7fb2037d3c3d2f802", null ],
+    [ "setK", "class_e_c___salinity.html#a5656655cb878b02b5414d84643951795", null ],
+    [ "accuracy", "class_e_c___salinity.html#a23a54c1ee4681fd83f36e4c94bb45876", null ],
+    [ "K", "class_e_c___salinity.html#adc8011bc4befb5ba0879f22c614a15b8", null ],
+    [ "mS", "class_e_c___salinity.html#ad835b40db253e61ad5898414eff3fc60", null ],
+    [ "PPM_500", "class_e_c___salinity.html#a05a42f334f67a657136d033a0a1d69d6", null ],
+    [ "PPM_640", "class_e_c___salinity.html#ae83ab780c294750919079477b871b2c9", null ],
+    [ "PPM_700", "class_e_c___salinity.html#a95969d31584e0afc0128909dfd39b932", null ],
+    [ "S", "class_e_c___salinity.html#af3274d7a8037d1eee998d1dd3f50ce91", null ],
+    [ "salinityPPM", "class_e_c___salinity.html#a8b5bab63164f67830388f9065b40bc1d", null ],
+    [ "salinityPPT", "class_e_c___salinity.html#a99faa627b03c807a535b956e98eec46e", null ],
+    [ "salinityPSU", "class_e_c___salinity.html#a7e1c505419b7e8b2b9a4cb277701b6a3", null ],
+    [ "tempC", "class_e_c___salinity.html#a2733418c3eee1adaf51a5edd5aaf20fa", null ],
+    [ "tempCompensationConstant", "class_e_c___salinity.html#a49cc1625abb119d7843493dcda3288b3", null ],
+    [ "tempF", "class_e_c___salinity.html#a7abb032fef7156b3b99396ecf39cd731", null ],
+    [ "uS", "class_e_c___salinity.html#a0ee529d0a7c75de0f2b019bd15991637", null ],
+    [ "useDualPointCalibration", "class_e_c___salinity.html#a908f0fc118dcd81f1ee467dbf6c56849", null ],
+    [ "useTempCompensation", "class_e_c___salinity.html#a4ad41e4be7d9064d406f8e7de22dc616", null ]
+];

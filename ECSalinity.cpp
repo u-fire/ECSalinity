@@ -22,7 +22,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 /*!
-   \file ec.cpp
+   \file ECSalinity.cpp
    \brief EC_Salinity Class Implementation
  */
 
@@ -46,25 +46,28 @@ EC_Salinity::~EC_Salinity()
 {
 }
 
-/*!
-   \brief Starts an EC/Salinity measurement
 
-   #sampleNumber of samples are taken and the average of the middle third of
-   the measures is returned in #mS. #tempC is treated the same way.
-   \param tempCoefficient the temperature coefficient used to compensate
-   for temperature.
+/*!
+   \brief Starts an EC measurement
+
+   #accuracy of samples are taken and the average of the middle third of
+   the measures is returned in #mS. If  #useTempCompensation is TRUE, then
+   the resulting measurement will be corrected for temperature. If #tempCompensationConstant
+   is set to anything other than -1, that value will be used as the temperature.
+   \param tempCoefficient the coefficient used to compensate for temperature.
    \pre #K must be set
-   \post #uS, #mS, #dS, #S, #tempC, #tempF, PPMs, and #K are updated
+   \post #uS, #mS, #S, #tempC, #tempF, #PPM_500, #PPM_640, #PPM_700,
+   #salinityPPM, #salinityPPT, #salinityPSU, and #K are updated
    \note PPM is not valid if salinity is being measured
-   \return #mS of measurement
+   \return #mS
  */
 float EC_Salinity::measureEC(float tempCoefficient)
 {
-        RunningMedian conductivityMedian = RunningMedian(sampleNumber);
-        RunningMedian tempCMedian = RunningMedian(sampleNumber);
-        int middleThird = sampleNumber / 3;
+        RunningMedian conductivityMedian = RunningMedian(accuracy);
+        RunningMedian tempCMedian = RunningMedian(accuracy);
+        int middleThird = accuracy / 3;
 
-        int i = sampleNumber;
+        int i = accuracy;
         while(i--)
         {
                 _measureEC();
@@ -73,27 +76,36 @@ float EC_Salinity::measureEC(float tempCoefficient)
         }
 
         mS = 1000 / (conductivityMedian.getAverage(middleThird) * K);
+
         tempF = ((tempCMedian.getAverage(middleThird) * 9) / 5) + 32;
 
-        mS  =  mS / (1 + tempCoefficient * (tempCMedian.getAverage(middleThird) - 25.0));
+        if (useTempCompensation)
+        {
+                if (tempCompensationConstant == -1)
+                {
+                        mS  =  mS / (1 + tempCoefficient * (tempCMedian.getAverage(middleThird) - 25.0));
+                }
+                else
+                {
+                        mS  =  mS / (1 + tempCoefficient * (tempCompensationConstant - 25.0));
+                }
+        }
+
+        if (useDualPointCalibration)
+        {
+                float referenceRange = _referenceHigh - _referenceLow;
+                float readingRange = _readingHigh - _readingLow;
+
+                mS = (((mS - _readingLow) * referenceRange) / readingRange) + _referenceLow;
+        }
+
+        PPM_500 = mS * 500;
+        PPM_640 = mS * 640;
+        PPM_700 = mS * 700;
         uS = mS * 1000;
-        dS = mS / 1000;
-        S = dS / 1000;
+        S = mS / 1000;
 
-        if (mS > 0.01)
-        {
-                PPM_500 = mS * 500;
-                PPM_640 = mS * 640;
-                PPM_700 = mS * 700;
-        }
-        else
-        {
-                PPM_500 = 0;
-                PPM_640 = 0;
-                PPM_700 = 0;
-        }
-
-        _Salinity(tempCMedian.getAverage(middleThird));
+        _salinity(tempCMedian.getAverage(middleThird));
 
         return mS;
 }
@@ -102,7 +114,7 @@ float EC_Salinity::measureEC(float tempCoefficient)
    \brief Calibrates the connected probe and saves the result in EEPROM
    numberProbeSamples measurements are made, the median third is taken and
    averaged together to get a #K value for the probe.
-   \param solutionEC          the EC of the calibration solution
+   \param solutionEC          the EC of the calibration solution in mS
    \param tempCoef            the coefficient used to calibrate the probe
    \param numberProbeSamples  the number of samples to take to calibrate the probe (must be a multiple of 3)
    \post  #K                  will be saved in EEPROM and used automatically thereafter
@@ -130,7 +142,7 @@ void EC_Salinity::calibrateProbe(float solutionEC, float tempCoef, int numberPro
 }
 
 /*!
-   \brief Updates the slave device with a new cell constant and saved in EEPROM
+   \brief Updates the device with a new cell constant and saves it in EEPROM
    \param K   the new cell constant
  */
 void EC_Salinity::setK(float K)
@@ -149,12 +161,28 @@ void EC_Salinity::setK(float K)
 }
 
 /*!
+   \brief Sets dual point calibration constants as provided by the master device.
+   \param referenceLow low known EC calibration solution
+   \param referenceHigh high known EC calibration solution
+   \param readingLow actual EC measure in refLow solution
+   \param readingHigh actual EC measure in refHigh solution
+ */
+void EC_Salinity::setDualPoint(float referenceLow, float referenceHigh, float readingLow, float readingHigh)
+{
+    _referenceLow = referenceLow;
+    _referenceHigh = referenceHigh;
+    _readingLow = readingLow;
+    _readingHigh = readingHigh;
+    useDualPointCalibration = true;
+}
+
+/*!
    \brief Private member to measure salinity
    \param temp the temperature of the solution being measured
    \post #salinityPSU and #salinityPPT will be updated with the new value or
    -1 if the value is out of range.
  */
-void EC_Salinity::_Salinity(float temp)
+void EC_Salinity::_salinity(float temp)
 {
         float r, ds, r2;
 
@@ -194,14 +222,14 @@ void EC_Salinity::_Salinity(float temp)
 
         if (salinityPSU < 2 || salinityPSU > 42)
         {
-          salinityPSU = -1;
-          return;
+                salinityPSU = -1;
+                return;
         }
 
         if (tempC < -2 || tempC > 35)
         {
-          salinityPSU = -1;
-          return;
+                salinityPSU = -1;
+                return;
         }
 
         salinityPPT = salinityPSU * 1.004715;
@@ -239,7 +267,11 @@ void EC_Salinity::_measureEC()
         u_ec.t[1] = b[5];
         u_ec.t[2] = b[6];
         u_ec.t[3] = b[7];
-        tempC = u_ec.t_val;
+        if (u_ec.t_val != -127)
+        {
+          // if no device is connected, don't change the tempC value to allow the user to set it
+          tempC = u_ec.t_val;
+        }
 
         u_ec.k[0] = b[8];
         u_ec.k[1] = b[9];
