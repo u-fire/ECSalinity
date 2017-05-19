@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['setdualpoint',['setDualPoint',['../class_e_c___salinity.html#a353fddb43c9932a7fb2037d3c3d2f802',1,'EC_Salinity']]],
-  ['setk',['setK',['../class_e_c___salinity.html#a5656655cb878b02b5414d84643951795',1,'EC_Salinity']]]
+  ['measureec',['measureEC',['../class_e_c___salinity.html#ac5eb05c6d52dcba0bb2d4785a51659bc',1,'EC_Salinity']]],
+  ['measuretemp',['measureTemp',['../class_e_c___salinity.html#ad0a0956675fc359950d1359927e248fd',1,'EC_Salinity']]]
 ];

@@ -6,12 +6,12 @@ void setup()
 {
         Serial.begin(9600);
         Serial.println("Calibrating...");
-        ec.calibrateProbe(2.77, ec.tempCoefEC, 30);
-        delay(30000);
+        ec.calibrateProbe(2.77, ec.tempCoefEC);
 }
 
 void loop()
 {
+        ec.measureTemp();
         ec.measureEC(ec.tempCoefEC);
         Serial.print("mS/cm: "); Serial.println(ec.mS);
         Serial.print("PPM: "); Serial.println(ec.PPM_500);

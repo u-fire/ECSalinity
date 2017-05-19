@@ -899,7 +899,8 @@ EXCLUDE_SYMBOLS        =
 # command).
 
 EXAMPLE_PATH           = examples/Basic \
-                         examples/Salinity
+                         examples/Salinity \
+                         "examples/Dual Point"
 
 # If the value of the EXAMPLE_PATH tag contains directories, you can use the
 # EXAMPLE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp and

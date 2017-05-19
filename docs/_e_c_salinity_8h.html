@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
         <meta name="generator" content="Doxygen 1.8.11"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <title>EC Salinity Class Implementation: ECSalinity.h File Reference</title>
+        <title>EC Salinity Class Implementation: src/ECSalinity.h File Reference</title>
         <!--<link href="tabs.css" rel="stylesheet" type="text/css"/>-->
         <script type="text/javascript" src="dynsections.js"></script>
         <link href="search/search.css" rel="stylesheet" type="text/css"/>
@@ -88,6 +88,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+</div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
@@ -102,7 +106,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;Arduino.h&gt;</code><br />
 <code>#include &lt;Wire.h&gt;</code><br />
-<code>#include &quot;RunningMedian.h&quot;</code><br />
 </div>
 <p><a href="_e_c_salinity_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -113,49 +116,301 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a640dfe86e985335227741fb4a5fa8589"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#a640dfe86e985335227741fb4a5fa8589">EC_SALINITY</a>&#160;&#160;&#160;0x13</td></tr>
+<tr class="memitem:a640dfe86e985335227741fb4a5fa8589"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#a640dfe86e985335227741fb4a5fa8589">EC_SALINITY</a>&#160;&#160;&#160;0x3C</td></tr>
 <tr class="separator:a640dfe86e985335227741fb4a5fa8589"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa43e94b54491b6b8084f4806f51309e8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#aa43e94b54491b6b8084f4806f51309e8">START_MEASUREMENT</a>&#160;&#160;&#160;0x00</td></tr>
-<tr class="separator:aa43e94b54491b6b8084f4806f51309e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acedb8f2d462e3776077871a8efde9a11"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#acedb8f2d462e3776077871a8efde9a11">SET_K</a>&#160;&#160;&#160;0x01</td></tr>
-<tr class="separator:acedb8f2d462e3776077871a8efde9a11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a245f0405630ad3b2e14fc785a19c539d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#a245f0405630ad3b2e14fc785a19c539d">EC_LOW_ACCURACY</a>&#160;&#160;&#160;3</td></tr>
-<tr class="separator:a245f0405630ad3b2e14fc785a19c539d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46db5220638c33df529b965a6c325e85"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#a46db5220638c33df529b965a6c325e85">EC_HIGH_ACCURACY</a>&#160;&#160;&#160;9</td></tr>
-<tr class="separator:a46db5220638c33df529b965a6c325e85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67c9c3b981221b2afd622643988ee12c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#a67c9c3b981221b2afd622643988ee12c">EC_MEASURE_EC</a>&#160;&#160;&#160;80</td></tr>
+<tr class="separator:a67c9c3b981221b2afd622643988ee12c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace5645a9b9f39b552abbfbc0a6c215fd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#ace5645a9b9f39b552abbfbc0a6c215fd">EC_MEASURE_TEMP</a>&#160;&#160;&#160;40</td></tr>
+<tr class="separator:ace5645a9b9f39b552abbfbc0a6c215fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95b9df9683015a475ff1b65e9d26f2e6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#a95b9df9683015a475ff1b65e9d26f2e6">EC_CALIBRATE_K</a>&#160;&#160;&#160;20</td></tr>
+<tr class="separator:a95b9df9683015a475ff1b65e9d26f2e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a808b4c22297cfe631864593bd2138b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#a0a808b4c22297cfe631864593bd2138b">EC_CALIBRATE_LOW</a>&#160;&#160;&#160;10</td></tr>
+<tr class="separator:a0a808b4c22297cfe631864593bd2138b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a882c5ec972030a5ead98ab6c396f5a00"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#a882c5ec972030a5ead98ab6c396f5a00">EC_CALIBRATE_HIGH</a>&#160;&#160;&#160;8</td></tr>
+<tr class="separator:a882c5ec972030a5ead98ab6c396f5a00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aead8f0055ef150518e0d8c3444badef6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#aead8f0055ef150518e0d8c3444badef6">EC_VERSION_REGISTER</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:aead8f0055ef150518e0d8c3444badef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcf8cab5c40f6ca7ea42c3a875c348ff"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#abcf8cab5c40f6ca7ea42c3a875c348ff">EC_MS_REGISTER</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:abcf8cab5c40f6ca7ea42c3a875c348ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69e25ed3d1d30d47a43ae0f79dfdbb10"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#a69e25ed3d1d30d47a43ae0f79dfdbb10">EC_TEMP_REGISTER</a>&#160;&#160;&#160;5</td></tr>
+<tr class="separator:a69e25ed3d1d30d47a43ae0f79dfdbb10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06e6eb8ce41f3c6f385a0c43b4b93b60"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#a06e6eb8ce41f3c6f385a0c43b4b93b60">EC_K_REGISTER</a>&#160;&#160;&#160;9</td></tr>
+<tr class="separator:a06e6eb8ce41f3c6f385a0c43b4b93b60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf8f63a28ce390dcccd310edb4621e52"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#acf8f63a28ce390dcccd310edb4621e52">EC_SOLUTION_REGISTER</a>&#160;&#160;&#160;13</td></tr>
+<tr class="separator:acf8f63a28ce390dcccd310edb4621e52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60c3bc8188b072f3988ace93a5db7c83"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#a60c3bc8188b072f3988ace93a5db7c83">EC_TEMPCOEF_REGISTER</a>&#160;&#160;&#160;17</td></tr>
+<tr class="separator:a60c3bc8188b072f3988ace93a5db7c83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a281af18988e2218f0709c796776e544e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#a281af18988e2218f0709c796776e544e">EC_CALIBRATE_REFHIGH_REGISTER</a>&#160;&#160;&#160;21</td></tr>
+<tr class="separator:a281af18988e2218f0709c796776e544e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6852c361b0a3eb4e2156c378e4d61c5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#af6852c361b0a3eb4e2156c378e4d61c5">EC_CALIBRATE_REFLOW_REGISTER</a>&#160;&#160;&#160;25</td></tr>
+<tr class="separator:af6852c361b0a3eb4e2156c378e4d61c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ffd369ac86a5b76dc5c496d93a09ba3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#a9ffd369ac86a5b76dc5c496d93a09ba3">EC_CALIBRATE_READHIGH_REGISTER</a>&#160;&#160;&#160;29</td></tr>
+<tr class="separator:a9ffd369ac86a5b76dc5c496d93a09ba3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd50d1eff7732c37e3a13443ea4f8e40"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#afd50d1eff7732c37e3a13443ea4f8e40">EC_CALIBRATE_READLOW_REGISTER</a>&#160;&#160;&#160;33</td></tr>
+<tr class="separator:afd50d1eff7732c37e3a13443ea4f8e40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b1ea9734a5570559b7246fbd8ae8fac"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#a8b1ea9734a5570559b7246fbd8ae8fac">EC_SALINITY_PSU</a>&#160;&#160;&#160;37</td></tr>
+<tr class="separator:a8b1ea9734a5570559b7246fbd8ae8fac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae17c781ddbe938029dca747dc9d1ca9c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#ae17c781ddbe938029dca747dc9d1ca9c">EC_TEMP_COMPENSATION_REGISTER</a>&#160;&#160;&#160;41</td></tr>
+<tr class="separator:ae17c781ddbe938029dca747dc9d1ca9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae14577084a91656b9b44259947240724"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#ae14577084a91656b9b44259947240724">EC_ACCURACY_REGISTER</a>&#160;&#160;&#160;42</td></tr>
+<tr class="separator:ae14577084a91656b9b44259947240724"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96d0e0f5ca69db87691deedeb1891e2b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#a96d0e0f5ca69db87691deedeb1891e2b">EC_CONFIG_REGISTER</a>&#160;&#160;&#160;43</td></tr>
+<tr class="separator:a96d0e0f5ca69db87691deedeb1891e2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e5656adc5e79608360f7b04444bfc94"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#a8e5656adc5e79608360f7b04444bfc94">EC_TASK_REGISTER</a>&#160;&#160;&#160;44</td></tr>
+<tr class="separator:a8e5656adc5e79608360f7b04444bfc94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab365fbd21a5691127a7cac02aa2fd87b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#ab365fbd21a5691127a7cac02aa2fd87b">EC_EC_MEASURMENT_TIME</a>&#160;&#160;&#160;10</td></tr>
+<tr class="separator:ab365fbd21a5691127a7cac02aa2fd87b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b7ae8cd7cb6620f9bcc087a61176146"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#a1b7ae8cd7cb6620f9bcc087a61176146">EC_TEMP_MEASURE_TIME</a>&#160;&#160;&#160;750</td></tr>
+<tr class="separator:a1b7ae8cd7cb6620f9bcc087a61176146"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a711cab6c24e67d703d6abd93cffc18e1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#a711cab6c24e67d703d6abd93cffc18e1">EC_CALIBRATE_DELAY</a>&#160;&#160;&#160;250</td></tr>
+<tr class="separator:a711cab6c24e67d703d6abd93cffc18e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7843d8a0ae692bd63a9dac9c767cb3f1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#a7843d8a0ae692bd63a9dac9c767cb3f1">EC_DUALPOINT_CONFIG_BIT</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:a7843d8a0ae692bd63a9dac9c767cb3f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0de7e993441fc3a1ecb4f0d50f19e02a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_c_salinity_8h.html#a0de7e993441fc3a1ecb4f0d50f19e02a">EC_TEMP_COMPENSATION_CONFIG_BIT</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:a0de7e993441fc3a1ecb4f0d50f19e02a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="class_e_c___salinity.html">EC_Salinity</a> Class Implementation. </p>
 
 <p>Definition in file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a class="anchor" id="a46db5220638c33df529b965a6c325e85"></a>
+<a class="anchor" id="ae14577084a91656b9b44259947240724"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define EC_HIGH_ACCURACY&#160;&#160;&#160;9</td>
+          <td class="memname">#define EC_ACCURACY_REGISTER&#160;&#160;&#160;42</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Defines middle of nine measurements </p>
+<p>accuracy register </p>
 
-<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00040">40</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00053">53</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a245f0405630ad3b2e14fc785a19c539d"></a>
+<a class="anchor" id="a711cab6c24e67d703d6abd93cffc18e1"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define EC_LOW_ACCURACY&#160;&#160;&#160;3</td>
+          <td class="memname">#define EC_CALIBRATE_DELAY&#160;&#160;&#160;250</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Defines middle of three measurements </p>
+<p>delay between EC calibration measurements </p>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00059">59</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a882c5ec972030a5ead98ab6c396f5a00"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EC_CALIBRATE_HIGH&#160;&#160;&#160;8</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Command to calibrate the high point of the probe </p>
 
 <p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00039">39</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a95b9df9683015a475ff1b65e9d26f2e6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EC_CALIBRATE_K&#160;&#160;&#160;20</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Command to calibrate the probe </p>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00037">37</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0a808b4c22297cfe631864593bd2138b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EC_CALIBRATE_LOW&#160;&#160;&#160;10</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Command to calibrate the low point of the probe </p>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00038">38</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9ffd369ac86a5b76dc5c496d93a09ba3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EC_CALIBRATE_READHIGH_REGISTER&#160;&#160;&#160;29</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>reading low register </p>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00049">49</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="afd50d1eff7732c37e3a13443ea4f8e40"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EC_CALIBRATE_READLOW_REGISTER&#160;&#160;&#160;33</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>reading high register </p>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00050">50</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a281af18988e2218f0709c796776e544e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EC_CALIBRATE_REFHIGH_REGISTER&#160;&#160;&#160;21</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>reference low register </p>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00047">47</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af6852c361b0a3eb4e2156c378e4d61c5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EC_CALIBRATE_REFLOW_REGISTER&#160;&#160;&#160;25</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>reference high register </p>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00048">48</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a96d0e0f5ca69db87691deedeb1891e2b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EC_CONFIG_REGISTER&#160;&#160;&#160;43</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>config register </p>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00054">54</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7843d8a0ae692bd63a9dac9c767cb3f1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EC_DUALPOINT_CONFIG_BIT&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>dual point config bit </p>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00061">61</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab365fbd21a5691127a7cac02aa2fd87b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EC_EC_MEASURMENT_TIME&#160;&#160;&#160;10</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>delay between EC measurements </p>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00057">57</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a06e6eb8ce41f3c6f385a0c43b4b93b60"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EC_K_REGISTER&#160;&#160;&#160;9</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>cell constant register </p>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00044">44</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a67c9c3b981221b2afd622643988ee12c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EC_MEASURE_EC&#160;&#160;&#160;80</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Command to start an EC measure </p>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00035">35</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ace5645a9b9f39b552abbfbc0a6c215fd"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EC_MEASURE_TEMP&#160;&#160;&#160;40</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Command to measure temperature </p>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00036">36</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="abcf8cab5c40f6ca7ea42c3a875c348ff"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EC_MS_REGISTER&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>mS register </p>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00042">42</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
 
 </div>
 </div>
@@ -164,43 +419,148 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define EC_SALINITY&#160;&#160;&#160;0x13</td>
+          <td class="memname">#define EC_SALINITY&#160;&#160;&#160;0x3C</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>EC Salinity probe I2C address </p>
 
-<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00035">35</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00034">34</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="acedb8f2d462e3776077871a8efde9a11"></a>
+<a class="anchor" id="a8b1ea9734a5570559b7246fbd8ae8fac"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define SET_K&#160;&#160;&#160;0x01</td>
+          <td class="memname">#define EC_SALINITY_PSU&#160;&#160;&#160;37</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>I2C command to update K </p>
+<p>Salinity register </p>
 
-<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00037">37</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00051">51</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="aa43e94b54491b6b8084f4806f51309e8"></a>
+<a class="anchor" id="acf8f63a28ce390dcccd310edb4621e52"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define START_MEASUREMENT&#160;&#160;&#160;0x00</td>
+          <td class="memname">#define EC_SOLUTION_REGISTER&#160;&#160;&#160;13</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>I2C command to start measurement </p>
+<p>calibration solution register </p>
 
-<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00036">36</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00045">45</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8e5656adc5e79608360f7b04444bfc94"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EC_TASK_REGISTER&#160;&#160;&#160;44</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>task register </p>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00055">55</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0de7e993441fc3a1ecb4f0d50f19e02a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EC_TEMP_COMPENSATION_CONFIG_BIT&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>temperature compensation config bit </p>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00062">62</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae17c781ddbe938029dca747dc9d1ca9c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EC_TEMP_COMPENSATION_REGISTER&#160;&#160;&#160;41</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>temperature compensation register </p>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00052">52</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1b7ae8cd7cb6620f9bcc087a61176146"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EC_TEMP_MEASURE_TIME&#160;&#160;&#160;750</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>delay for temperature measurement </p>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00058">58</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a69e25ed3d1d30d47a43ae0f79dfdbb10"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EC_TEMP_REGISTER&#160;&#160;&#160;5</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>temperature in C register </p>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00043">43</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a60c3bc8188b072f3988ace93a5db7c83"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EC_TEMPCOEF_REGISTER&#160;&#160;&#160;17</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>temperatue coefficient register </p>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00046">46</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aead8f0055ef150518e0d8c3444badef6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EC_VERSION_REGISTER&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>version register </p>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00041">41</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
 
 </div>
 </div>

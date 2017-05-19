@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
         <meta name="generator" content="Doxygen 1.8.11"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <title>EC Salinity Class Implementation: EC-Salinity Probe</title>
+        <title>EC Salinity Class Implementation: README</title>
         <!--<link href="tabs.css" rel="stylesheet" type="text/css"/>-->
         <script type="text/javascript" src="dynsections.js"></script>
         <link href="search/search.css" rel="stylesheet" type="text/css"/>
@@ -85,13 +85,23 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">EC-Salinity Probe </div>  </div>
+<div class="title">README </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Monitor hydroponic nutrient levels, salinity levels, water quality, etc.</p>
-<p><a href="http://www.tindie.com">Buy one</a> or try to make one with the <a href="https://www.github.com/u-fire/ec-salinity-probe">Source code</a> and <a href="https://upverter.com/justind000/19cb71ec38391a95/wq/">Schematics</a></p>
-<h4>What it is...</h4>
-<p>An ATTiny85 as an I2C slave, a DS18B20 waterproof temperature probe, and a two-plate EC probe. It measures conductance and converts it into a temperature-compensated Siemen. From that value, it derives PPM and salinity. It is accurate to ~0.5mS in seawater, and to within ~0.05mS in the hydroponic or saltwater-pool range.</p>
+<div class="textblock"><hr/>
+ <h2>layout: default </h2>
+<h3>EC-Salinity Probe</h3>
+<p>&gt;Monitor hydroponic nutrient levels, salinity levels in aquariums or the ocean, saltwater pools, soil salinity, water quality</p><ul>
+<li>Electrical Conductivity in Siemens</li>
+<li>Total Dissolved Solids in PPM</li>
+<li>Salinity in PSU and PPT</li>
+</ul>
+<div class="image">
+<img src="/images/ECSalinity.png"  alt="ECSalinity probe"/>
+</div>
+<p><a href="http://www.tindie.com">Buy one</a> or make one with the <a href="https://www.github.com/u-fire/ec-salinity-probe">source code</a> and <a href="https://upverter.com/justind000/19cb71ec38391a95/EC-Salinity-Probe/">schematics</a>. You can also have the <a href="http://dirtypcbs.com/store/user/manage/d91w/19cb71ec38391a95_14924452820000_gerber.zip">board made</a> and get all the board components at <a href="http://www.mouser.com/ProjectManager/ProjectDetail.aspx?AccessID=02223dd686">Mouser</a></p>
+<h4>What it is</h4>
+<p>An ATTiny85 programmed as an I2C slave, a DS18B20 waterproof temperature probe, and a two-electrode EC probe. It measures conductance and converts it into a temperature-compensated Siemen. From that value, it derives PPM and salinity. It is accurate to ~0.5mS in seawater, and to within ~0.05mS in the hydroponic or freshwater range.</p>
 <h4>Using it</h4>
 <p>An Arduino-compatible <a href="https://github.com/u-fire/ECSalinity">library</a> is provided to make using the probe easy and there is extensive <a href="http://ufire.co/ECSalinity/">documentation</a> on the use and setup of the device.</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;#include &lt;ECSalinity.h&gt;</div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;EC_Salinity ec;</div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;mS = ec.measureEC(ec.tempCoefEC);</div></div><!-- fragment --> </div></div><!-- contents -->

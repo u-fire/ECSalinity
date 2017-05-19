@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ec_2dsalinity_20probe',['EC-Salinity Probe',['../md_README.html',1,'']]]
+  ['mainpage',['mainpage',['../md_docs_mainpage.html',1,'']]]
 ];

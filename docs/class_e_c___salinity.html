@@ -92,7 +92,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
@@ -117,15 +116,60 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac5eb05c6d52dcba0bb2d4785a51659bc"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#ac5eb05c6d52dcba0bb2d4785a51659bc">measureEC</a> (float tempCoefficient)</td></tr>
 <tr class="memdesc:ac5eb05c6d52dcba0bb2d4785a51659bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts an EC measurement.  <a href="#ac5eb05c6d52dcba0bb2d4785a51659bc">More...</a><br /></td></tr>
 <tr class="separator:ac5eb05c6d52dcba0bb2d4785a51659bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3063ab09d83692263d7959fd9254f41"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#ae3063ab09d83692263d7959fd9254f41">calibrateProbe</a> (float solutionEC, float tempCoef, int numberProbeSamples)</td></tr>
-<tr class="memdesc:ae3063ab09d83692263d7959fd9254f41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calibrates the connected probe and saves the result in EEPROM numberProbeSamples measurements are made, the median third is taken and averaged together to get a <a class="el" href="class_e_c___salinity.html#adc8011bc4befb5ba0879f22c614a15b8">K</a> value for the probe.  <a href="#ae3063ab09d83692263d7959fd9254f41">More...</a><br /></td></tr>
-<tr class="separator:ae3063ab09d83692263d7959fd9254f41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5656655cb878b02b5414d84643951795"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#a5656655cb878b02b5414d84643951795">setK</a> (float <a class="el" href="class_e_c___salinity.html#adc8011bc4befb5ba0879f22c614a15b8">K</a>)</td></tr>
-<tr class="memdesc:a5656655cb878b02b5414d84643951795"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the device with a new cell constant and saves it in EEPROM.  <a href="#a5656655cb878b02b5414d84643951795">More...</a><br /></td></tr>
-<tr class="separator:a5656655cb878b02b5414d84643951795"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a353fddb43c9932a7fb2037d3c3d2f802"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#a353fddb43c9932a7fb2037d3c3d2f802">setDualPoint</a> (float referenceLow, float referenceHigh, float readingLow, float readingHigh)</td></tr>
-<tr class="memdesc:a353fddb43c9932a7fb2037d3c3d2f802"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets dual point calibration constants as provided by the master device.  <a href="#a353fddb43c9932a7fb2037d3c3d2f802">More...</a><br /></td></tr>
-<tr class="separator:a353fddb43c9932a7fb2037d3c3d2f802"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0a0956675fc359950d1359927e248fd"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#ad0a0956675fc359950d1359927e248fd">measureTemp</a> ()</td></tr>
+<tr class="memdesc:ad0a0956675fc359950d1359927e248fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts a temperature measurement.  <a href="#ad0a0956675fc359950d1359927e248fd">More...</a><br /></td></tr>
+<tr class="separator:ad0a0956675fc359950d1359927e248fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33ffb6fb52b63b928ab45fb98c477826"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#a33ffb6fb52b63b928ab45fb98c477826">calibrateProbe</a> (float solutionEC, float tempCoef)</td></tr>
+<tr class="memdesc:a33ffb6fb52b63b928ab45fb98c477826"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calibrates the connected probe and saves the result in EEPROM.  <a href="#a33ffb6fb52b63b928ab45fb98c477826">More...</a><br /></td></tr>
+<tr class="separator:a33ffb6fb52b63b928ab45fb98c477826"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89cb728b13b422baa24729c386ae66b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#a89cb728b13b422baa24729c386ae66b2">calibrateProbeLow</a> (float solutionEC, float tempCoef)</td></tr>
+<tr class="memdesc:a89cb728b13b422baa24729c386ae66b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calibrates the dual-point values for the low reading and saves them in the devices's EEPROM.  <a href="#a89cb728b13b422baa24729c386ae66b2">More...</a><br /></td></tr>
+<tr class="separator:a89cb728b13b422baa24729c386ae66b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a339b7cfaf85d56946aaa8b09e649eec0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#a339b7cfaf85d56946aaa8b09e649eec0">calibrateProbeHigh</a> (float solutionEC, float tempCoef)</td></tr>
+<tr class="memdesc:a339b7cfaf85d56946aaa8b09e649eec0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calibrates the dual-point values for the high reading and saves them in the devices's EEPROM.  <a href="#a339b7cfaf85d56946aaa8b09e649eec0">More...</a><br /></td></tr>
+<tr class="separator:a339b7cfaf85d56946aaa8b09e649eec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3cd5b404706edec78f1b117b8e9d6dd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#af3cd5b404706edec78f1b117b8e9d6dd">setDualPointCalibration</a> (float refLow, float refHigh, float readLow, float readHigh)</td></tr>
+<tr class="memdesc:af3cd5b404706edec78f1b117b8e9d6dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets all the values for dual point calibration and saves them in the devices's EEPROM.  <a href="#af3cd5b404706edec78f1b117b8e9d6dd">More...</a><br /></td></tr>
+<tr class="separator:af3cd5b404706edec78f1b117b8e9d6dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfb9db695342135fe3c1d9e017099d01"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#abfb9db695342135fe3c1d9e017099d01">setK</a> (float k)</td></tr>
+<tr class="memdesc:abfb9db695342135fe3c1d9e017099d01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the device with a new cell constant and saves it in EEPROM.  <a href="#abfb9db695342135fe3c1d9e017099d01">More...</a><br /></td></tr>
+<tr class="separator:abfb9db695342135fe3c1d9e017099d01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a982b424d2ddc77d3b46bea505acf3bf5"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#a982b424d2ddc77d3b46bea505acf3bf5">getK</a> ()</td></tr>
+<tr class="memdesc:a982b424d2ddc77d3b46bea505acf3bf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the cell constant from the device.  <a href="#a982b424d2ddc77d3b46bea505acf3bf5">More...</a><br /></td></tr>
+<tr class="separator:a982b424d2ddc77d3b46bea505acf3bf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaaaab96ad13c1f55772256f31d9de8de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#aaaaab96ad13c1f55772256f31d9de8de">setAccuracy</a> (byte b)</td></tr>
+<tr class="memdesc:aaaaab96ad13c1f55772256f31d9de8de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures the accuracy of the device.  <a href="#aaaaab96ad13c1f55772256f31d9de8de">More...</a><br /></td></tr>
+<tr class="separator:aaaaab96ad13c1f55772256f31d9de8de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bdd48a6f3f9a68fd94a39fb4cb274a1"><td class="memItemLeft" align="right" valign="top">byte&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#a7bdd48a6f3f9a68fd94a39fb4cb274a1">getAccuracy</a> ()</td></tr>
+<tr class="memdesc:a7bdd48a6f3f9a68fd94a39fb4cb274a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the accuracy configuration of the device.  <a href="#a7bdd48a6f3f9a68fd94a39fb4cb274a1">More...</a><br /></td></tr>
+<tr class="separator:a7bdd48a6f3f9a68fd94a39fb4cb274a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6afe24ed690b92259a8c5af1a91688a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#a6afe24ed690b92259a8c5af1a91688a0">setTempConstant</a> (byte b)</td></tr>
+<tr class="memdesc:a6afe24ed690b92259a8c5af1a91688a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures device to use the provided temperature constant.  <a href="#a6afe24ed690b92259a8c5af1a91688a0">More...</a><br /></td></tr>
+<tr class="separator:a6afe24ed690b92259a8c5af1a91688a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a706c795bcde429e780a07247f7bacbc6"><td class="memItemLeft" align="right" valign="top">byte&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#a706c795bcde429e780a07247f7bacbc6">getTempConstant</a> ()</td></tr>
+<tr class="memdesc:a706c795bcde429e780a07247f7bacbc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the temperature constant.  <a href="#a706c795bcde429e780a07247f7bacbc6">More...</a><br /></td></tr>
+<tr class="separator:a706c795bcde429e780a07247f7bacbc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a826a26a7b0b6113089412bb0cf841367"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#a826a26a7b0b6113089412bb0cf841367">useTemperatureCompensation</a> (bool b)</td></tr>
+<tr class="memdesc:a826a26a7b0b6113089412bb0cf841367"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures device to use temperature compensation or not.  <a href="#a826a26a7b0b6113089412bb0cf841367">More...</a><br /></td></tr>
+<tr class="separator:a826a26a7b0b6113089412bb0cf841367"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21e07bf976f2ef15680fadac5da4c8f8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#a21e07bf976f2ef15680fadac5da4c8f8">usingTemperatureCompensation</a> ()</td></tr>
+<tr class="memdesc:a21e07bf976f2ef15680fadac5da4c8f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if temperature compensation is being used.  <a href="#a21e07bf976f2ef15680fadac5da4c8f8">More...</a><br /></td></tr>
+<tr class="separator:a21e07bf976f2ef15680fadac5da4c8f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad59943579cc4e237cbe48a2067b99e65"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#ad59943579cc4e237cbe48a2067b99e65">useDualPoint</a> (bool b)</td></tr>
+<tr class="memdesc:ad59943579cc4e237cbe48a2067b99e65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures device to use dual-point calibration.  <a href="#ad59943579cc4e237cbe48a2067b99e65">More...</a><br /></td></tr>
+<tr class="separator:ad59943579cc4e237cbe48a2067b99e65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c5a7a1fe2c32c514cadd85e90f7249b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#a2c5a7a1fe2c32c514cadd85e90f7249b">usingDualPoint</a> ()</td></tr>
+<tr class="memdesc:a2c5a7a1fe2c32c514cadd85e90f7249b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if dual point calibration is being used.  <a href="#a2c5a7a1fe2c32c514cadd85e90f7249b">More...</a><br /></td></tr>
+<tr class="separator:a2c5a7a1fe2c32c514cadd85e90f7249b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77c403d82647d21a5540bc9e642e9627"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#a77c403d82647d21a5540bc9e642e9627">getCalibrateHigh</a> ()</td></tr>
+<tr class="memdesc:a77c403d82647d21a5540bc9e642e9627"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the dual-point calibration high value.  <a href="#a77c403d82647d21a5540bc9e642e9627">More...</a><br /></td></tr>
+<tr class="separator:a77c403d82647d21a5540bc9e642e9627"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a793511d6d72e865d3a603cbfe2e89cc1"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#a793511d6d72e865d3a603cbfe2e89cc1">getCalibrateLow</a> ()</td></tr>
+<tr class="memdesc:a793511d6d72e865d3a603cbfe2e89cc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the dual-point calibration low value.  <a href="#a793511d6d72e865d3a603cbfe2e89cc1">More...</a><br /></td></tr>
+<tr class="separator:a793511d6d72e865d3a603cbfe2e89cc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5854663a77aa407db47c08cda5b715d"><td class="memItemLeft" align="right" valign="top">byte&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#ae5854663a77aa407db47c08cda5b715d">getVersion</a> ()</td></tr>
+<tr class="memdesc:ae5854663a77aa407db47c08cda5b715d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the firmware version of the device.  <a href="#ae5854663a77aa407db47c08cda5b715d">More...</a><br /></td></tr>
+<tr class="separator:ae5854663a77aa407db47c08cda5b715d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -133,8 +177,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:af3274d7a8037d1eee998d1dd3f50ce91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad835b40db253e61ad5898414eff3fc60"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#ad835b40db253e61ad5898414eff3fc60">mS</a></td></tr>
 <tr class="separator:ad835b40db253e61ad5898414eff3fc60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ee529d0a7c75de0f2b019bd15991637"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#a0ee529d0a7c75de0f2b019bd15991637">uS</a></td></tr>
-<tr class="separator:a0ee529d0a7c75de0f2b019bd15991637"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d5cf279e9c0cd10cc3ced6d30d8f4ad"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#a7d5cf279e9c0cd10cc3ced6d30d8f4ad">uS</a></td></tr>
+<tr class="separator:a7d5cf279e9c0cd10cc3ced6d30d8f4ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05a42f334f67a657136d033a0a1d69d6"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#a05a42f334f67a657136d033a0a1d69d6">PPM_500</a></td></tr>
 <tr class="separator:a05a42f334f67a657136d033a0a1d69d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae83ab780c294750919079477b871b2c9"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#ae83ab780c294750919079477b871b2c9">PPM_640</a></td></tr>
@@ -151,16 +195,6 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a2733418c3eee1adaf51a5edd5aaf20fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7abb032fef7156b3b99396ecf39cd731"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#a7abb032fef7156b3b99396ecf39cd731">tempF</a></td></tr>
 <tr class="separator:a7abb032fef7156b3b99396ecf39cd731"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc8011bc4befb5ba0879f22c614a15b8"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#adc8011bc4befb5ba0879f22c614a15b8">K</a></td></tr>
-<tr class="separator:adc8011bc4befb5ba0879f22c614a15b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23a54c1ee4681fd83f36e4c94bb45876"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#a23a54c1ee4681fd83f36e4c94bb45876">accuracy</a> = <a class="el" href="_e_c_salinity_8h.html#a46db5220638c33df529b965a6c325e85">EC_HIGH_ACCURACY</a></td></tr>
-<tr class="separator:a23a54c1ee4681fd83f36e4c94bb45876"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ad41e4be7d9064d406f8e7de22dc616"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#a4ad41e4be7d9064d406f8e7de22dc616">useTempCompensation</a> = true</td></tr>
-<tr class="separator:a4ad41e4be7d9064d406f8e7de22dc616"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49cc1625abb119d7843493dcda3288b3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#a49cc1625abb119d7843493dcda3288b3">tempCompensationConstant</a> = -1</td></tr>
-<tr class="separator:a49cc1625abb119d7843493dcda3288b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a908f0fc118dcd81f1ee467dbf6c56849"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_e_c___salinity.html#a908f0fc118dcd81f1ee467dbf6c56849">useDualPointCalibration</a> = false</td></tr>
-<tr class="separator:a908f0fc118dcd81f1ee467dbf6c56849"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -172,9 +206,9 @@ Static Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>EC Salinity Class Implementation </p>
 
-<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00042">42</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00064">64</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ae3063ab09d83692263d7959fd9254f41"></a>
+<a class="anchor" id="a33ffb6fb52b63b928ab45fb98c477826"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -188,13 +222,7 @@ Static Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>tempCoef</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>numberProbeSamples</em>&#160;</td>
+          <td class="paramname"><em>tempCoef</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -204,18 +232,211 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Calibrates the connected probe and saves the result in EEPROM numberProbeSamples measurements are made, the median third is taken and averaged together to get a <a class="el" href="class_e_c___salinity.html#adc8011bc4befb5ba0879f22c614a15b8">K</a> value for the probe. </p>
+<p>Calibrates the connected probe and saves the result in EEPROM. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">solutionEC</td><td>the EC of the calibration solution in mS </td></tr>
     <tr><td class="paramname">tempCoef</td><td>the coefficient used to calibrate the probe </td></tr>
-    <tr><td class="paramname">numberProbeSamples</td><td>the number of samples to take to calibrate the probe (must be a multiple of 3) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd><a class="el" href="class_e_c___salinity.html#adc8011bc4befb5ba0879f22c614a15b8">K</a> will be saved in EEPROM and used automatically thereafter </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>cell constant will be saved in the device's EEPROM and used automatically thereafter </dd></dl>
 
-<p>Definition at line <a class="el" href="_e_c_salinity_8cpp_source.html#l00122">122</a> of file <a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_e_c_salinity_8cpp_source.html#l00109">109</a> of file <a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a339b7cfaf85d56946aaa8b09e649eec0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void EC_Salinity::calibrateProbeHigh </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>solutionEC</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>tempCoef</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calibrates the dual-point values for the high reading and saves them in the devices's EEPROM. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">solutionEC</td><td>the EC of the calibration solution in mS </td></tr>
+    <tr><td class="paramname">tempCoef</td><td>the coefficient used to calibrate the probe </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8cpp_source.html#l00148">148</a> of file <a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a89cb728b13b422baa24729c386ae66b2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void EC_Salinity::calibrateProbeLow </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>solutionEC</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>tempCoef</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calibrates the dual-point values for the low reading and saves them in the devices's EEPROM. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">solutionEC</td><td>the EC of the calibration solution in mS </td></tr>
+    <tr><td class="paramname">tempCoef</td><td>the coefficient used to calibrate the probe </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8cpp_source.html#l00129">129</a> of file <a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7bdd48a6f3f9a68fd94a39fb4cb274a1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">byte EC_Salinity::getAccuracy </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieves the accuracy configuration of the device. </p>
+<dl class="section return"><dt>Returns</dt><dd>accuracy </dd></dl>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8cpp_source.html#l00285">285</a> of file <a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a77c403d82647d21a5540bc9e642e9627"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float EC_Salinity::getCalibrateHigh </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieves the dual-point calibration high value. </p>
+<dl class="section return"><dt>Returns</dt><dd>the dual-point calibration high value </dd></dl>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8cpp_source.html#l00200">200</a> of file <a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a793511d6d72e865d3a603cbfe2e89cc1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float EC_Salinity::getCalibrateLow </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieves the dual-point calibration low value. </p>
+<dl class="section return"><dt>Returns</dt><dd>the dual-point calibration low value </dd></dl>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8cpp_source.html#l00211">211</a> of file <a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a982b424d2ddc77d3b46bea505acf3bf5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float EC_Salinity::getK </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieves the cell constant from the device. </p>
+<dl class="section return"><dt>Returns</dt><dd>the new cell constant </dd></dl>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8cpp_source.html#l00189">189</a> of file <a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a706c795bcde429e780a07247f7bacbc6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">byte EC_Salinity::getTempConstant </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieves the temperature constant. </p>
+<dl class="section return"><dt>Returns</dt><dd>the temperature to used for compensation </dd></dl>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8cpp_source.html#l00309">309</a> of file <a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae5854663a77aa407db47c08cda5b715d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">byte EC_Salinity::getVersion </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieves the firmware version of the device. </p>
+<dl class="section return"><dt>Returns</dt><dd>version of firmware </dd></dl>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8cpp_source.html#l00260">260</a> of file <a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a>.</p>
 
 </div>
 </div>
@@ -234,48 +455,95 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Starts an EC measurement. </p>
-<p><a class="el" href="class_e_c___salinity.html#a23a54c1ee4681fd83f36e4c94bb45876">accuracy</a> of samples are taken and the average of the middle third of the measures is returned in <a class="el" href="class_e_c___salinity.html#ad835b40db253e61ad5898414eff3fc60">mS</a>. If <a class="el" href="class_e_c___salinity.html#a4ad41e4be7d9064d406f8e7de22dc616">useTempCompensation</a> is TRUE, then the resulting measurement will be corrected for temperature. If <a class="el" href="class_e_c___salinity.html#a49cc1625abb119d7843493dcda3288b3">tempCompensationConstant</a> is set to anything other than -1, that value will be used as the temperature. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>The device starst an EC measurement. The accuracy can be specified in <a class="el" href="class_e_c___salinity.html#aaaaab96ad13c1f55772256f31d9de8de" title="Configures the accuracy of the device. ">EC_Salinity::setAccuracy</a>. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">tempCoefficient</td><td>the coefficient used to compensate for temperature. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section pre"><dt>Precondition</dt><dd><a class="el" href="class_e_c___salinity.html#adc8011bc4befb5ba0879f22c614a15b8">K</a> must be set </dd></dl>
-<dl class="section post"><dt>Postcondition</dt><dd><a class="el" href="class_e_c___salinity.html#a0ee529d0a7c75de0f2b019bd15991637">uS</a>, <a class="el" href="class_e_c___salinity.html#ad835b40db253e61ad5898414eff3fc60">mS</a>, <a class="el" href="class_e_c___salinity.html#af3274d7a8037d1eee998d1dd3f50ce91">S</a>, <a class="el" href="class_e_c___salinity.html#a2733418c3eee1adaf51a5edd5aaf20fa">tempC</a>, <a class="el" href="class_e_c___salinity.html#a7abb032fef7156b3b99396ecf39cd731">tempF</a>, <a class="el" href="class_e_c___salinity.html#a05a42f334f67a657136d033a0a1d69d6">PPM_500</a>, <a class="el" href="class_e_c___salinity.html#ae83ab780c294750919079477b871b2c9">PPM_640</a>, <a class="el" href="class_e_c___salinity.html#a95969d31584e0afc0128909dfd39b932">PPM_700</a>, <a class="el" href="class_e_c___salinity.html#a8b5bab63164f67830388f9065b40bc1d">salinityPPM</a>, <a class="el" href="class_e_c___salinity.html#a99faa627b03c807a535b956e98eec46e">salinityPPT</a>, <a class="el" href="class_e_c___salinity.html#a7e1c505419b7e8b2b9a4cb277701b6a3">salinityPSU</a>, and <a class="el" href="class_e_c___salinity.html#adc8011bc4befb5ba0879f22c614a15b8">K</a> are updated </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd><a class="el" href="class_e_c___salinity.html#a7d5cf279e9c0cd10cc3ced6d30d8f4ad">uS</a>, <a class="el" href="class_e_c___salinity.html#ad835b40db253e61ad5898414eff3fc60">mS</a>, <a class="el" href="class_e_c___salinity.html#af3274d7a8037d1eee998d1dd3f50ce91">S</a>, <a class="el" href="class_e_c___salinity.html#a2733418c3eee1adaf51a5edd5aaf20fa">tempC</a>, <a class="el" href="class_e_c___salinity.html#a7abb032fef7156b3b99396ecf39cd731">tempF</a>, <a class="el" href="class_e_c___salinity.html#a05a42f334f67a657136d033a0a1d69d6">PPM_500</a>, <a class="el" href="class_e_c___salinity.html#ae83ab780c294750919079477b871b2c9">PPM_640</a>, <a class="el" href="class_e_c___salinity.html#a95969d31584e0afc0128909dfd39b932">PPM_700</a>, <a class="el" href="class_e_c___salinity.html#a8b5bab63164f67830388f9065b40bc1d">salinityPPM</a>, <a class="el" href="class_e_c___salinity.html#a99faa627b03c807a535b956e98eec46e">salinityPPT</a>, and <a class="el" href="class_e_c___salinity.html#a7e1c505419b7e8b2b9a4cb277701b6a3">salinityPSU</a> are updated </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>PPM is not valid if salinity is being measured </dd></dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="class_e_c___salinity.html#ad835b40db253e61ad5898414eff3fc60">mS</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>milli-Siemens </dd></dl>
 
-<p>Definition at line <a class="el" href="_e_c_salinity_8cpp_source.html#l00064">64</a> of file <a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_e_c_salinity_8cpp_source.html#l00061">61</a> of file <a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a353fddb43c9932a7fb2037d3c3d2f802"></a>
+<a class="anchor" id="ad0a0956675fc359950d1359927e248fd"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void EC_Salinity::setDualPoint </td>
+          <td class="memname">float EC_Salinity::measureTemp </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Starts a temperature measurement. </p>
+<dl class="section post"><dt>Postcondition</dt><dd><a class="el" href="class_e_c___salinity.html#a2733418c3eee1adaf51a5edd5aaf20fa">tempC</a> and <a class="el" href="class_e_c___salinity.html#a7abb032fef7156b3b99396ecf39cd731">tempF</a> are updated </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>A value of -127 means the device is not connected. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>temperature in C </dd></dl>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8cpp_source.html#l00094">94</a> of file <a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aaaaab96ad13c1f55772256f31d9de8de"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void EC_Salinity::setAccuracy </td>
+          <td>(</td>
+          <td class="paramtype">byte&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Configures the accuracy of the device. </p>
+<p>The device maintains a running median of values. It throws out the top and bottom third of values, then averages the middle third together to return a single value. The accuracy incrases with a high number. It must be evenly divisible by 3. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">b</td><td>accuracy of the device </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8cpp_source.html#l00276">276</a> of file <a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af3cd5b404706edec78f1b117b8e9d6dd"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void EC_Salinity::setDualPointCalibration </td>
           <td>(</td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>referenceLow</em>, </td>
+          <td class="paramname"><em>refLow</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>referenceHigh</em>, </td>
+          <td class="paramname"><em>refHigh</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>readingLow</em>, </td>
+          <td class="paramname"><em>readLow</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>readingHigh</em>&#160;</td>
+          <td class="paramname"><em>readHigh</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -285,22 +553,22 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Sets dual point calibration constants as provided by the master device. </p>
+<p>Sets all the values for dual point calibration and saves them in the devices's EEPROM. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">referenceLow</td><td>low known EC calibration solution </td></tr>
-    <tr><td class="paramname">referenceHigh</td><td>high known EC calibration solution </td></tr>
-    <tr><td class="paramname">readingLow</td><td>actual EC measure in refLow solution </td></tr>
-    <tr><td class="paramname">readingHigh</td><td>actual EC measure in refHigh solution </td></tr>
+    <tr><td class="paramname">refLow</td><td>the reference low point </td></tr>
+    <tr><td class="paramname">refHigh</td><td>the reference high point </td></tr>
+    <tr><td class="paramname">readLow</td><td>the measured low point in mS </td></tr>
+    <tr><td class="paramname">readHigh</td><td>the measured high point in mS </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_e_c_salinity_8cpp_source.html#l00170">170</a> of file <a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_e_c_salinity_8cpp_source.html#l00169">169</a> of file <a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a5656655cb878b02b5414d84643951795"></a>
+<a class="anchor" id="abfb9db695342135fe3c1d9e017099d01"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -308,7 +576,7 @@ Static Public Attributes</h2></td></tr>
           <td class="memname">void EC_Salinity::setK </td>
           <td>(</td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>K</em></td><td>)</td>
+          <td class="paramname"><em>k</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -317,46 +585,134 @@ Static Public Attributes</h2></td></tr>
 <p>Updates the device with a new cell constant and saves it in EEPROM. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">K</td><td>the new cell constant </td></tr>
+    <tr><td class="paramname">k</td><td>the new cell constant </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_e_c_salinity_8cpp_source.html#l00148">148</a> of file <a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_e_c_salinity_8cpp_source.html#l00180">180</a> of file <a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6afe24ed690b92259a8c5af1a91688a0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void EC_Salinity::setTempConstant </td>
+          <td>(</td>
+          <td class="paramtype">byte&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Configures device to use the provided temperature constant. </p>
+<p>By default, the temperature constant is set to -1 which instructs the actual temperature to be used for temperature compensation, however any number can be specified. To use the actual temperature, restore the value to -1. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">b</td><td>the temperature to use for compensation </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8cpp_source.html#l00300">300</a> of file <a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad59943579cc4e237cbe48a2067b99e65"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void EC_Salinity::useDualPoint </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Configures device to use dual-point calibration. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">b</td><td>true for yes, false for no </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8cpp_source.html#l00241">241</a> of file <a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a826a26a7b0b6113089412bb0cf841367"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void EC_Salinity::useTemperatureCompensation </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Configures device to use temperature compensation or not. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">b</td><td>true for compensation, false to not use it </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8cpp_source.html#l00222">222</a> of file <a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2c5a7a1fe2c32c514cadd85e90f7249b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool EC_Salinity::usingDualPoint </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Determines if dual point calibration is being used. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if using compensation, false otherwise </dd></dl>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8cpp_source.html#l00331">331</a> of file <a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a21e07bf976f2ef15680fadac5da4c8f8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool EC_Salinity::usingTemperatureCompensation </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Determines if temperature compensation is being used. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if using compensation, false otherwise </dd></dl>
+
+<p>Definition at line <a class="el" href="_e_c_salinity_8cpp_source.html#l00320">320</a> of file <a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a23a54c1ee4681fd83f36e4c94bb45876"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int EC_Salinity::accuracy = <a class="el" href="_e_c_salinity_8h.html#a46db5220638c33df529b965a6c325e85">EC_HIGH_ACCURACY</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Number of samples to take per measurement and must be a multiple of 3 </p>
-
-<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00059">59</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="adc8011bc4befb5ba0879f22c614a15b8"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float EC_Salinity::K</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Cell constant </p>
-
-<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00056">56</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="ad835b40db253e61ad5898414eff3fc60"></a>
 <div class="memitem">
 <div class="memproto">
@@ -368,7 +724,7 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>EC in milli-Siemens </p>
 
-<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00046">46</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00068">68</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
 
 </div>
 </div>
@@ -383,7 +739,7 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Parts per million using 500 as a multiplier </p>
 
-<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00048">48</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00070">70</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
 
 </div>
 </div>
@@ -398,7 +754,7 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Parts per million using 640 as a multiplier </p>
 
-<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00049">49</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00071">71</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
 
 </div>
 </div>
@@ -413,7 +769,7 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Parts per million using 700 as a multiplier </p>
 
-<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00050">50</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00072">72</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
 
 </div>
 </div>
@@ -428,7 +784,7 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>EC in Siemens </p>
 
-<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00045">45</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00067">67</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
 
 </div>
 </div>
@@ -443,7 +799,7 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Salinity measured parts per million </p>
 
-<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00053">53</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00075">75</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
 
 </div>
 </div>
@@ -458,7 +814,7 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Salinity measured parts per thousand </p>
 
-<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00052">52</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00074">74</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
 
 </div>
 </div>
@@ -473,7 +829,7 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Salinity measured practical salinity units </p>
 
-<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00051">51</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00073">73</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
 
 </div>
 </div>
@@ -488,7 +844,7 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Temperature in C </p>
 
-<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00054">54</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00076">76</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
 
 </div>
 </div>
@@ -511,7 +867,7 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Temperature compensation coefficient for EC measurement </p>
 
-<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00057">57</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00078">78</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
 
 </div>
 </div>
@@ -534,22 +890,7 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Temperature compensation coefficient for salinity measurement </p>
 
-<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00058">58</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a49cc1625abb119d7843493dcda3288b3"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int EC_Salinity::tempCompensationConstant = -1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>To use a constant value for temperature compensation, -1 for actual temperature </p>
-
-<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00061">61</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00079">79</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
 
 </div>
 </div>
@@ -564,58 +905,28 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Temperature in F </p>
 
-<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00055">55</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00077">77</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a0ee529d0a7c75de0f2b019bd15991637"></a>
+<a class="anchor" id="a7d5cf279e9c0cd10cc3ced6d30d8f4ad"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">long EC_Salinity::uS</td>
+          <td class="memname">float EC_Salinity::uS</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>EC in micro-Siemens </p>
 
-<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00047">47</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a908f0fc118dcd81f1ee467dbf6c56849"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool EC_Salinity::useDualPointCalibration = false</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Use dual point calibration or not </p>
-
-<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00062">62</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a4ad41e4be7d9064d406f8e7de22dc616"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool EC_Salinity::useTempCompensation = true</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>To use temperature compensation </p>
-
-<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00060">60</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
+<p>Definition at line <a class="el" href="_e_c_salinity_8h_source.html#l00069">69</a> of file <a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li><a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a></li>
-<li><a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a></li>
+<li>src/<a class="el" href="_e_c_salinity_8h_source.html">ECSalinity.h</a></li>
+<li>src/<a class="el" href="_e_c_salinity_8cpp_source.html">ECSalinity.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->

@@ -1,6 +1,29 @@
 var searchData=
 [
-  ['ec_5fhigh_5faccuracy',['EC_HIGH_ACCURACY',['../_e_c_salinity_8h.html#a46db5220638c33df529b965a6c325e85',1,'ECSalinity.h']]],
-  ['ec_5flow_5faccuracy',['EC_LOW_ACCURACY',['../_e_c_salinity_8h.html#a245f0405630ad3b2e14fc785a19c539d',1,'ECSalinity.h']]],
-  ['ec_5fsalinity',['EC_SALINITY',['../_e_c_salinity_8h.html#a640dfe86e985335227741fb4a5fa8589',1,'ECSalinity.h']]]
+  ['ec_5faccuracy_5fregister',['EC_ACCURACY_REGISTER',['../_e_c_salinity_8h.html#ae14577084a91656b9b44259947240724',1,'ECSalinity.h']]],
+  ['ec_5fcalibrate_5fdelay',['EC_CALIBRATE_DELAY',['../_e_c_salinity_8h.html#a711cab6c24e67d703d6abd93cffc18e1',1,'ECSalinity.h']]],
+  ['ec_5fcalibrate_5fhigh',['EC_CALIBRATE_HIGH',['../_e_c_salinity_8h.html#a882c5ec972030a5ead98ab6c396f5a00',1,'ECSalinity.h']]],
+  ['ec_5fcalibrate_5fk',['EC_CALIBRATE_K',['../_e_c_salinity_8h.html#a95b9df9683015a475ff1b65e9d26f2e6',1,'ECSalinity.h']]],
+  ['ec_5fcalibrate_5flow',['EC_CALIBRATE_LOW',['../_e_c_salinity_8h.html#a0a808b4c22297cfe631864593bd2138b',1,'ECSalinity.h']]],
+  ['ec_5fcalibrate_5freadhigh_5fregister',['EC_CALIBRATE_READHIGH_REGISTER',['../_e_c_salinity_8h.html#a9ffd369ac86a5b76dc5c496d93a09ba3',1,'ECSalinity.h']]],
+  ['ec_5fcalibrate_5freadlow_5fregister',['EC_CALIBRATE_READLOW_REGISTER',['../_e_c_salinity_8h.html#afd50d1eff7732c37e3a13443ea4f8e40',1,'ECSalinity.h']]],
+  ['ec_5fcalibrate_5frefhigh_5fregister',['EC_CALIBRATE_REFHIGH_REGISTER',['../_e_c_salinity_8h.html#a281af18988e2218f0709c796776e544e',1,'ECSalinity.h']]],
+  ['ec_5fcalibrate_5freflow_5fregister',['EC_CALIBRATE_REFLOW_REGISTER',['../_e_c_salinity_8h.html#af6852c361b0a3eb4e2156c378e4d61c5',1,'ECSalinity.h']]],
+  ['ec_5fconfig_5fregister',['EC_CONFIG_REGISTER',['../_e_c_salinity_8h.html#a96d0e0f5ca69db87691deedeb1891e2b',1,'ECSalinity.h']]],
+  ['ec_5fdualpoint_5fconfig_5fbit',['EC_DUALPOINT_CONFIG_BIT',['../_e_c_salinity_8h.html#a7843d8a0ae692bd63a9dac9c767cb3f1',1,'ECSalinity.h']]],
+  ['ec_5fec_5fmeasurment_5ftime',['EC_EC_MEASURMENT_TIME',['../_e_c_salinity_8h.html#ab365fbd21a5691127a7cac02aa2fd87b',1,'ECSalinity.h']]],
+  ['ec_5fk_5fregister',['EC_K_REGISTER',['../_e_c_salinity_8h.html#a06e6eb8ce41f3c6f385a0c43b4b93b60',1,'ECSalinity.h']]],
+  ['ec_5fmeasure_5fec',['EC_MEASURE_EC',['../_e_c_salinity_8h.html#a67c9c3b981221b2afd622643988ee12c',1,'ECSalinity.h']]],
+  ['ec_5fmeasure_5ftemp',['EC_MEASURE_TEMP',['../_e_c_salinity_8h.html#ace5645a9b9f39b552abbfbc0a6c215fd',1,'ECSalinity.h']]],
+  ['ec_5fms_5fregister',['EC_MS_REGISTER',['../_e_c_salinity_8h.html#abcf8cab5c40f6ca7ea42c3a875c348ff',1,'ECSalinity.h']]],
+  ['ec_5fsalinity',['EC_SALINITY',['../_e_c_salinity_8h.html#a640dfe86e985335227741fb4a5fa8589',1,'ECSalinity.h']]],
+  ['ec_5fsalinity_5fpsu',['EC_SALINITY_PSU',['../_e_c_salinity_8h.html#a8b1ea9734a5570559b7246fbd8ae8fac',1,'ECSalinity.h']]],
+  ['ec_5fsolution_5fregister',['EC_SOLUTION_REGISTER',['../_e_c_salinity_8h.html#acf8f63a28ce390dcccd310edb4621e52',1,'ECSalinity.h']]],
+  ['ec_5ftask_5fregister',['EC_TASK_REGISTER',['../_e_c_salinity_8h.html#a8e5656adc5e79608360f7b04444bfc94',1,'ECSalinity.h']]],
+  ['ec_5ftemp_5fcompensation_5fconfig_5fbit',['EC_TEMP_COMPENSATION_CONFIG_BIT',['../_e_c_salinity_8h.html#a0de7e993441fc3a1ecb4f0d50f19e02a',1,'ECSalinity.h']]],
+  ['ec_5ftemp_5fcompensation_5fregister',['EC_TEMP_COMPENSATION_REGISTER',['../_e_c_salinity_8h.html#ae17c781ddbe938029dca747dc9d1ca9c',1,'ECSalinity.h']]],
+  ['ec_5ftemp_5fmeasure_5ftime',['EC_TEMP_MEASURE_TIME',['../_e_c_salinity_8h.html#a1b7ae8cd7cb6620f9bcc087a61176146',1,'ECSalinity.h']]],
+  ['ec_5ftemp_5fregister',['EC_TEMP_REGISTER',['../_e_c_salinity_8h.html#a69e25ed3d1d30d47a43ae0f79dfdbb10',1,'ECSalinity.h']]],
+  ['ec_5ftempcoef_5fregister',['EC_TEMPCOEF_REGISTER',['../_e_c_salinity_8h.html#a60c3bc8188b072f3988ace93a5db7c83',1,'ECSalinity.h']]],
+  ['ec_5fversion_5fregister',['EC_VERSION_REGISTER',['../_e_c_salinity_8h.html#aead8f0055ef150518e0d8c3444badef6',1,'ECSalinity.h']]]
 ];
