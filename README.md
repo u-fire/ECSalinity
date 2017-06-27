@@ -1,7 +1,3 @@
----
-layout: default
----
-
 ### EC Probe
 
 >Monitor hydroponic nutrient levels, salinity in aquariums, the ocean,

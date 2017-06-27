@@ -1,22 +1,18 @@
 {
-  "name": "EC_Salinity",
-  "keywords": "EC, Conductivity, hydroponics, salinity, ppt, psu, tds, ppm",
-  "description": "Measures Electrical Conductivity in Siemens, Total Dissolved Solids in PPM, Salinity in PSU and PPT",
-  "repository":
-  {
-    "type": "git",
-    "url": "https://github.com/u-fire/ECSalinity.git"
-  },
-  "authors":
-  [
-    {
-      "name": "Justin Decker",
-      "email": "justin@ufire.co",
-      "url": "http://ufire.co",
-      "maintainer": true
-    }
-  ],
-  "version": "1.0.0",
-  "frameworks": "arduino",
-  "platforms": "*"
+	"name": "EC_Salinity",
+	"keywords": "EC, Conductivity, hydroponics, salinity, ppt, psu, tds, ppm",
+	"description": "Measures Electrical Conductivity in Siemens, Total Dissolved Solids in PPM, Salinity in PSU and PPT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/u-fire/ECSalinity.git"
+	},
+	"authors": [{
+		"name": "Justin Decker",
+		"email": "justin@ufire.co",
+		"url": "http://ufire.co",
+		"maintainer": true
+	}],
+	"version": "1.0.0",
+	"frameworks": "arduino",
+	"platforms": "*"
 }
