@@ -112,7 +112,7 @@ float EC_Salinity::measureSalinity()
 float EC_Salinity::measureTemp()
 {
   _send_command(EC_MEASURE_TEMP);
-  delay((getAccuracy() * EC_EC_MEASURMENT_TIME));
+  delay(EC_TEMP_MEASURE_TIME);
   tempC = _read_register(EC_TEMP_REGISTER);
   tempF = ((tempC * 9) / 5) + 32;
   return tempC;

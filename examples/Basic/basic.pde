@@ -1,7 +1,7 @@
 #include <ECSalinity.h>
 
 EC_Salinity ec;
-float calibrationSolution_mS = 2.77;
+float calibrationSolution_mS = 7.82;
 
 void setup()
 {
