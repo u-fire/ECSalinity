@@ -1,5 +1,5 @@
 {
-	"name": "EC_Salinity",
+	"name": "EC Salinity Prober Interface",
 	"keywords": "EC, Conductivity, hydroponics, salinity, ppt, psu, tds, ppm",
 	"description": "Measures Electrical Conductivity in Siemens, Total Dissolved Solids in PPM, Salinity in PSU and PPT",
 	"repository": {
@@ -12,7 +12,7 @@
 		"url": "http://ufire.co",
 		"maintainer": true
 	}],
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"frameworks": "arduino",
 	"platforms": "*"
 }
