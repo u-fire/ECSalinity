@@ -256,7 +256,7 @@ from the measure and is in PSU, PPT, and PPM.</p>
 <h2 id="characteristics">Characteristics</h2>
 
 <ul>
-<li><strong>EC range</strong>: ~1.0 - ~200mS</li>
+<li><strong>EC range</strong>: 0.1 - 200mS</li>
 <li><strong>Salinity range</strong>: 2 - 42</li>
 <li><strong>Temperature range</strong>: -2 - 35C</li>
 <li><strong>Interface</strong>: I2C</li>
@@ -326,6 +326,24 @@ from the measure and is in PSU, PPT, and PPM.</p>
 
 <p>Any 2-electrode probe can be attached to the device.</p>
 
+<p>A probe with a K constant of</p>
+
+<ul>
+<li>0.1K can measure from 0 - 200 uS</li>
+<li>1K from 0 - 2000 uS</li>
+<li>10K from 0 - 200 mS</li>
+</ul>
+
+<h3 id="making-a-probe">Making a Probe</h3>
+
+<p>A probe can be as simple as two male Dupont wire connectors and some wire or as complicated as commercially purchased platinum electrodes embedded in glass. The conductivity of the probe is a factor of the total surface area divided by the distance between the probes. Things to be mindful of include:</p>
+
+<ul>
+<li>Current and voltage will pass through the probes; one probe will be fouled by chemical interactions that take place unless a non-reactive metal is used.</li>
+<li>Water will creep into small crevices if they are left unsealed and provide erratic results, changing slowly to new solution conditions.</li>
+<li>Handmade probes require more maintenance and are less accurate overall than commercial alternatives, the advantage being they can cost a few pennies in material.</li>
+</ul>
+
 <h1 id="calibration">Calibration</h1>
 <pre class="highlight cpp"><code><span class="cp">#include &lt;ECSalinity.h&gt;
 </span><span class="n">EC_Salinity</span> <span class="n">ec</span><span class="p">;</span>
@@ -336,7 +354,7 @@ from the measure and is in PSU, PPT, and PPM.</p>
 </code></pre>
 <p>When the device is powered for the first time, it will be uncalibrated. There are two calibration options: single and dual or double point. Single point determines a percent difference between actual readings and expected readings, then uses it to adjust the readings. Double point uses two points, a high and low, to determine the adjustment to make. The choice of single or double depends on the expected use. A small range might be better measured by single point calibration whereas a large range may be more accurate with double point.  </p>
 
-<p>Before any measurements can be made, to include measurements to calibrate the probe, the cell constant (K) must be specified. This number is typically 0.1, 1.0, or 10.0. The exact value may be found on the probe itself (9.988 for example). After K has been set, you can expect to see values being returned. It will not be accurate and must be calibrated.</p>
+<p>Before any measurements can be made, to include measurements to calibrate the probe, the cell constant (K) must be specified. There are two ways to accomplish this. The number is typically 0.1, 1.0, or 10.0 and the exact value may be found on the probe itself (9.988 for example). Alternatitivley, if the probe is handmade, <code class="prettyprint">calculateK()</code> can be called.  After K has been set, you can expect to see values being returned. It will not be accurate and must be calibrated if you manually entered the K value; if <code class="prettyprint">calculateK()</code> was used, you can expect accurate readings and no further calibration is needed for single point measurements.</p>
 
 <p>To begin the single point calibration process, place the thermometer and probe in a calibration solution then call the <code class="prettyprint">calibrateProbe</code> function.</p>
 
@@ -352,11 +370,11 @@ from the measure and is in PSU, PPT, and PPM.</p>
 <pre class="highlight cpp"><code><span class="kt">float</span> <span class="n">solutionEC</span> <span class="o">=</span> <span class="mf">53.0</span><span class="p">;</span>
 <span class="n">ec</span><span class="p">.</span><span class="n">calibrationProbe</span><span class="p">(</span><span class="n">solutionEC</span><span class="p">,</span> <span class="n">ec</span><span class="p">.</span><span class="n">tempCoefSalinity</span><span class="p">);</span>
 </code></pre>
-<p>After K has been set, you can calibrate the probe using a single point. For this method of calibrating, submerge the probe and wait for the readings to stabilize. Then call <code class="prettyprint">calibrateProbe</code>. The calibration information will be stored in EEPROM and is the percent difference from the measured value and the expected value.</p>
+<p>After K has been set, you can calibrate the probe using a single point. For this method of calibrating, submerge the probe and wait for the readings to stabilize. Then call <code class="prettyprint">calibrateProbe</code>. The calibration information will be stored in ec.referenceLow and is the percent difference from the measured value and the expected value.</p>
 
 <h3 id="dual-point">Dual Point</h3>
 
-<p>Two calibration solutions are required, the low and high values you expect to measure between.</p>
+<p>You can use dual point calibration for more accurate results between two predesignated points. Two calibration solutions are required, the low and high values you expect to measure between.</p>
 <pre class="highlight cpp"><code><span class="kt">float</span> <span class="n">readingLow</span> <span class="o">=</span> <span class="mf">51.0</span><span class="p">;</span>
 <span class="kt">float</span> <span class="n">readingHigh</span> <span class="o">=</span> <span class="mf">60.2</span><span class="p">;</span>
 <span class="n">ec</span><span class="p">.</span><span class="n">setDualPointCalibration</span><span class="p">(</span><span class="mf">50.0</span><span class="p">,</span> <span class="mf">58.0</span><span class="p">,</span> <span class="n">readingLow</span><span class="p">,</span> <span class="n">readingHigh</span><span class="p">);</span>
@@ -386,7 +404,8 @@ to programatically determine the values.</p>
 
 <p><code class="prettyprint">getCalibrateHigh</code> and <code class="prettyprint">getCalibrateLow</code> can be used
 to get the currently set reference values.</p>
-
+<pre class="highlight cpp"><code><span class="n">ec</span><span class="p">.</span><span class="n">useDualPoint</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+</code></pre>
 <p>Each call to <code class="prettyprint">measureEC</code> will use the calibration to adjust
 the reading. It can be disabled by <code class="prettyprint">ec.useDualPoint(false);</code></p>
 
@@ -394,9 +413,11 @@ the reading. It can be disabled by <code class="prettyprint">ec.useDualPoint(fal
 <pre class="highlight cpp"><code><span class="kt">float</span> <span class="n">tempC</span> <span class="o">=</span> <span class="n">ec</span><span class="p">.</span><span class="n">measureTemp</span><span class="p">();</span>
 </code></pre>
 <p>Once the probe has been calibrated, a reading can be taken. The device will use
-the most recent temperature measurement obtained from <code class="prettyprint">measureTemp</code> if temperature
-compensation is enabled.The probe should be placed in the solution to be measured and <code class="prettyprint">measureEC</code>
-called to start a measurement. </p>
+the most recent temperature measurement obtained from <code class="prettyprint">measureTemp</code>.
+The probe should be placed in the solution to be measured and <code class="prettyprint">measureEC</code>
+called to start a measurement. For best results, the probe should be cleaned with distilled
+water and left in the solution for 5 - 10 minutes. Be sure no air bubbles or debris
+are on the probe points.</p>
 
 <p>After the measurement is taken, the following class variables are updated:</p>
 
@@ -449,349 +470,81 @@ divisible by 3. The least number of measures possible is 3.</p>
 a call to <code class="prettyprint">measureEC</code> will return in about 90ms. A temperature measurement
 takes 750ms.</p>
 
-          <h1 id="summary">Summary</h1>
-
-<table><thead>
-<tr>
-<th>Members</th>
-<th>Descriptions</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a640dfe86e985335227741fb4a5fa8589"><code class="prettyprint">EC_SALINITY</code></a></td>
-<td>EC Salinity probe I2C address</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a67c9c3b981221b2afd622643988ee12c"><code class="prettyprint">EC_MEASURE_EC</code></a></td>
-<td>Command to start an EC measure</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1ace5645a9b9f39b552abbfbc0a6c215fd"><code class="prettyprint">EC_MEASURE_TEMP</code></a></td>
-<td>Command to measure temperature</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1adb0e1b956d582d6f490d48f173f3f2b0"><code class="prettyprint">EC_CALIBRATE_PROBE</code></a></td>
-<td>Command to calibrate the probe</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a0a808b4c22297cfe631864593bd2138b"><code class="prettyprint">EC_CALIBRATE_LOW</code></a></td>
-<td>Command to calibrate the low point of the probe</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a882c5ec972030a5ead98ab6c396f5a00"><code class="prettyprint">EC_CALIBRATE_HIGH</code></a></td>
-<td>Command to calibrate the high point of the probe</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1aead8f0055ef150518e0d8c3444badef6"><code class="prettyprint">EC_VERSION_REGISTER</code></a></td>
-<td>version register</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1abcf8cab5c40f6ca7ea42c3a875c348ff"><code class="prettyprint">EC_MS_REGISTER</code></a></td>
-<td>mS register</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a69e25ed3d1d30d47a43ae0f79dfdbb10"><code class="prettyprint">EC_TEMP_REGISTER</code></a></td>
-<td>temperature in C register</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a06e6eb8ce41f3c6f385a0c43b4b93b60"><code class="prettyprint">EC_K_REGISTER</code></a></td>
-<td>cell constant register</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1acf8f63a28ce390dcccd310edb4621e52"><code class="prettyprint">EC_SOLUTION_REGISTER</code></a></td>
-<td>calibration solution register</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a60c3bc8188b072f3988ace93a5db7c83"><code class="prettyprint">EC_TEMPCOEF_REGISTER</code></a></td>
-<td>temperatue coefficient register</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a281af18988e2218f0709c796776e544e"><code class="prettyprint">EC_CALIBRATE_REFHIGH_REGISTER</code></a></td>
-<td>reference low register</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1af6852c361b0a3eb4e2156c378e4d61c5"><code class="prettyprint">EC_CALIBRATE_REFLOW_REGISTER</code></a></td>
-<td>reference high register</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a9ffd369ac86a5b76dc5c496d93a09ba3"><code class="prettyprint">EC_CALIBRATE_READHIGH_REGISTER</code></a></td>
-<td>reading low register</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1afd50d1eff7732c37e3a13443ea4f8e40"><code class="prettyprint">EC_CALIBRATE_READLOW_REGISTER</code></a></td>
-<td>reading high register</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1ae243d66ed1deefd16d8905013d77e1e8"><code class="prettyprint">EC_CALIBRATE_OFFSET_REGISTER</code></a></td>
-<td>caliration offset</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a8b1ea9734a5570559b7246fbd8ae8fac"><code class="prettyprint">EC_SALINITY_PSU</code></a></td>
-<td>Salinity register</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1ae17c781ddbe938029dca747dc9d1ca9c"><code class="prettyprint">EC_TEMP_COMPENSATION_REGISTER</code></a></td>
-<td>temperature compensation register</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1ae14577084a91656b9b44259947240724"><code class="prettyprint">EC_ACCURACY_REGISTER</code></a></td>
-<td>accuracy register</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a96d0e0f5ca69db87691deedeb1891e2b"><code class="prettyprint">EC_CONFIG_REGISTER</code></a></td>
-<td>config register</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a8e5656adc5e79608360f7b04444bfc94"><code class="prettyprint">EC_TASK_REGISTER</code></a></td>
-<td>task register</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1ab365fbd21a5691127a7cac02aa2fd87b"><code class="prettyprint">EC_EC_MEASURMENT_TIME</code></a></td>
-<td>delay between EC measurements</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a1b7ae8cd7cb6620f9bcc087a61176146"><code class="prettyprint">EC_TEMP_MEASURE_TIME</code></a></td>
-<td>delay for temperature measurement</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a711cab6c24e67d703d6abd93cffc18e1"><code class="prettyprint">EC_CALIBRATE_DELAY</code></a></td>
-<td>delay between EC calibration measurements</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a7843d8a0ae692bd63a9dac9c767cb3f1"><code class="prettyprint">EC_DUALPOINT_CONFIG_BIT</code></a></td>
-<td>dual point config bit</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a0de7e993441fc3a1ecb4f0d50f19e02a"><code class="prettyprint">EC_TEMP_COMPENSATION_CONFIG_BIT</code></a></td>
-<td>temperature compensation config bit</td>
-</tr>
-<tr>
-<td><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1ab25e1ec7973038c1ae1db1fd19eecc1b"><code class="prettyprint">PSU_TO_PPT_CONVERSION</code></a></td>
-<td>conversion factor for PSU to PPT</td>
-</tr>
-<tr>
-<td><code class="prettyprint">class</code><a href="#class_e_c___salinity"><code class="prettyprint">EC_Salinity</code></a></td>
-<td>EC Salinity Class</td>
-</tr>
-</tbody></table>
-
-<h2 id="members">Members</h2>
-
-<h4 id="defineec_salinity"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a640dfe86e985335227741fb4a5fa8589"><code class="prettyprint">EC_SALINITY</code></a></h4>
-
-<p>EC Salinity probe I2C address</p>
-
-<h4 id="defineec_measure_ec"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a67c9c3b981221b2afd622643988ee12c"><code class="prettyprint">EC_MEASURE_EC</code></a></h4>
-
-<p>Command to start an EC measure</p>
-
-<h4 id="defineec_measure_temp"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1ace5645a9b9f39b552abbfbc0a6c215fd"><code class="prettyprint">EC_MEASURE_TEMP</code></a></h4>
-
-<p>Command to measure temperature</p>
-
-<h4 id="defineec_calibrate_probe"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1adb0e1b956d582d6f490d48f173f3f2b0"><code class="prettyprint">EC_CALIBRATE_PROBE</code></a></h4>
-
-<p>Command to calibrate the probe</p>
-
-<h4 id="defineec_calibrate_low"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a0a808b4c22297cfe631864593bd2138b"><code class="prettyprint">EC_CALIBRATE_LOW</code></a></h4>
-
-<p>Command to calibrate the low point of the probe</p>
-
-<h4 id="defineec_calibrate_high"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a882c5ec972030a5ead98ab6c396f5a00"><code class="prettyprint">EC_CALIBRATE_HIGH</code></a></h4>
-
-<p>Command to calibrate the high point of the probe</p>
-
-<h4 id="defineec_version_register"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1aead8f0055ef150518e0d8c3444badef6"><code class="prettyprint">EC_VERSION_REGISTER</code></a></h4>
-
-<p>version register</p>
-
-<h4 id="defineec_ms_register"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1abcf8cab5c40f6ca7ea42c3a875c348ff"><code class="prettyprint">EC_MS_REGISTER</code></a></h4>
-
-<p>mS register</p>
-
-<h4 id="defineec_temp_register"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a69e25ed3d1d30d47a43ae0f79dfdbb10"><code class="prettyprint">EC_TEMP_REGISTER</code></a></h4>
-
-<p>temperature in C register</p>
-
-<h4 id="defineec_k_register"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a06e6eb8ce41f3c6f385a0c43b4b93b60"><code class="prettyprint">EC_K_REGISTER</code></a></h4>
-
-<p>cell constant register</p>
-
-<h4 id="defineec_solution_register"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1acf8f63a28ce390dcccd310edb4621e52"><code class="prettyprint">EC_SOLUTION_REGISTER</code></a></h4>
-
-<p>calibration solution register</p>
-
-<h4 id="defineec_tempcoef_register"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a60c3bc8188b072f3988ace93a5db7c83"><code class="prettyprint">EC_TEMPCOEF_REGISTER</code></a></h4>
-
-<p>temperatue coefficient register</p>
-
-<h4 id="defineec_calibrate_refhigh_register"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a281af18988e2218f0709c796776e544e"><code class="prettyprint">EC_CALIBRATE_REFHIGH_REGISTER</code></a></h4>
-
-<p>reference low register</p>
-
-<h4 id="defineec_calibrate_reflow_register"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1af6852c361b0a3eb4e2156c378e4d61c5"><code class="prettyprint">EC_CALIBRATE_REFLOW_REGISTER</code></a></h4>
-
-<p>reference high register</p>
-
-<h4 id="defineec_calibrate_readhigh_register"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a9ffd369ac86a5b76dc5c496d93a09ba3"><code class="prettyprint">EC_CALIBRATE_READHIGH_REGISTER</code></a></h4>
-
-<p>reading low register</p>
-
-<h4 id="defineec_calibrate_readlow_register"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1afd50d1eff7732c37e3a13443ea4f8e40"><code class="prettyprint">EC_CALIBRATE_READLOW_REGISTER</code></a></h4>
-
-<p>reading high register</p>
-
-<h4 id="defineec_calibrate_offset_register"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1ae243d66ed1deefd16d8905013d77e1e8"><code class="prettyprint">EC_CALIBRATE_OFFSET_REGISTER</code></a></h4>
-
-<p>caliration offset</p>
-
-<h4 id="defineec_salinity_psu"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a8b1ea9734a5570559b7246fbd8ae8fac"><code class="prettyprint">EC_SALINITY_PSU</code></a></h4>
-
-<p>Salinity register</p>
-
-<h4 id="defineec_temp_compensation_register"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1ae17c781ddbe938029dca747dc9d1ca9c"><code class="prettyprint">EC_TEMP_COMPENSATION_REGISTER</code></a></h4>
-
-<p>temperature compensation register</p>
-
-<h4 id="defineec_accuracy_register"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1ae14577084a91656b9b44259947240724"><code class="prettyprint">EC_ACCURACY_REGISTER</code></a></h4>
-
-<p>accuracy register</p>
-
-<h4 id="defineec_config_register"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a96d0e0f5ca69db87691deedeb1891e2b"><code class="prettyprint">EC_CONFIG_REGISTER</code></a></h4>
-
-<p>config register</p>
-
-<h4 id="defineec_task_register"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a8e5656adc5e79608360f7b04444bfc94"><code class="prettyprint">EC_TASK_REGISTER</code></a></h4>
-
-<p>task register</p>
-
-<h4 id="defineec_ec_measurment_time"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1ab365fbd21a5691127a7cac02aa2fd87b"><code class="prettyprint">EC_EC_MEASURMENT_TIME</code></a></h4>
-
-<p>delay between EC measurements</p>
-
-<h4 id="defineec_temp_measure_time"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a1b7ae8cd7cb6620f9bcc087a61176146"><code class="prettyprint">EC_TEMP_MEASURE_TIME</code></a></h4>
-
-<p>delay for temperature measurement</p>
-
-<h4 id="defineec_calibrate_delay"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a711cab6c24e67d703d6abd93cffc18e1"><code class="prettyprint">EC_CALIBRATE_DELAY</code></a></h4>
-
-<p>delay between EC calibration measurements</p>
-
-<h4 id="defineec_dualpoint_config_bit"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a7843d8a0ae692bd63a9dac9c767cb3f1"><code class="prettyprint">EC_DUALPOINT_CONFIG_BIT</code></a></h4>
-
-<p>dual point config bit</p>
-
-<h4 id="defineec_temp_compensation_config_bit"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1a0de7e993441fc3a1ecb4f0d50f19e02a"><code class="prettyprint">EC_TEMP_COMPENSATION_CONFIG_BIT</code></a></h4>
-
-<p>temperature compensation config bit</p>
-
-<h4 id="definepsu_to_ppt_conversion"><code class="prettyprint">define</code><a href="#_e_c_salinity_8h_1ab25e1ec7973038c1ae1db1fd19eecc1b"><code class="prettyprint">PSU_TO_PPT_CONVERSION</code></a></h4>
-
-<p>conversion factor for PSU to PPT</p>
-
-<h1 id="class-ec_salinity">class <code class="prettyprint">EC_Salinity</code></h1>
-
-<h2 id="members">Members</h2>
-
-<h2 id="s">S</h2>
-
-<p><code class="prettyprint">public float</code><a href="#class_e_c___salinity_1af3274d7a8037d1eee998d1dd3f50ce91"><code class="prettyprint">S</code></a>
-</br></p>
-
-<p>EC in Siemens</p>
-
-<h2 id="ms">mS</h2>
-
-<p><code class="prettyprint">public float</code><a href="#class_e_c___salinity_1ad835b40db253e61ad5898414eff3fc60"><code class="prettyprint">mS</code></a>
-</br></p>
-
-<p>EC in milli-Siemens</p>
+<h1 id="member-data">Member Data</h1>
 
 <h2 id="us">uS</h2>
 
-<p><code class="prettyprint">public float</code><a href="#class_e_c___salinity_1a7d5cf279e9c0cd10cc3ced6d30d8f4ad"><code class="prettyprint">uS</code></a>
-</br></p>
+<p><code class="prettyprint">float</code><br/>
+EC in micro-Siemens</p>
 
-<p>EC in micro-Siemens</p>
+<h2 id="ms">mS</h2>
+
+<p><code class="prettyprint">float</code><br/>
+EC in milli-Siemens</p>
+
+<h2 id="s">S</h2>
+
+<p><code class="prettyprint">float</code><br/>
+EC in Siemens</p>
 
 <h2 id="ppm_500">PPM_500</h2>
 
-<p><code class="prettyprint">public long</code><a href="#class_e_c___salinity_1a05a42f334f67a657136d033a0a1d69d6"><code class="prettyprint">PPM_500</code></a>
-</br></p>
-
-<p>Parts per million using 500 as a multiplier</p>
+<p><code class="prettyprint">long</code><br/>
+TDS in PPM using 500 as a multiplier (US)</p>
 
 <h2 id="ppm_640">PPM_640</h2>
 
-<p><code class="prettyprint">public long</code><a href="#class_e_c___salinity_1ae83ab780c294750919079477b871b2c9"><code class="prettyprint">PPM_640</code></a>
-</br></p>
-
-<p>Parts per million using 640 as a multiplier</p>
+<p><code class="prettyprint">long</code><br/>
+TDS in PPM using 640 as a multiplier</p>
 
 <h2 id="ppm_700">PPM_700</h2>
 
-<p><code class="prettyprint">public long</code><a href="#class_e_c___salinity_1a95969d31584e0afc0128909dfd39b932"><code class="prettyprint">PPM_700</code></a>
-</br></p>
-
-<p>Parts per million using 700 as a multiplier</p>
+<p><code class="prettyprint">long</code><br/>
+TDS in PPM using 700 as a multiplier (US)</p>
 
 <h2 id="salinitypsu">salinityPSU</h2>
 
-<p><code class="prettyprint">public float</code><a href="#class_e_c___salinity_1a7e1c505419b7e8b2b9a4cb277701b6a3"><code class="prettyprint">salinityPSU</code></a>
-</br></p>
-
-<p>Salinity measured practical salinity units</p>
+<p><code class="prettyprint">float</code><br/>
+Salinity in Practical Salinity Units</p>
 
 <h2 id="salinityppt">salinityPPT</h2>
 
-<p><code class="prettyprint">public float</code><a href="#class_e_c___salinity_1a99faa627b03c807a535b956e98eec46e"><code class="prettyprint">salinityPPT</code></a>
-</br></p>
-
-<p>Salinity measured parts per thousand</p>
+<p><code class="prettyprint">float</code><br/>
+Salinity in parts-per-thousand</p>
 
 <h2 id="salinityppm">salinityPPM</h2>
 
-<p><code class="prettyprint">public float</code><a href="#class_e_c___salinity_1af2ebd67da491f816329f222a7d382ad8"><code class="prettyprint">salinityPPM</code></a>
-</br></p>
-
-<p>Salinity measured parts per million</p>
+<p><code class="prettyprint">float</code><br/>
+Salinity in parts-per-million</p>
 
 <h2 id="tempc">tempC</h2>
 
-<p><code class="prettyprint">public float</code><a href="#class_e_c___salinity_1a2733418c3eee1adaf51a5edd5aaf20fa"><code class="prettyprint">tempC</code></a>
-</br></p>
-
-<p>Temperature in C</p>
+<p><code class="prettyprint">float</code><br/>
+Temperature in Celsius</p>
 
 <h2 id="tempf">tempF</h2>
 
-<p><code class="prettyprint">public float</code><a href="#class_e_c___salinity_1a7abb032fef7156b3b99396ecf39cd731"><code class="prettyprint">tempF</code></a>
-</br></p>
+<p><code class="prettyprint">float</code><br/>
+Temperature in Fahrenheit</p>
 
-<p>Temperature in F</p>
+<h2 id="tempcoefec">tempCoefEC</h2>
 
-<h2 id="ec_salinity">EC_Salinity</h2>
+<p><code class="prettyprint">const float = 0.019</code><br/>
+Temperature compensation coefficient for EC/freshwater measurements</p>
 
-<p><code class="prettyprint">public</code><a href="#class_e_c___salinity_1ab1421417cd2bbd92dad82b315128a946"><code class="prettyprint">EC_Salinity</code></a><code class="prettyprint">()</code>
-</br></p>
+<h2 id="tempcoefsalinity">tempCoefSalinity</h2>
 
-<p>Class constructor.</p>
+<p><code class="prettyprint">const float = 0.021</code><br/>
+Temperature compensation coefficient for salinity measurements</p>
 
-<h2 id="ec_salinity">~EC_Salinity</h2>
+<h1 id="member-functions">Member Functions</h1>
 
-<p><code class="prettyprint">public</code><a href="#class_e_c___salinity_1a4f5b2354fb443a5928d2ec544472a4af"><code class="prettyprint">~EC_Salinity</code></a><code class="prettyprint">()</code>
-</br></p>
-
-<p>Class destructor.</p>
-
-<h2 id="measureec">measureEC</h2>
-
-<p><code class="prettyprint">public float</code><a href="#class_e_c___salinity_1ac5eb05c6d52dcba0bb2d4785a51659bc"><code class="prettyprint">measureEC</code></a><code class="prettyprint">(float tempCoefficient)</code>
-</br></p>
-
-<p>Starts an EC measurement.</p>
-
-<p>The device starst an EC measurement. The accuracy can be specified in <a href="#class_e_c___salinity_1aaaaab96ad13c1f55772256f31d9de8de">EC_Salinity::setAccuracy</a>. </p>
+<h2 id="calculatek">calculateK</h2>
+<pre class="highlight cpp"><code><span class="n">ec</span><span class="p">.</span><span class="n">calculateK</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">ec</span><span class="p">.</span><span class="n">tempCoefEC</span><span class="p">);</span>
+<span class="n">ec</span><span class="p">.</span><span class="n">calculateK</span><span class="p">(</span><span class="mf">53.0</span><span class="p">,</span> <span class="n">ec</span><span class="p">.</span><span class="n">tempCoefSalinity</span><span class="p">);</span>
+<span class="n">ec</span><span class="p">.</span><span class="n">calculateK</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.0455</span><span class="p">);</span>
+</code></pre>
+<p><code class="prettyprint">void calculateK(float solutionEC, float tempCoef)</code><br/></p>
 
 <table><thead>
 <tr>
@@ -800,100 +553,72 @@ takes 750ms.</p>
 </tr>
 </thead><tbody>
 <tr>
-<td><code class="prettyprint">tempCoefficient</code></td>
-<td>the coefficient used to compensate for temperature.</td>
+<td>solutionEC</td>
+<td>mS of calibration solution</td>
+</tr>
+<tr>
+<td>tempCoef</td>
+<td>temperature coefficient to use for measurement</td>
 </tr>
 </tbody></table>
 
-<p><a href="#class_e_c___salinity_1a7d5cf279e9c0cd10cc3ced6d30d8f4ad">uS</a>, <a href="#class_e_c___salinity_1ad835b40db253e61ad5898414eff3fc60">mS</a>, <a href="#class_e_c___salinity_1af3274d7a8037d1eee998d1dd3f50ce91">S</a>, <a href="#class_e_c___salinity_1a2733418c3eee1adaf51a5edd5aaf20fa">tempC</a>, <a href="#class_e_c___salinity_1a7abb032fef7156b3b99396ecf39cd731">tempF</a>, <a href="#class_e_c___salinity_1a05a42f334f67a657136d033a0a1d69d6">PPM_500</a>, <a href="#class_e_c___salinity_1ae83ab780c294750919079477b871b2c9">PPM_640</a>, <a href="#class_e_c___salinity_1a95969d31584e0afc0128909dfd39b932">PPM_700</a>, <a href="#class_e_c___salinity_1af2ebd67da491f816329f222a7d382ad8">salinityPPM</a>, <a href="#class_e_c___salinity_1a99faa627b03c807a535b956e98eec46e">salinityPPT</a>, and <a href="#class_e_c___salinity_1a7e1c505419b7e8b2b9a4cb277701b6a3">salinityPSU</a> are updated </p>
+<p>Calculates the K value of the attached probe and saves it in the devices&rsquo;s EEPROM.</p>
 
-<p>PPM is not valid if salinity is being measured </p>
-
-<p><strong>Returns</strong>: milli-Siemens</p>
-
-<h2 id="measureec">measureEC</h2>
-
-<p><code class="prettyprint">public float</code><a href="#class_e_c___salinity_1a754320b158a17fe3b37d0c36ec168695"><code class="prettyprint">measureEC</code></a><code class="prettyprint">()</code>
-</br></p>
-
-<p>Convenience function.</p>
-
-<p>Calls <a href="#class_e_c___salinity_1ac5eb05c6d52dcba0bb2d4785a51659bc">EC_Salinity::measureEC</a>(<a href="#class_e_c___salinity_1aa5a1d7c5924a3c09be48911756b8c64a">EC_Salinity::tempCoefEC</a>) 
-<strong>Returns</strong>: salinity in PSU</p>
-
-<h2 id="measuresalinity">measureSalinity</h2>
-
-<p><code class="prettyprint">public float</code><a href="#class_e_c___salinity_1a57ce8b1e6d96902eb1ad8d1eefadcbeb"><code class="prettyprint">measureSalinity</code></a><code class="prettyprint">()</code>
-</br></p>
-
-<p>Convenience function.</p>
-
-<p>Calls <a href="#class_e_c___salinity_1ac5eb05c6d52dcba0bb2d4785a51659bc">EC_Salinity::measureEC</a>(<a href="#class_e_c___salinity_1a6dece08b650de2f4eecf7822dbaee34b">EC_Salinity::tempCoefSalinity</a>) 
-<strong>Returns</strong>: salinity in PSU</p>
-
-<h2 id="measuretemp">measureTemp</h2>
-
-<p><code class="prettyprint">public float</code><a href="#class_e_c___salinity_1ad0a0956675fc359950d1359927e248fd"><code class="prettyprint">measureTemp</code></a><code class="prettyprint">()</code>
-</br></p>
-
-<p>Starts a temperature measurement.</p>
-
-<p><a href="#class_e_c___salinity_1a2733418c3eee1adaf51a5edd5aaf20fa">tempC</a> and <a href="#class_e_c___salinity_1a7abb032fef7156b3b99396ecf39cd731">tempF</a> are updated </p>
-
-<p>A value of -127 means the device is not connected. </p>
-
-<p><strong>Returns</strong>: temperature in C</p>
+<aside class="notice">
+The following values are predefined, but any value can be passed.
+tempCoefSalinity<br/>
+tempCoefEC<br/>
+</aside>
 
 <h2 id="calibrateprobe">calibrateProbe</h2>
+<pre class="highlight cpp"><code><span class="cp">#include &lt;ECSalinity.h&gt;
+</span><span class="n">EC_Salinity</span> <span class="n">ec</span><span class="p">;</span>
 
-<p><code class="prettyprint">public void</code><a href="#class_e_c___salinity_1a33ffb6fb52b63b928ab45fb98c477826"><code class="prettyprint">calibrateProbe</code></a><code class="prettyprint">(float solutionEC,float tempCoef)</code>
-</br></p>
+<span class="n">ec</span><span class="p">.</span><span class="n">calibrateProbe</span><span class="p">(</span><span class="mf">2.77</span><span class="p">,</span> <span class="n">ec</span><span class="p">.</span><span class="n">tempCoefEC</span><span class="p">);</span>
+<span class="n">ec</span><span class="p">.</span><span class="n">calibrateProbe</span><span class="p">(</span><span class="mf">53.0</span><span class="p">,</span> <span class="n">ec</span><span class="p">.</span><span class="n">tempCoefSalinity</span><span class="p">);</span>
+<span class="n">ec</span><span class="p">.</span><span class="n">calibrateProbe</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0455</span><span class="p">);</span>
+</code></pre>
+<p><code class="prettyprint">void calibrateProbe(float solutionEC, float tempCoef)</code><br/></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>solutionEC</td>
+<td>mS of calibration solution</td>
+</tr>
+<tr>
+<td>tempCoef</td>
+<td>temperature coefficient to use for measurement</td>
+</tr>
+</tbody></table>
 
 <p>Calibrates the connected probe and saves the result in EEPROM.</p>
 
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code class="prettyprint">solutionEC</code></td>
-<td>the EC of the calibration solution in mS</td>
-</tr>
-</tbody></table>
-
-<p><code class="prettyprint">tempCoef</code> | the coefficient used to calibrate the probe </p>
-
-<p>cell constant will be saved in the device&rsquo;s EEPROM and used automatically thereafter</p>
-
-<h2 id="calibrateprobelow">calibrateProbeLow</h2>
-
-<p><code class="prettyprint">public void</code><a href="#class_e_c___salinity_1a89cb728b13b422baa24729c386ae66b2"><code class="prettyprint">calibrateProbeLow</code></a><code class="prettyprint">(float solutionEC,float tempCoef)</code>
-</br></p>
-
-<p>Calibrates the dual-point values for the low reading and saves them in the devices&rsquo;s EEPROM.</p>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code class="prettyprint">solutionEC</code></td>
-<td>the EC of the calibration solution in mS</td>
-</tr>
-</tbody></table>
-
-<p><code class="prettyprint">tempCoef</code> | the coefficient used to calibrate the probe</p>
+<aside class="notice">
+The following values are predefined, but any value can be passed.<br/>
+<code>tempCoefSalinity</code><br/>
+<code>tempCoefEC</code><br/>
+</aside>
 
 <h2 id="calibrateprobehigh">calibrateProbeHigh</h2>
+<pre class="highlight cpp"><code><span class="cp">#include &lt;ECSalinity.h&gt;
+</span><span class="n">EC_Salinity</span> <span class="n">ec</span><span class="p">;</span>
 
-<p><code class="prettyprint">public void</code><a href="#class_e_c___salinity_1a339b7cfaf85d56946aaa8b09e649eec0"><code class="prettyprint">calibrateProbeHigh</code></a><code class="prettyprint">(float solutionEC,float tempCoef)</code>
-</br></p>
+<span class="k">while</span> <span class="p">(</span><span class="n">Serial</span><span class="p">.</span><span class="n">available</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"mS: "</span><span class="p">);</span> <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">ec</span><span class="p">.</span><span class="n">measureEC</span><span class="p">(</span><span class="n">ec</span><span class="p">.</span><span class="n">tempCoefSalinity</span><span class="p">));</span>
+  <span class="n">delay</span><span class="p">(</span><span class="mi">5000</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="n">Serial</span><span class="p">.</span><span class="n">read</span><span class="p">();</span>
 
-<p>Calibrates the dual-point values for the high reading and saves them in the devices&rsquo;s EEPROM.</p>
+<span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"Calibrating high..."</span><span class="p">);</span>
+<span class="n">ec</span><span class="p">.</span><span class="n">calibrateProbeHigh</span><span class="p">(</span><span class="mi">58</span><span class="p">,</span> <span class="n">ec</span><span class="p">.</span><span class="n">tempCoefSalinity</span><span class="p">);</span>
+</code></pre>
+<p><code class="prettyprint">void calibrateProbeHigh(float solutionEC, float tempCoef)</code><br/></p>
 
 <table><thead>
 <tr>
@@ -902,44 +627,317 @@ takes 750ms.</p>
 </tr>
 </thead><tbody>
 <tr>
-<td><code class="prettyprint">solutionEC</code></td>
-<td>the EC of the calibration solution in mS</td>
+<td>solutionEC</td>
+<td>mS of calibration solution</td>
+</tr>
+<tr>
+<td>tempCoef</td>
+<td>temperature coefficient to use for measurement</td>
 </tr>
 </tbody></table>
 
-<p><code class="prettyprint">tempCoef</code> | the coefficient used to calibrate the probe</p>
+<p>Calibrates dual-point values for the high reading and saves them in the devices&rsquo;s EEPROM.</p>
+
+<aside class="notice">
+The following values are predefined, but any value can be passed.
+tempCoefSalinity<br/>
+tempCoefEC<br/>
+</aside>
+
+<h2 id="calibrateprobelow">calibrateProbeLow</h2>
+<pre class="highlight cpp"><code><span class="n">ec</span><span class="p">.</span><span class="n">calibrateProbeLow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">ec</span><span class="p">.</span><span class="n">tempCoefEC</span><span class="p">);</span>
+<span class="n">ec</span><span class="p">.</span><span class="n">calibrateProbeLow</span><span class="p">(</span><span class="mf">53.0</span><span class="p">,</span> <span class="n">ec</span><span class="p">.</span><span class="n">tempCoefSalinity</span><span class="p">);</span>
+<span class="n">ec</span><span class="p">.</span><span class="n">calibrateProbeLow</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.0455</span><span class="p">);</span>
+</code></pre>
+<p><code class="prettyprint">void calibrateProbeLow(float solutionEC, float tempCoef)</code><br/></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>solutionEC</td>
+<td>mS of calibration solution</td>
+</tr>
+<tr>
+<td>tempCoef</td>
+<td>temperature coefficient to use for measurement</td>
+</tr>
+</tbody></table>
+
+<p>Calibrates dual-point values for the low reading and saves them in the devices&rsquo;s EEPROM.</p>
+
+<aside class="notice">
+The following values are predefined, but any value can be passed.
+tempCoefSalinity<br/>
+tempCoefEC<br/>
+</aside>
+
+<h2 id="getaccuracy">getAccuracy</h2>
+<pre class="highlight cpp"><code><span class="n">byte</span> <span class="n">accuracy</span> <span class="o">=</span> <span class="n">ec</span><span class="p">.</span><span class="n">getAccuracy</span><span class="p">();</span>
+</code></pre>
+<p><code class="prettyprint">byte getAccuracy()</code><br/></p>
+
+<p>Retrieves the accuracy configuration of the device.</p>
+
+<p><strong>Returns</strong>: <code class="prettyprint">byte</code> accuracy</p>
+
+<h2 id="getcalibratehigh">getCalibrateHigh</h2>
+<pre class="highlight cpp"><code><span class="cp">#include &lt;ECSalinity.h&gt;
+</span><span class="n">EC_Salinity</span> <span class="n">ec</span><span class="p">;</span>
+
+<span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"Calibrating high..."</span><span class="p">);</span>
+<span class="n">ec</span><span class="p">.</span><span class="n">calibrateProbeHigh</span><span class="p">(</span><span class="mi">58</span><span class="p">,</span> <span class="n">ec</span><span class="p">.</span><span class="n">tempCoefSalinity</span><span class="p">);</span>
+
+<span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"Reference high set at: "</span><span class="p">);</span>
+<span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">ec</span><span class="p">.</span><span class="n">getCalibrateHigh</span><span class="p">());</span>
+</code></pre>
+<p><code class="prettyprint">float getCalibrateHigh()</code><br/></p>
+
+<p>Retrieves the dual-point calibration high reference value.</p>
+
+<p><strong>Returns</strong>: <code class="prettyprint">float</code> highCalibration</p>
+
+<h2 id="getcalibratelow">getCalibrateLow</h2>
+<pre class="highlight cpp"><code><span class="kt">float</span> <span class="n">lowCalibration</span> <span class="o">=</span> <span class="n">ec</span><span class="p">.</span><span class="n">getCalibrateLow</span><span class="p">();</span>
+</code></pre>
+<p><code class="prettyprint">float getCalibrateLow()</code><br/></p>
+
+<p>Retrieves the dual-point calibration low reference value.</p>
+
+<p><strong>Returns</strong>: <code class="prettyprint">float</code> lowCalibration</p>
+
+<h2 id="getcalibratelowreading">getCalibrateLowReading</h2>
+<pre class="highlight cpp"><code><span class="kt">float</span> <span class="n">lowCalibration</span> <span class="o">=</span> <span class="n">ec</span><span class="p">.</span><span class="n">getCalibrateLowReading</span><span class="p">();</span>
+</code></pre>
+<p><code class="prettyprint">float getCalibrateLowReading()</code><br/></p>
+
+<p>Retrieves the dual-point calibration low reading value.</p>
+
+<p><strong>Returns</strong>: <code class="prettyprint">float</code> lowCalibration</p>
+
+<h2 id="getcalibratehigh">getCalibrateHigh</h2>
+<pre class="highlight cpp"><code><span class="cp">#include &lt;ECSalinity.h&gt;
+</span><span class="n">EC_Salinity</span> <span class="n">ec</span><span class="p">;</span>
+
+<span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"Calibrating high..."</span><span class="p">);</span>
+<span class="n">ec</span><span class="p">.</span><span class="n">calibrateProbeHigh</span><span class="p">(</span><span class="mi">58</span><span class="p">,</span> <span class="n">ec</span><span class="p">.</span><span class="n">tempCoefSalinity</span><span class="p">);</span>
+
+<span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"Reference high set at: "</span><span class="p">);</span>
+<span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">ec</span><span class="p">.</span><span class="n">getCalibrateHigh</span><span class="p">());</span>
+</code></pre>
+<p><code class="prettyprint">float getCalibrateHigh()</code><br/></p>
+
+<p>Retrieves the dual-point calibration high reference value.</p>
+
+<p><strong>Returns</strong>: <code class="prettyprint">float</code> highCalibration</p>
+
+<h2 id="getcalibratehighreading">getCalibrateHighReading</h2>
+
+<p><code class="prettyprint">float getCalibrateHighReading()</code><br/></p>
+
+<p>Retrieves the dual-point calibration high reading value.</p>
+
+<p><strong>Returns</strong>: <code class="prettyprint">float</code> highCalibration</p>
+
+<h2 id="getcalibrateoffset">getCalibrateOffset</h2>
+<pre class="highlight cpp"><code><span class="kt">float</span> <span class="n">offsetCalibration</span> <span class="o">=</span> <span class="n">ec</span><span class="p">.</span><span class="n">getCalibrateOffset</span><span class="p">();</span>
+</code></pre>
+<p><code class="prettyprint">float getCalibrateOffset()</code><br/></p>
+
+<p>Retrieves the single-point calibration offset value.</p>
+
+<p><strong>Returns</strong>: <code class="prettyprint">float</code> offsetCalibration</p>
+
+<h2 id="getk">getK</h2>
+<pre class="highlight cpp"><code><span class="kt">float</span> <span class="n">K</span> <span class="o">=</span> <span class="n">getK</span><span class="p">();</span>
+</code></pre>
+<p><code class="prettyprint">float getK()</code><br/></p>
+
+<p>Retrieves the cell constant from the device.</p>
+
+<p><strong>Returns</strong>: <code class="prettyprint">float</code> K</p>
+
+<h2 id="gettempconstant">getTempConstant</h2>
+<pre class="highlight cpp"><code><span class="n">byte</span> <span class="n">tempConstant</span> <span class="o">=</span> <span class="n">ec</span><span class="p">.</span><span class="n">getTempConstant</span><span class="p">();</span>
+</code></pre>
+<p><code class="prettyprint">byte getTempConstant()</code><br/></p>
+
+<p>Retrieves the temperature constant used for temperature compensation. A value
+of <code class="prettyprint">0xFF</code> indicates the actual measured temperature is being used.</p>
+
+<p><strong>Returns</strong>: <code class="prettyprint">byte</code> tempConstant</p>
+
+<h2 id="getversion">getVersion</h2>
+<pre class="highlight cpp"><code><span class="n">byte</span> <span class="n">version</span> <span class="o">=</span> <span class="n">ec</span><span class="p">.</span><span class="n">getVersion</span><span class="p">();</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">version</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+</code></pre>
+<p><code class="prettyprint">byte getVersion()</code><br/></p>
+
+<p>Retrieves the version of the hardware/firmware.</p>
+
+<p><strong>Returns</strong>: <code class="prettyprint">byte</code> version</p>
+
+<h2 id="measureec">measureEC()</h2>
+<pre class="highlight cpp"><code><span class="cp">#include &lt;ECSalinity.h&gt;
+</span><span class="n">EC_Salinity</span> <span class="n">ec</span><span class="p">;</span>
+
+<span class="kt">float</span> <span class="n">EC</span> <span class="o">=</span> <span class="n">ec</span><span class="p">.</span><span class="n">measureEC</span><span class="p">(</span><span class="n">ec</span><span class="p">.</span><span class="n">tempCoefEC</span><span class="p">);</span>
+<span class="kt">float</span> <span class="n">EC</span> <span class="o">=</span> <span class="n">ec</span><span class="p">.</span><span class="n">measureEC</span><span class="p">(</span><span class="n">ec</span><span class="p">.</span><span class="n">tempCoefSalinity</span><span class="p">);</span>
+<span class="kt">float</span> <span class="n">EC</span> <span class="o">=</span> <span class="n">ec</span><span class="p">.</span><span class="n">measureEC</span><span class="p">(</span><span class="mf">0.0455</span><span class="p">);</span>
+</code></pre>
+<p><code class="prettyprint">float measureEC(float tempCoef)</code><br/></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>tempCoef</td>
+<td>temperature coefficient to use for measurement</td>
+</tr>
+</tbody></table>
+
+<p>Starts an EC measurement.</p>
+
+<p>Updates the following:<br/>
+- <code class="prettyprint">uS</code><br/>
+- <code class="prettyprint">mS</code><br/>
+- <code class="prettyprint">S</code><br/>
+- <code class="prettyprint">PPM_500</code><br/>
+- <code class="prettyprint">PPM_640</code><br/>
+- <code class="prettyprint">PPM_700</code><br/>
+- <code class="prettyprint">salinityPSU</code><br/>
+- <code class="prettyprint">salinityPPT</code><br/>
+- <code class="prettyprint">salinityPPM</code><br/>
+- <code class="prettyprint">tempC</code><br/>
+- <code class="prettyprint">tempF</code><br/></p>
+
+<p><strong>Returns</strong>: <code class="prettyprint">float</code> EC in mS</p>
+
+<aside class="notice">
+There are two convenience functions to use:<br/>
+<code>measureEC()</code> without a temperature coefficient will use tempCoefEC<br/>
+<code>measureSalinity()</code> will use tempCoefSalinity
+</aside>
+
+<aside class="warning">
+If measuring salinity, use <code>salinityPPT</code> or <code>salinityPPM</code>
+rather than <code>PPM_500</code>, <code>PPM_640</code>, or <code>PPM_700</code>.
+</aside>
+
+<h2 id="measuresalinity">measureSalinity()</h2>
+<pre class="highlight cpp"><code><span class="kt">float</span> <span class="n">PSU</span> <span class="o">=</span> <span class="n">ec</span><span class="p">.</span><span class="n">measureSalinity</span><span class="p">();</span>
+</code></pre>
+<p><code class="prettyprint">float measureSalinity()</code><br/></p>
+
+<p>Starts an EC salinity measurement using tempCoefSalinity as a temperature coefficient.</p>
+
+<p>Updates the following:<br/>
+- <code class="prettyprint">uS</code><br/>
+- <code class="prettyprint">mS</code><br/>
+- <code class="prettyprint">S</code><br/>
+- <code class="prettyprint">PPM_500</code><br/>
+- <code class="prettyprint">PPM_640</code><br/>
+- <code class="prettyprint">PPM_700</code><br/>
+- <code class="prettyprint">salinityPSU</code><br/>
+- <code class="prettyprint">salinityPPT</code><br/>
+- <code class="prettyprint">salinityPPM</code><br/>
+- <code class="prettyprint">tempC</code><br/>
+- <code class="prettyprint">tempF</code><br/></p>
+
+<p><strong>Returns</strong>: <code class="prettyprint">float</code> salinity in PSU</p>
+
+<aside class="notice">
+Salinity can only be measured between 2 - 42 PSU. -1 is returned if it is out of bounds.
+</aside>
+
+<h2 id="measuretemp">measureTemp()</h2>
+<pre class="highlight cpp"><code><span class="kt">float</span> <span class="n">tempC</span> <span class="o">=</span> <span class="n">ec</span><span class="p">.</span><span class="n">measureTemp</span><span class="p">();</span>
+</code></pre>
+<p><code class="prettyprint">float setAccuracy(byte accuracy)</code><br/></p>
+
+<p>Starts a temperature measurement.</p>
+
+<p>Updates the following:<br/>
+- <code class="prettyprint">tempC</code><br/>
+- <code class="prettyprint">tempF</code><br/></p>
+
+<p><strong>Returns</strong>: <code class="prettyprint">float</code> temperature in Celsius</p>
+
+<aside class="notice">
+If the device is unconnected, -127 is returned.
+</aside>
+
+<h2 id="reset">reset()</h2>
+
+<p><code class="prettyprint">void reset()</code><br/></p>
+
+<p>Clears all calibration data from the device.</p>
+
+<h2 id="setaccuracy">setAccuracy</h2>
+<pre class="highlight cpp"><code><span class="n">ec</span><span class="p">.</span><span class="n">setAccuracy</span><span class="p">(</span><span class="mi">21</span><span class="p">);</span>
+</code></pre>
+<p><code class="prettyprint">void setAccuracy(byte accuracy)</code><br/></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>accuracy</td>
+<td>accuracy setting</td>
+</tr>
+</tbody></table>
+
+<p>Changes the number of samples taken per measurement. The device uses a running median average that averages the middle third of the total values.</p>
+
+<aside class="warning">
+The accuracy value must be evenly divisible by 3.
+</aside>
 
 <h2 id="setdualpointcalibration">setDualPointCalibration</h2>
+<pre class="highlight cpp"><code><span class="n">ec</span><span class="p">.</span><span class="n">setDualPointCalibration</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">);</span>
+</code></pre>
+<p><code class="prettyprint">void setDualPointCalibration(float refLow, float refHigh, float readLow, float readHigh)</code><br/></p>
 
-<p><code class="prettyprint">public void</code><a href="#class_e_c___salinity_1af3cd5b404706edec78f1b117b8e9d6dd"><code class="prettyprint">setDualPointCalibration</code></a><code class="prettyprint">(float refLow,float refHigh,float readLow,float readHigh)</code>
-</br></p>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>refLow</td>
+<td>reference low calibration solution in mS</td>
+</tr>
+<tr>
+<td>refHigh</td>
+<td>reference high calibration solution in mS</td>
+</tr>
+<tr>
+<td>readLow</td>
+<td>reading low calibration solution in mS</td>
+</tr>
+<tr>
+<td>readHigh</td>
+<td>reading low calibration solution in mS</td>
+</tr>
+</tbody></table>
 
 <p>Sets all the values for dual point calibration and saves them in the devices&rsquo;s EEPROM.</p>
 
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code class="prettyprint">refLow</code></td>
-<td>the reference low point</td>
-</tr>
-</tbody></table>
-
-<p><code class="prettyprint">refHigh</code> | the reference high point </p>
-
-<p><code class="prettyprint">readLow</code> | the measured low point in mS </p>
-
-<p><code class="prettyprint">readHigh</code> | the measured high point in mS</p>
-
 <h2 id="setk">setK</h2>
-
-<p><code class="prettyprint">public void</code><a href="#class_e_c___salinity_1abfb9db695342135fe3c1d9e017099d01"><code class="prettyprint">setK</code></a><code class="prettyprint">(float k)</code>
-</br></p>
-
-<p>Updates the device with a new cell constant and saves it in EEPROM.</p>
+<pre class="highlight cpp"><code><span class="n">ec</span><span class="p">.</span><span class="n">setK</span><span class="p">(</span><span class="mf">1.5</span><span class="p">);</span>
+</code></pre>
+<p><code class="prettyprint">void setK(float K)</code><br/></p>
 
 <table><thead>
 <tr>
@@ -948,65 +946,17 @@ takes 750ms.</p>
 </tr>
 </thead><tbody>
 <tr>
-<td><code class="prettyprint">k</code></td>
+<td>K</td>
 <td>the new cell constant</td>
 </tr>
 </tbody></table>
 
-<h2 id="getk">getK</h2>
-
-<p><code class="prettyprint">public float</code><a href="#class_e_c___salinity_1a982b424d2ddc77d3b46bea505acf3bf5"><code class="prettyprint">getK</code></a><code class="prettyprint">()</code>
-</br></p>
-
-<p>Retrieves the cell constant from the device.</p>
-
-<p><strong>Returns</strong>: the new cell constant</p>
-
-<h2 id="setaccuracy">setAccuracy</h2>
-
-<p><code class="prettyprint">public void</code><a href="#class_e_c___salinity_1aaaaab96ad13c1f55772256f31d9de8de"><code class="prettyprint">setAccuracy</code></a><code class="prettyprint">(byte b)</code>
-</br></p>
-
-<p>Configures the accuracy of the device.</p>
-
-<p>The device maintains a running median of values. It throws out the top and bottom third of values, then averages the middle third together to return a single value. The accuracy incrases with a high number. It must be evenly divisible by 3. </p>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code class="prettyprint">b</code></td>
-<td>accuracy of the device</td>
-</tr>
-</tbody></table>
-
-<h2 id="getaccuracy">getAccuracy</h2>
-
-<p><code class="prettyprint">public byte</code><a href="#class_e_c___salinity_1a7bdd48a6f3f9a68fd94a39fb4cb274a1"><code class="prettyprint">getAccuracy</code></a><code class="prettyprint">()</code>
-</br></p>
-
-<p>Retrieves the accuracy configuration of the device.</p>
-
-<p><strong>Returns</strong>: accuracy</p>
-
-<h2 id="reset">reset</h2>
-
-<p><code class="prettyprint">public void</code><a href="#class_e_c___salinity_1a9d0691335001b2fe878c72dd60bcebc9"><code class="prettyprint">reset</code></a><code class="prettyprint">()</code>
-</br></p>
-
-<p>Resets all the stored calibration information.</p>
+<p>Updates the device with a new cell constant and saves it in EEPROM.</p>
 
 <h2 id="settempconstant">setTempConstant</h2>
-
-<p><code class="prettyprint">public void</code><a href="#class_e_c___salinity_1a6afe24ed690b92259a8c5af1a91688a0"><code class="prettyprint">setTempConstant</code></a><code class="prettyprint">(byte b)</code>
-</br></p>
-
-<p>Configures device to use the provided temperature constant.</p>
-
-<p>By default, the temperature constant is set to 0xFF which instructs the actual temperature to be used for temperature compensation, however any number can be specified. To use the actual temperature, restore the value to 0xFF. </p>
+<pre class="highlight cpp"><code><span class="n">ec</span><span class="p">.</span><span class="n">setTempConstant</span><span class="p">(</span><span class="mi">25</span><span class="p">);</span>
+</code></pre>
+<p><code class="prettyprint">void setTempConstant(byte tempConstant)</code><br/></p>
 
 <table><thead>
 <tr>
@@ -1015,54 +965,23 @@ takes 750ms.</p>
 </tr>
 </thead><tbody>
 <tr>
-<td><code class="prettyprint">b</code></td>
-<td>the temperature to use for compensation</td>
+<td>tempConstant</td>
+<td>the new cell constant</td>
 </tr>
 </tbody></table>
 
-<h2 id="gettempconstant">getTempConstant</h2>
+<p>Configures the device to use the provided temperature constant.</p>
 
-<p><code class="prettyprint">public byte</code><a href="#class_e_c___salinity_1a706c795bcde429e780a07247f7bacbc6"><code class="prettyprint">getTempConstant</code></a><code class="prettyprint">()</code>
-</br></p>
+<p>By default, the temperature constant is set to <code class="prettyprint">0xFF</code> which means the actual temperature is to be used.</p>
 
-<p>Retrieves the temperature constant.</p>
-
-<p><strong>Returns</strong>: the temperature to used for compensation</p>
-
-<h2 id="usetemperaturecompensation">useTemperatureCompensation</h2>
-
-<p><code class="prettyprint">public void</code><a href="#class_e_c___salinity_1a826a26a7b0b6113089412bb0cf841367"><code class="prettyprint">useTemperatureCompensation</code></a><code class="prettyprint">(bool b)</code>
-</br></p>
-
-<p>Configures device to use temperature compensation or not.</p>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code class="prettyprint">b</code></td>
-<td>true for compensation, false to not use it</td>
-</tr>
-</tbody></table>
-
-<h2 id="usingtemperaturecompensation">usingTemperatureCompensation</h2>
-
-<p><code class="prettyprint">public bool</code><a href="#class_e_c___salinity_1a21e07bf976f2ef15680fadac5da4c8f8"><code class="prettyprint">usingTemperatureCompensation</code></a><code class="prettyprint">()</code>
-</br></p>
-
-<p>Determines if temperature compensation is being used.</p>
-
-<p><strong>Returns</strong>: true if using compensation, false otherwise</p>
+<aside class="notice">
+This value is not saved and must be reconfigured on each reset.
+</aside>
 
 <h2 id="usedualpoint">useDualPoint</h2>
-
-<p><code class="prettyprint">public void</code><a href="#class_e_c___salinity_1ad59943579cc4e237cbe48a2067b99e65"><code class="prettyprint">useDualPoint</code></a><code class="prettyprint">(bool b)</code>
-</br></p>
-
-<p>Configures device to use dual-point calibration.</p>
+<pre class="highlight cpp"><code><span class="n">ec</span><span class="p">.</span><span class="n">useDualPoint</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+</code></pre>
+<p><code class="prettyprint">void useDualPoint(bool useDualPoint)</code><br/></p>
 
 <table><thead>
 <tr>
@@ -1071,94 +990,61 @@ takes 750ms.</p>
 </tr>
 </thead><tbody>
 <tr>
-<td><code class="prettyprint">b</code></td>
-<td>true for yes, false for no</td>
+<td>useDualPoint</td>
+<td>true/false</td>
 </tr>
 </tbody></table>
 
-<h2 id="usingdualpoint">usingDualPoint</h2>
+<p>Configures the device to use dual point calibration. By default, the device powers on with this value set to <code class="prettyprint">false</code>.</p>
 
-<p><code class="prettyprint">public bool</code><a href="#class_e_c___salinity_1a2c5a7a1fe2c32c514cadd85e90f7249b"><code class="prettyprint">usingDualPoint</code></a><code class="prettyprint">()</code>
-</br></p>
+<aside class="notice">
+This value is not saved and must be reconfigured on each reset.
+</aside>
+
+<aside class="warning">
+Ensure dual point calibration values are entered prior to passing <code>true</code>.
+</aside>
+
+<h2 id="usetemperaturecompensation">useTemperatureCompensation</h2>
+<pre class="highlight cpp"><code><span class="n">ec</span><span class="p">.</span><span class="n">useTemperatureCompensation</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+</code></pre>
+<p><code class="prettyprint">void useTemperatureCompensation(bool useTempComp)</code><br/></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>useTempComp</td>
+<td>true/false</td>
+</tr>
+</tbody></table>
+
+<p>Configures device to use temperature compensation. If this is set to <code class="prettyprint">false</code>, the uncompensated Siemen value will be returned by the device.</p>
+
+<aside class="notice">
+This value is not saved and must be reconfigured on each reset.
+</aside>
+
+<h2 id="usingdualpoint">usingDualPoint</h2>
+<pre class="highlight cpp"><code><span class="kt">bool</span> <span class="n">bDualPoint</span> <span class="o">=</span> <span class="n">ec</span><span class="p">.</span><span class="n">usingDualPoint</span><span class="p">();</span>
+</code></pre>
+<p><code class="prettyprint">bool usingDualPoint()</code><br/></p>
 
 <p>Determines if dual point calibration is being used.</p>
 
-<p><strong>Returns</strong>: true if using compensation, false otherwise</p>
+<p><strong>Returns</strong>: <code class="prettyprint">bool</code> true/false</p>
 
-<h2 id="getcalibratehigh">getCalibrateHigh</h2>
+<h2 id="usingtemperaturecompensation">usingTemperatureCompensation</h2>
+<pre class="highlight cpp"><code><span class="kt">bool</span> <span class="n">bTempComp</span> <span class="o">=</span> <span class="n">ec</span><span class="p">.</span><span class="n">usingTemperatureCompensation</span><span class="p">();</span>
+</code></pre>
+<p><code class="prettyprint">bool usingTemperatureCompensation()</code><br/></p>
 
-<p><code class="prettyprint">public float</code><a href="#class_e_c___salinity_1a77c403d82647d21a5540bc9e642e9627"><code class="prettyprint">getCalibrateHigh</code></a><code class="prettyprint">()</code>
-</br></p>
+<p>Determines if temperature compensation is being used.</p>
 
-<p>Retrieves the dual-point calibration high value.</p>
-
-<p><strong>Returns</strong>: the dual-point calibration high value</p>
-
-<h2 id="getcalibratelow">getCalibrateLow</h2>
-
-<p><code class="prettyprint">public float</code><a href="#class_e_c___salinity_1a793511d6d72e865d3a603cbfe2e89cc1"><code class="prettyprint">getCalibrateLow</code></a><code class="prettyprint">()</code>
-</br></p>
-
-<p>Retrieves the dual-point calibration low value.</p>
-
-<p><strong>Returns</strong>: the dual-point calibration low value</p>
-
-<h2 id="getcalibratehighreading">getCalibrateHighReading</h2>
-
-<p><code class="prettyprint">public float</code><a href="#class_e_c___salinity_1a2beee7c1ce99dd5af7301991152b445c"><code class="prettyprint">getCalibrateHighReading</code></a><code class="prettyprint">()</code>
-</br></p>
-
-<p>Retrieves the dual-point calibration reading high value.</p>
-
-<p><strong>Returns</strong>: the dual-point calibration high value</p>
-
-<h2 id="getcalibratelowreading">getCalibrateLowReading</h2>
-
-<p><code class="prettyprint">public float</code><a href="#class_e_c___salinity_1a376524d70ae1b9a916e1a23e221f859c"><code class="prettyprint">getCalibrateLowReading</code></a><code class="prettyprint">()</code>
-</br></p>
-
-<p>Retrieves the dual-point calibration reading low value.</p>
-
-<p><strong>Returns</strong>: the dual-point calibration low value</p>
-
-<h2 id="setcalibrateoffset">setCalibrateOffset</h2>
-
-<p><code class="prettyprint">public void</code><a href="#class_e_c___salinity_1aae1598cf128c59aebd8938bd7812fd1e"><code class="prettyprint">setCalibrateOffset</code></a><code class="prettyprint">(float offset)</code>
-</br></p>
-
-<p>Sets the single point offset value.</p>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code class="prettyprint">offset</code></td>
-<td>single point offset value</td>
-</tr>
-</tbody></table>
-
-<h2 id="getcalibrateoffset">getCalibrateOffset</h2>
-
-<p><code class="prettyprint">public float</code><a href="#class_e_c___salinity_1a59b3e933ae3ec3667c621bc933f601d7"><code class="prettyprint">getCalibrateOffset</code></a><code class="prettyprint">()</code>
-</br></p>
-
-<p>Retrieves the single point offset value.</p>
-
-<p><strong>Returns</strong>: single point offset value</p>
-
-<h2 id="getversion">getVersion</h2>
-
-<p><code class="prettyprint">public byte</code><a href="#class_e_c___salinity_1ae5854663a77aa407db47c08cda5b715d"><code class="prettyprint">getVersion</code></a><code class="prettyprint">()</code>
-</br></p>
-
-<p>Retrieves the firmware version of the device.</p>
-
-<p><strong>Returns</strong>: version of firmware</p>
-
-<p>Generated by <a href="https://sourcey.com/moxygen">Moxygen</a></p>
+<p><strong>Returns</strong>: <code class="prettyprint">bool</code> true/false</p>
 
       </div>
       <div class="dark-box">

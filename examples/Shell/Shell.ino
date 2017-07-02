@@ -1,17 +1,28 @@
+// For more information and documentation, visit ufire.co
+
 #include <ECSalinity.h>
 #include "CLI.h"
 
 /*
-   This allows you to run various functions on a command line.
+   This allows you to run various functions on a command-line like interface.
+   Remember, the device doesn't take a temperature reading, it uses the last
+   measured value. If you don't want to use the actual temperature, you must
+   disable it using 'tc 0' and optionally 'tc 0 25' to use 25C as the temp.
+   Otherwise, you will be innaccurate readings.
 
    To use an unconfigured device:
-   1. k <K constant value eg. 10.0>
-   2. cal <calibration solution in mS eg 2.77>
-   3. temp
+   1. temp
+   2. k <K constant value eg. 10.0>
+   3. cal <calibration solution in mS eg 2.77>
    4. ec
    Type 'ec' to get a measurement in mS, 'data' to see all the data members
    of the class like uS, and S, 'temp' to read the temperature, 'sal' to use
    salinity parameters for a measurment.
+
+   To use a handmade probe:
+   1. temp
+   2. calk <mS of calibration solution>
+   3. ec
  */
 
 
@@ -28,6 +39,7 @@ CLI_COMMAND(dp);     // 'dp 0/1' to use dual-point calibration or not
 CLI_COMMAND(acc);    // 'acc 21' sets accuracy of the device
 CLI_COMMAND(sal);    // 'sal' starts a salinity measurement
 CLI_COMMAND(data);   // 'data' shows all the data from the latest 'ec' or 'sal' call made
+CLI_COMMAND(calk);   // 'calk 9.82' calculates the K value of the connected probe and saves it to EEPROM
 
 EC_Salinity _ec;
 
@@ -51,6 +63,7 @@ void setup()
   CLI.addCommand("acc", acc);
   CLI.addCommand("sal", sal);
   CLI.addCommand("data", data);
+  CLI.addCommand("calk", calk);
 
   CLI.addClient(Serial);
 }
@@ -176,7 +189,7 @@ CLI_COMMAND(acc) {
 
 CLI_COMMAND(sal) {
   _ec.measureSalinity();
-  dev->print("salinity PSU/PPT/PPM: "); dev->print(_ec.salinityPSU, 2);
+  dev->print("salinity PSU / PPT / PPM: "); dev->print(_ec.salinityPSU, 2);
   dev->print(" / "); dev->print(_ec.salinityPPT, 2);
   dev->print(" / "); dev->print(_ec.salinityPPM, 2);
   return 0;
@@ -189,7 +202,16 @@ CLI_COMMAND(data) {
   dev->print("TDS 500/640/700: "); dev->print(_ec.PPM_500);
   dev->print(" / "); dev->print(_ec.PPM_640);
   dev->print(" / "); dev->println(_ec.PPM_700);
-  dev->print("salinity PSU/PPT: "); dev->print(_ec.salinityPSU, 4);
+  dev->print("salinity PSU / PPT: "); dev->print(_ec.salinityPSU, 4);
   dev->print(" / "); dev->print(_ec.salinityPPT, 4);
+  return 0;
+}
+
+CLI_COMMAND(calk) {
+  if (argc == 2) {
+    _ec.calculateK(atof(argv[1]), _ec.tempCoefEC);
+  }
+
+  dev->print("K: "); dev->print(_ec.getK(), 4);
   return 0;
 }

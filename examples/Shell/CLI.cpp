@@ -1,3 +1,6 @@
+// This file is included with the example Shell.ino with very minor
+// modification from the original.
+
 /*
  * Copyright (c) 2013, Majenko Technologies
  * All rights reserved.

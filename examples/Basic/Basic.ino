@@ -1,3 +1,5 @@
+// For more information and documentation, visit ufire.co
+
 #include <ECSalinity.h>
 
 EC_Salinity ec;

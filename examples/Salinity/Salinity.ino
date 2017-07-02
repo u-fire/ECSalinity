@@ -1,3 +1,5 @@
+// For more information and documentation, visit ufire.co
+
 #include <ECSalinity.h>
 
 EC_Salinity ec;
@@ -17,7 +19,7 @@ void loop()
   ec.measureTemp();
   ec.measureSalinity();
   Serial.print("PPT / PSU: "); Serial.print(ec.salinityPPT);
-  Serial.print(" / ") ''
+  Serial.print(" / ");
   Serial.println(ec.salinityPSU);
   Serial.print("Temp C/F: "); Serial.print(ec.tempC); Serial.print("/");
   Serial.println(ec.tempF);

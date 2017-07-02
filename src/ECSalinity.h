@@ -38,6 +38,7 @@
 #define EC_CALIBRATE_PROBE 20             /*!< Command to calibrate the probe */
 #define EC_CALIBRATE_LOW 10               /*!< Command to calibrate the low point of the probe */
 #define EC_CALIBRATE_HIGH 8               /*!< Command to calibrate the high point of the probe */
+#define EC_CALCULATE_K 2                  /*!< Command to calculate K of the probe */
 
 #define EC_VERSION_REGISTER 0             /*!< version register */
 #define EC_MS_REGISTER 1                  /*!< mS register */
@@ -93,6 +94,8 @@ public:
                           float tempCoef);
   void  calibrateProbeHigh(float solutionEC,
                            float tempCoef);
+  void  calculateK(float solutionEC,
+                   float tempCoef);
   void  setDualPointCalibration(float refLow,
                                 float refHigh,
                                 float readLow,

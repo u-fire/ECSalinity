@@ -174,6 +174,23 @@ void EC_Salinity::calibrateProbeHigh(float solutionEC, float tempCoef)
 }
 
 /*!
+   \brief Calculates the K value of the connected probe and saves it in EEPROM.
+   \param solutionEC          the EC of the calibration solution in mS
+   \param tempCoef            the coefficient used to calibrate the probe
+ */
+void EC_Salinity::calculateK(float solutionEC, float tempCoef)
+{
+  bool dualpoint = usingDualPoint();
+
+  useDualPoint(false);
+  _write_register(EC_TEMPCOEF_REGISTER, tempCoef);
+  _write_register(EC_SOLUTION_REGISTER, solutionEC);
+  _send_command(EC_CALCULATE_K);
+  delay((getAccuracy() * EC_EC_MEASURMENT_TIME));
+  useDualPoint(dualpoint);
+}
+
+/*!
    \brief Sets all the values for dual point calibration and saves them
    in the devices's EEPROM.
    \param refLow            the reference low point
