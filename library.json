@@ -1,5 +1,5 @@
 {
-	"name": "EC Salinity Prober Interface",
+	"name": "EC Salinity Probe Interface",
 	"keywords": "EC, Conductivity, hydroponics, salinity, ppt, psu, tds, ppm",
 	"description": "Measures Electrical Conductivity in Siemens, Total Dissolved Solids in PPM, Salinity in PSU and PPT",
 	"repository": {

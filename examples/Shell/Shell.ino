@@ -7,8 +7,8 @@
    This allows you to run various functions on a command-line like interface.
    Remember, the device doesn't take a temperature reading, it uses the last
    measured value. If you don't want to use the actual temperature, you must
-   disable it using 'tc 0' and optionally 'tc 0 25' to use 25C as the temp.
-   Otherwise, you will be innaccurate readings.
+   disable it using 'tc 0' or 'tc 1 25' to use 25C as the temp.
+   Otherwise, you will getK innaccurate readings.
 
    To use an unconfigured device:
    1. temp
@@ -30,7 +30,7 @@ CLI_COMMAND(reset);  // 'reset' reset all calibration configuration
 CLI_COMMAND(temp);   // 'temp' measure temperature
 CLI_COMMAND(cal);    // 'cal 2.77' calibrate the offset of the probe using mS of the solution
 CLI_COMMAND(k);      // 'k 10.0' sets the K value of the probe being used
-CLI_COMMAND(ec);     // 'ec' starts and EC measurement, returns mS
+CLI_COMMAND(ec);     // 'ec' starts an EC measurement, returns mS
 CLI_COMMAND(low);    // 'low 1.0' calibrates the low dual-point calibration settings using mS as solution
 CLI_COMMAND(high);   // 'high 10.0'calibrates the high dual-point calibration settings using mS as solution
 CLI_COMMAND(config); // 'config' shows configuration information
