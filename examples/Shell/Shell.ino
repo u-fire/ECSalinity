@@ -8,7 +8,7 @@
    Remember, the device doesn't take a temperature reading, it uses the last
    measured value. If you don't want to use the actual temperature, you must
    disable it using 'tc 0' or 'tc 1 25' to use 25C as the temp.
-   Otherwise, you will getK innaccurate readings.
+   Otherwise, you will get innaccurate readings.
 
    To use an unconfigured device:
    1. temp
