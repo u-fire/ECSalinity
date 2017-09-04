@@ -37,15 +37,14 @@ const float EC_Salinity::tempCoefSalinity = 0.021;
  */
 EC_Salinity::EC_Salinity()
 {
-        Wire.begin();
+  Wire.begin();
 }
 
 /*!
    \brief Class destructor
  */
 EC_Salinity::~EC_Salinity()
-{
-}
+{}
 
 /*!
    \code
@@ -64,25 +63,25 @@ EC_Salinity::~EC_Salinity()
  */
 float EC_Salinity::measureEC(float tempCoefficient)
 {
-        _write_register(EC_TEMPCOEF_REGISTER, tempCoefficient);
-        _send_command(EC_MEASURE_EC);
-        delay((getAccuracy() * EC_EC_MEASURMENT_TIME));
-        mS = _read_register(EC_MS_REGISTER);
+  _write_register(EC_TEMPCOEF_REGISTER, tempCoefficient);
+  _send_command(EC_MEASURE_EC);
+  delay((getAccuracy() * EC_EC_MEASURMENT_TIME));
+  mS = _read_register(EC_MS_REGISTER);
 
-        if (mS == mS)
-        {
-                PPM_500 = mS * 500;
-                PPM_640 = mS * 640;
-                PPM_700 = mS * 700;
-                uS      = mS * 1000;
-                S       = mS / 1000;
+  if (mS == mS)
+  {
+    PPM_500 = mS * 500;
+    PPM_640 = mS * 640;
+    PPM_700 = mS * 700;
+    uS      = mS * 1000;
+    S       = mS / 1000;
 
-                salinityPSU = _read_register(EC_SALINITY_PSU);
-                salinityPPT = salinityPSU * PSU_TO_PPT_CONVERSION;
-                salinityPPM = salinityPPT * 1000;
-        }
+    salinityPSU = _read_register(EC_SALINITY_PSU);
+    salinityPPT = salinityPSU * PSU_TO_PPT_CONVERSION;
+    salinityPPM = salinityPPT * 1000;
+  }
 
-        return mS;
+  return mS;
 }
 
 /*!
@@ -97,7 +96,7 @@ float EC_Salinity::measureEC(float tempCoefficient)
  */
 float EC_Salinity::measureEC()
 {
-        return measureEC(tempCoefEC);
+  return measureEC(tempCoefEC);
 }
 
 /*!
@@ -112,8 +111,8 @@ float EC_Salinity::measureEC()
  */
 float EC_Salinity::measureSalinity()
 {
-        measureEC(tempCoefSalinity);
-        return salinityPSU;
+  measureEC(tempCoefSalinity);
+  return salinityPSU;
 }
 
 /*!
@@ -128,11 +127,11 @@ float EC_Salinity::measureSalinity()
  */
 float EC_Salinity::measureTemp()
 {
-        _send_command(EC_MEASURE_TEMP);
-        delay(EC_TEMP_MEASURE_TIME);
-        tempC = _read_register(EC_TEMP_REGISTER);
-        tempF = ((tempC * 9) / 5) + 32;
-        return tempC;
+  _send_command(EC_MEASURE_TEMP);
+  delay(EC_TEMP_MEASURE_TIME);
+  tempC = _read_register(EC_TEMP_REGISTER);
+  tempF = ((tempC * 9) / 5) + 32;
+  return tempC;
 }
 
 /*!
@@ -148,14 +147,14 @@ float EC_Salinity::measureTemp()
  */
 void EC_Salinity::calibrateProbe(float solutionEC, float tempCoef)
 {
-        bool dualpoint = usingDualPoint();
+  bool dualpoint = usingDualPoint();
 
-        useDualPoint(false);
-        _write_register(EC_TEMPCOEF_REGISTER, tempCoef);
-        _write_register(EC_SOLUTION_REGISTER, solutionEC);
-        _send_command(EC_CALIBRATE_PROBE);
-        delay((getAccuracy() * EC_EC_MEASURMENT_TIME));
-        useDualPoint(dualpoint);
+  useDualPoint(false);
+  _write_register(EC_TEMPCOEF_REGISTER, tempCoef);
+  _write_register(EC_SOLUTION_REGISTER, solutionEC);
+  _send_command(EC_CALIBRATE_PROBE);
+  delay((getAccuracy() * EC_EC_MEASURMENT_TIME));
+  useDualPoint(dualpoint);
 }
 
 /*!
@@ -170,14 +169,14 @@ void EC_Salinity::calibrateProbe(float solutionEC, float tempCoef)
  */
 void EC_Salinity::calibrateProbeLow(float solutionEC, float tempCoef)
 {
-        bool dualpoint = usingDualPoint();
+  bool dualpoint = usingDualPoint();
 
-        useDualPoint(false);
-        _write_register(EC_TEMPCOEF_REGISTER, tempCoef);
-        _write_register(EC_SOLUTION_REGISTER, solutionEC);
-        _send_command(EC_CALIBRATE_LOW);
-        delay((getAccuracy() * EC_EC_MEASURMENT_TIME));
-        useDualPoint(dualpoint);
+  useDualPoint(false);
+  _write_register(EC_TEMPCOEF_REGISTER, tempCoef);
+  _write_register(EC_SOLUTION_REGISTER, solutionEC);
+  _send_command(EC_CALIBRATE_LOW);
+  delay((getAccuracy() * EC_EC_MEASURMENT_TIME));
+  useDualPoint(dualpoint);
 }
 
 /*!
@@ -193,20 +192,20 @@ void EC_Salinity::calibrateProbeLow(float solutionEC, float tempCoef)
  */
 void EC_Salinity::calibrateProbeHigh(float solutionEC, float tempCoef)
 {
-        bool dualpoint = usingDualPoint();
+  bool dualpoint = usingDualPoint();
 
-        useDualPoint(false);
-        _write_register(EC_TEMPCOEF_REGISTER, tempCoef);
-        _write_register(EC_SOLUTION_REGISTER, solutionEC);
-        _send_command(EC_CALIBRATE_HIGH);
-        delay((getAccuracy() * EC_EC_MEASURMENT_TIME));
-        useDualPoint(dualpoint);
+  useDualPoint(false);
+  _write_register(EC_TEMPCOEF_REGISTER, tempCoef);
+  _write_register(EC_SOLUTION_REGISTER, solutionEC);
+  _send_command(EC_CALIBRATE_HIGH);
+  delay((getAccuracy() * EC_EC_MEASURMENT_TIME));
+  useDualPoint(dualpoint);
 }
 
 /*!
-  \code
+   \code
     EC_Salinity::calculateK(2.77, EC_Salinity::tempCoefEC);
-  \endcode
+   \endcode
 
    \brief Calculates the K value of the connected probe and saves it in EEPROM.
    \param solutionEC          the EC of the calibration solution in mS
@@ -214,20 +213,20 @@ void EC_Salinity::calibrateProbeHigh(float solutionEC, float tempCoef)
  */
 void EC_Salinity::calculateK(float solutionEC, float tempCoef)
 {
-        bool dualpoint = usingDualPoint();
+  bool dualpoint = usingDualPoint();
 
-        useDualPoint(false);
-        _write_register(EC_TEMPCOEF_REGISTER, tempCoef);
-        _write_register(EC_SOLUTION_REGISTER, solutionEC);
-        _send_command(EC_CALCULATE_K);
-        delay((getAccuracy() * EC_EC_MEASURMENT_TIME));
-        useDualPoint(dualpoint);
+  useDualPoint(false);
+  _write_register(EC_TEMPCOEF_REGISTER, tempCoef);
+  _write_register(EC_SOLUTION_REGISTER, solutionEC);
+  _send_command(EC_CALCULATE_K);
+  delay((getAccuracy() * EC_EC_MEASURMENT_TIME));
+  useDualPoint(dualpoint);
 }
 
 /*!
-  \code
+   \code
     EC_Salinity::setDualPointCalibration(1.0, 3.0, 0.9, 3.2);
-  \endcode
+   \endcode
 
    \brief Sets all the values for dual point calibration and saves them
    in the devices's EEPROM.
@@ -241,49 +240,49 @@ void EC_Salinity::setDualPointCalibration(float refLow,
                                           float readLow,
                                           float readHigh)
 {
-        _write_register(EC_CALIBRATE_REFLOW_REGISTER,   refLow);
-        _write_register(EC_CALIBRATE_REFHIGH_REGISTER,  refHigh);
-        _write_register(EC_CALIBRATE_READLOW_REGISTER,  readLow);
-        _write_register(EC_CALIBRATE_READHIGH_REGISTER, readHigh);
+  _write_register(EC_CALIBRATE_REFLOW_REGISTER,   refLow);
+  _write_register(EC_CALIBRATE_REFHIGH_REGISTER,  refHigh);
+  _write_register(EC_CALIBRATE_READLOW_REGISTER,  readLow);
+  _write_register(EC_CALIBRATE_READHIGH_REGISTER, readHigh);
 }
 
 /*!
-  \code
+   \code
     EC_Salinity::setK(1.121);
-  \endcode
+   \endcode
 
    \brief Updates the device with a new cell constant and saves it in EEPROM
    \param k   the new cell constant
  */
 void EC_Salinity::setK(float k)
 {
-        _write_register(EC_K_REGISTER, k);
+  _write_register(EC_K_REGISTER, k);
 }
 
 /*!
-  \code
+   \code
     float k = EC_Salinity::getK();
-  \endcode
+   \endcode
 
    \brief Retrieves the cell constant from the device.
    \return   the new cell constant
  */
 float EC_Salinity::getK()
 {
-        return _read_register(EC_K_REGISTER);
+  return _read_register(EC_K_REGISTER);
 }
 
 /*!
-  \code
+   \code
     float calibrateOffset = EC_Salinity::getCalibrateOffset();
-  \endcode
+   \endcode
 
    \brief Retrieves the single point offset value
    \return   single point offset value
  */
 float EC_Salinity::getCalibrateOffset()
 {
-        return _read_register(EC_CALIBRATE_OFFSET_REGISTER);
+  return _read_register(EC_CALIBRATE_OFFSET_REGISTER);
 }
 
 /*!
@@ -292,7 +291,7 @@ float EC_Salinity::getCalibrateOffset()
  */
 float EC_Salinity::getCalibrateHigh()
 {
-        return _read_register(EC_CALIBRATE_REFHIGH_REGISTER);
+  return _read_register(EC_CALIBRATE_REFHIGH_REGISTER);
 }
 
 /*!
@@ -301,7 +300,7 @@ float EC_Salinity::getCalibrateHigh()
  */
 float EC_Salinity::getCalibrateLow()
 {
-        return _read_register(EC_CALIBRATE_REFLOW_REGISTER);
+  return _read_register(EC_CALIBRATE_REFLOW_REGISTER);
 }
 
 /*!
@@ -310,7 +309,7 @@ float EC_Salinity::getCalibrateLow()
  */
 float EC_Salinity::getCalibrateHighReading()
 {
-        return _read_register(EC_CALIBRATE_READHIGH_REGISTER);
+  return _read_register(EC_CALIBRATE_READHIGH_REGISTER);
 }
 
 /*!
@@ -319,31 +318,32 @@ float EC_Salinity::getCalibrateHighReading()
  */
 float EC_Salinity::getCalibrateLowReading()
 {
-        return _read_register(EC_CALIBRATE_READLOW_REGISTER);
+  return _read_register(EC_CALIBRATE_READLOW_REGISTER);
 }
 
 /*!
-  \code
+   \code
     EC_Salinity::useTemperatureCompensation(true);
-  \endcode
+   \endcode
 
    \brief Configures device to use temperature compensation or not
    \param b   true/false
  */
 void EC_Salinity::useTemperatureCompensation(bool b)
 {
-        byte retval;
+  byte retval;
+  byte config = _read_byte(EC_CONFIG_REGISTER);
 
-        retval = _read_byte(EC_CONFIG_REGISTER);
-        if (b)
-        {
-                retval = bitSet(retval, EC_TEMP_COMPENSATION_CONFIG_BIT);
-        }
-        else
-        {
-                retval = bitClear(retval, EC_TEMP_COMPENSATION_CONFIG_BIT);
-        }
-        _write_byte(EC_CONFIG_REGISTER, retval);
+  if (b)
+  {
+    retval = bitSet(config, EC_TEMP_COMPENSATION_CONFIG_BIT);
+  }
+  else
+  {
+    retval = bitClear(config, EC_TEMP_COMPENSATION_CONFIG_BIT);
+  }
+
+  _write_byte(EC_CONFIG_REGISTER, retval);
 }
 
 /*!
@@ -352,18 +352,19 @@ void EC_Salinity::useTemperatureCompensation(bool b)
  */
 void EC_Salinity::useDualPoint(bool b)
 {
-        byte retval;
+  byte retval;
+  byte config = _read_byte(EC_CONFIG_REGISTER);
 
-        retval = _read_byte(EC_CONFIG_REGISTER);
-        if (b)
-        {
-                retval = bitSet(retval, EC_DUALPOINT_CONFIG_BIT);
-        }
-        else
-        {
-                retval = bitClear(retval, EC_DUALPOINT_CONFIG_BIT);
-        }
-        _write_byte(EC_CONFIG_REGISTER, retval);
+  if (b)
+  {
+    retval = bitSet(config, EC_DUALPOINT_CONFIG_BIT);
+  }
+  else
+  {
+    retval = bitClear(config, EC_DUALPOINT_CONFIG_BIT);
+  }
+
+  _write_byte(EC_CONFIG_REGISTER, retval);
 }
 
 /*!
@@ -372,7 +373,7 @@ void EC_Salinity::useDualPoint(bool b)
  */
 byte EC_Salinity::getVersion()
 {
-        return _read_byte(EC_VERSION_REGISTER);
+  return _read_byte(EC_VERSION_REGISTER);
 }
 
 /*!
@@ -380,18 +381,18 @@ byte EC_Salinity::getVersion()
  */
 void EC_Salinity::reset()
 {
-        _write_register(EC_K_REGISTER,                  NAN);
-        _write_register(EC_CALIBRATE_OFFSET_REGISTER,   NAN);
-        _write_register(EC_CALIBRATE_REFHIGH_REGISTER,  NAN);
-        _write_register(EC_CALIBRATE_REFLOW_REGISTER,   NAN);
-        _write_register(EC_CALIBRATE_READHIGH_REGISTER, NAN);
-        _write_register(EC_CALIBRATE_READLOW_REGISTER,  NAN);
+  _write_register(EC_K_REGISTER,                  NAN);
+  _write_register(EC_CALIBRATE_OFFSET_REGISTER,   NAN);
+  _write_register(EC_CALIBRATE_REFHIGH_REGISTER,  NAN);
+  _write_register(EC_CALIBRATE_REFLOW_REGISTER,   NAN);
+  _write_register(EC_CALIBRATE_READHIGH_REGISTER, NAN);
+  _write_register(EC_CALIBRATE_READLOW_REGISTER,  NAN);
 }
 
 /*!
-  \code
+   \code
     EC_Salinity::setAccuracy(6);
-  \endcode
+   \endcode
 
    \brief Configures the accuracy of the device.
 
@@ -403,7 +404,7 @@ void EC_Salinity::reset()
  */
 void EC_Salinity::setAccuracy(byte b)
 {
-        _write_byte(EC_ACCURACY_REGISTER, b);
+  _write_byte(EC_ACCURACY_REGISTER, b);
 }
 
 /*!
@@ -412,7 +413,7 @@ void EC_Salinity::setAccuracy(byte b)
  */
 byte EC_Salinity::getAccuracy()
 {
-        return _read_byte(EC_ACCURACY_REGISTER);
+  return _read_byte(EC_ACCURACY_REGISTER);
 }
 
 /*!
@@ -421,14 +422,14 @@ byte EC_Salinity::getAccuracy()
  */
 void EC_Salinity::setCalibrateOffset(float offset)
 {
-        _write_register(EC_CALIBRATE_OFFSET_REGISTER, offset);
+  _write_register(EC_CALIBRATE_OFFSET_REGISTER, offset);
 }
 
 /*!
-  \code
+   \code
     EC_Salinity::setTempConstant(25);
     EC_Salinity::setTempConstant(0xFF);   // use the actual tempeature
-  \endcode
+   \endcode
 
    \brief Configures device to use the provided temperature constant
 
@@ -439,7 +440,7 @@ void EC_Salinity::setCalibrateOffset(float offset)
  */
 void EC_Salinity::setTempConstant(byte b)
 {
-        _write_byte(EC_TEMP_COMPENSATION_REGISTER, b);
+  _write_byte(EC_TEMP_COMPENSATION_REGISTER, b);
 }
 
 /*!
@@ -448,7 +449,7 @@ void EC_Salinity::setTempConstant(byte b)
  */
 byte EC_Salinity::getTempConstant()
 {
-        return _read_byte(EC_TEMP_COMPENSATION_REGISTER);
+  return _read_byte(EC_TEMP_COMPENSATION_REGISTER);
 }
 
 /*!
@@ -457,10 +458,10 @@ byte EC_Salinity::getTempConstant()
  */
 bool EC_Salinity::usingTemperatureCompensation()
 {
-        byte retval;
+  byte retval;
 
-        retval = _read_byte(EC_CONFIG_REGISTER);
-        return (retval >> 1)  & 0x01;
+  retval = _read_byte(EC_CONFIG_REGISTER);
+  return (retval >> 1)  & 0x01;
 }
 
 /*!
@@ -469,81 +470,81 @@ bool EC_Salinity::usingTemperatureCompensation()
  */
 bool EC_Salinity::usingDualPoint()
 {
-        byte retval;
+  byte retval;
 
-        retval = _read_byte(EC_CONFIG_REGISTER);
-        return (retval >> 0)  & 0x01;
+  retval = _read_byte(EC_CONFIG_REGISTER);
+  return (retval >> 0)  & 0x01;
 }
 
 void EC_Salinity::_change_register(byte r)
 {
-        Wire.beginTransmission(EC_SALINITY);
-        Wire.write(r);
-        Wire.endTransmission();
-        delay(10);
+  Wire.beginTransmission(EC_SALINITY);
+  Wire.write(r);
+  Wire.endTransmission();
+  delay(10);
 }
 
 void EC_Salinity::_send_command(byte command)
 {
-        Wire.beginTransmission(EC_SALINITY);
-        Wire.write(EC_TASK_REGISTER);
-        Wire.write(command);
-        Wire.endTransmission();
-        delay(10);
+  Wire.beginTransmission(EC_SALINITY);
+  Wire.write(EC_TASK_REGISTER);
+  Wire.write(command);
+  Wire.endTransmission();
+  delay(10);
 }
 
 void EC_Salinity::_write_register(byte reg, float f)
 {
-        byte b[5];
-        float f_val = f;
+  byte  b[5];
+  float f_val = f;
 
-        b[0] = reg;
-        b[1] = *((uint8_t *)&f_val);
-        b[2] = *((uint8_t *)&f_val + 1);
-        b[3] = *((uint8_t *)&f_val + 2);
-        b[4] = *((uint8_t *)&f_val + 3);
-        Wire.beginTransmission(EC_SALINITY);
-        Wire.write(b, 5);
-        Wire.endTransmission();
-        delay(10);
+  b[0] = reg;
+  b[1] = *((uint8_t *)&f_val);
+  b[2] = *((uint8_t *)&f_val + 1);
+  b[3] = *((uint8_t *)&f_val + 2);
+  b[4] = *((uint8_t *)&f_val + 3);
+  Wire.beginTransmission(EC_SALINITY);
+  Wire.write(b, 5);
+  Wire.endTransmission();
+  delay(10);
 }
 
 float EC_Salinity::_read_register(byte reg)
 {
-        float retval;
+  float retval;
 
-        _change_register(reg);
-        Wire.requestFrom(EC_SALINITY, 1);
-        *((uint8_t *)&retval) = Wire.read();
-        Wire.requestFrom(EC_SALINITY, 1);
-        *((uint8_t *)&retval + 1) = Wire.read();
-        Wire.requestFrom(EC_SALINITY, 1);
-        *((uint8_t *)&retval + 2) = Wire.read();
-        Wire.requestFrom(EC_SALINITY, 1);
-        *((uint8_t *)&retval + 3) = Wire.read();
-        delay(10);
-        return retval;
+  _change_register(reg);
+  Wire.requestFrom(EC_SALINITY, 1);
+  *((uint8_t *)&retval) = Wire.read();
+  Wire.requestFrom(EC_SALINITY, 1);
+  *((uint8_t *)&retval + 1) = Wire.read();
+  Wire.requestFrom(EC_SALINITY, 1);
+  *((uint8_t *)&retval + 2) = Wire.read();
+  Wire.requestFrom(EC_SALINITY, 1);
+  *((uint8_t *)&retval + 3) = Wire.read();
+  delay(10);
+  return retval;
 }
 
 void EC_Salinity::_write_byte(byte reg, byte val)
 {
-        byte b[5];
+  byte b[5];
 
-        b[0] = reg;
-        b[1] = val;
-        Wire.beginTransmission(EC_SALINITY);
-        Wire.write(b, 2);
-        Wire.endTransmission();
-        delay(10);
+  b[0] = reg;
+  b[1] = val;
+  Wire.beginTransmission(EC_SALINITY);
+  Wire.write(b, 2);
+  Wire.endTransmission();
+  delay(10);
 }
 
 byte EC_Salinity::_read_byte(byte reg)
 {
-        byte retval;
+  byte retval;
 
-        _change_register(reg);
-        Wire.requestFrom(EC_SALINITY, 1);
-        retval = Wire.read();
-        delay(10);
-        return retval;
+  _change_register(reg);
+  Wire.requestFrom(EC_SALINITY, 1);
+  retval = Wire.read();
+  delay(10);
+  return retval;
 }
