@@ -1,4 +1,5 @@
 [![GitHub release](https://img.shields.io/github/release/u-fire/ECSalinity.svg)]()
+[![Codacy grade](https://img.shields.io/codacy/grade/981e93b4cd0c44f4b9db629b1c393ecf.svg)]()
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/u-fire/ECSalinity/master/LICENSE)
 ### EC_Salinity Probe Interface
 
