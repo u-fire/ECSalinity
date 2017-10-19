@@ -29,6 +29,7 @@
 
 #ifndef EC_SALINITY_H
 #define EC_SALINITY_H
+
 #include <Arduino.h>
 #include <Wire.h>
 
@@ -72,9 +73,9 @@ public:
   float S;                             /*!< EC in Siemens */
   float mS;                            /*!< EC in milli-Siemens */
   float uS;                            /*!< EC in micro-Siemens */
-  long  PPM_500;                       /*!< Parts per million using 500 as a multiplier */
-  long  PPM_640;                       /*!< Parts per million using 640 as a multiplier */
-  long  PPM_700;                       /*!< Parts per million using 700 as a multiplier */
+  long PPM_500;                        /*!< Parts per million using 500 as a multiplier */
+  long PPM_640;                        /*!< Parts per million using 640 as a multiplier */
+  long PPM_700;                        /*!< Parts per million using 700 as a multiplier */
   float salinityPSU;                   /*!< Salinity measured practical salinity units */
   float salinityPPT;                   /*!< Salinity measured parts per thousand */
   float salinityPPM;                   /*!< Salinity measured parts per million */
