@@ -347,7 +347,25 @@ from the measure and is in PSU, PPT, and PPM.</p>
 
 <p>If you are using PlatformIO, you can install the library using the library manager (PlatformIO / PlatformIO Home / Libraries) and search for EC Salinity. Examples are included.</p>
 
-<p>On your Raspberry Pi, you can install the library with <code class="prettyprint">pip install ecsalinity</code>. Note, you may run into python 2/3 issues. If you get a module not found error, try installing with <code class="prettyprint">pip3 install ecsalinity</code> (replacing pip3 with the appropriate version if pip3 isn&rsquo;t found). You can find an example at the library&rsquo;s <a href="https://github.com/u-fire/ECSalinity-python">GitHub</a> page. To access the library, <code class="prettyprint">from ecsalinity.ecsalinity import ecsalinity</code> and <code class="prettyprint">ec = ecsalinity(i2c_device)</code>.</p>
+<h1 id="getting-started">Getting Started</h1>
+
+<p>To start developing for the device, you need to install the library. Two are provided, one for the Arduino framework, and the other for python3 on the Raspberry Pi.</p>
+
+<p>If you are using the Arduino IDE, you can go to the library manager (Sketch / Include Library / Manage Libraries&hellip;) and search for pH_Probe. Examples are included.</p>
+
+<p>If you are using PlatformIO, you can install the library using the library manager (PlatformIO / PlatformIO Home / Libraries) and search for pH Probe. Examples are included.</p>
+
+<p>For Raspberry Pi 3, you can clone the <a href="https://github.com/u-fire/ECSalinity-python">GitHub repo</a>. Before you can run anything, you will need to enable software I2C, as the Pi&rsquo;s hardware implementation has a clock-stretching bug that will prevent it from working with the pH probe.</p>
+
+<ol>
+<li><code class="prettyprint">sudo nano /boot/config.txt</code> and scroll to the bottom</li>
+<li>Add <code class="prettyprint">dtoverlay=i2c-gpio,i2c_gpio_sda=&lt;pin&gt;,i2c_gpio_scl=&lt;pin&gt;</code>, replacing <code class="prettyprint">&lt;pin&gt;</code> with whatever pin you&rsquo;d like to use. Refer <a href="https://docs.microsoft.com/en-us/windows/iot-core/media/pinmappingsrpi/rp2_pinout.png">here</a> for the pin functions, you will need to use the orange GPIO xx labels in the picture to locate the pins. As an example, to use GPIO 17 as SDA and GPIO 27 as SCL, your line will look like this <code class="prettyprint">dtoverlay=i2c-gpio,i2c_gpio_sda=17,i2c_gpio_scl=27</code>
+Alternatively, you can choose to use the existing I2C pins, but using a software implementation of I2C, by pasting <code class="prettyprint">dtoverlay=i2c-gpio</code>. If you go this route, you will need to edit line #4 from <code class="prettyprint">ph = phprobe(3)</code>, to <code class="prettyprint">ph = phprobe(1)</code>.</li>
+<li><code class="prettyprint">ctrl + x</code> to exit, <code class="prettyprint">y</code> to save, and <code class="prettyprint">enter</code> to confirm the filename.</li>
+<li>Reboot</li>
+</ol>
+
+<p>From inside repo folder, execute <code class="prettyprint">sudo python3 shell.ph</code> and you should be presented with a <code class="prettyprint">&gt;</code> prompt as described below.</p>
 
 <h2 id="the-shell-example">The shell Example</h2>
 
