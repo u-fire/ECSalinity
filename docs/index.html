@@ -343,14 +343,6 @@ from the measure and is in PSU, PPT, and PPM.</p>
 
 <p>To start developing for the device, you need to install the library. Two are provided, one for the Arduino framework, and the other for python3 on the Raspberry Pi.</p>
 
-<p>If you are using the Arduino IDE, you can go to the library manager (Sketch / Include Library / Manage Libraries&hellip;) and search for EC_Salinity. Examples are included.</p>
-
-<p>If you are using PlatformIO, you can install the library using the library manager (PlatformIO / PlatformIO Home / Libraries) and search for EC Salinity. Examples are included.</p>
-
-<h1 id="getting-started">Getting Started</h1>
-
-<p>To start developing for the device, you need to install the library. Two are provided, one for the Arduino framework, and the other for python3 on the Raspberry Pi.</p>
-
 <p>If you are using the Arduino IDE, you can go to the library manager (Sketch / Include Library / Manage Libraries&hellip;) and search for pH_Probe. Examples are included.</p>
 
 <p>If you are using PlatformIO, you can install the library using the library manager (PlatformIO / PlatformIO Home / Libraries) and search for pH Probe. Examples are included.</p>
@@ -378,7 +370,7 @@ Alternatively, you can choose to use the existing I2C pins, but using a software
 
 <span class="n">ec</span><span class="p">.</span><span class="n">setK</span><span class="p">(</span><span class="mf">10.0</span><span class="p">);</span>
 <span class="n">ec</span><span class="p">.</span><span class="n">calibrateProbe</span><span class="p">(</span><span class="n">calibrationSolution_mS</span><span class="p">,</span> <span class="n">ec</span><span class="p">.</span><span class="n">tempCoefEC</span><span class="p">);</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">ecsalinity.ecsalinity</span> <span class="kn">import</span> <span class="n">ecsalinity</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">ecsalinity</span> <span class="kn">import</span> <span class="n">ecsalinity</span>
 <span class="n">ec</span> <span class="o">=</span> <span class="n">ecsalinity</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">calibrationSolution_mS</span> <span class="o">=</span> <span class="mf">2.77</span>
 <span class="n">ec</span><span class="o">.</span><span class="n">setK</span><span class="p">(</span><span class="mf">10.0</span><span class="p">)</span>
