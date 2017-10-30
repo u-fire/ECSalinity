@@ -1,4 +1,8 @@
-// For more information and documentation, visit ufire.co
+/*!
+   ufire.co for links to documentation, examples, and libraries
+   github.com/u-fire for feature requests, bug reports, and  questions
+   questions@ufire.co to get in touch with someone
+ */
 
 #include <ECSalinity.h>
 #include "CLI.h"
@@ -50,20 +54,20 @@ void setup()
   CLI.setDefaultPrompt("> ");
   CLI.onConnect(config);
 
-  CLI.addCommand("reset", reset);
-  CLI.addCommand("temp", temp);
-  CLI.addCommand("cal", cal);
-  CLI.addCommand("k", k);
-  CLI.addCommand("ec", ec);
-  CLI.addCommand("low", low);
-  CLI.addCommand("high", high);
+  CLI.addCommand("reset",  reset);
+  CLI.addCommand("temp",   temp);
+  CLI.addCommand("cal",    cal);
+  CLI.addCommand("k",      k);
+  CLI.addCommand("ec",     ec);
+  CLI.addCommand("low",    low);
+  CLI.addCommand("high",   high);
   CLI.addCommand("config", config);
-  CLI.addCommand("tc", tc);
-  CLI.addCommand("dp", dp);
-  CLI.addCommand("acc", acc);
-  CLI.addCommand("sal", sal);
-  CLI.addCommand("data", data);
-  CLI.addCommand("calk", calk);
+  CLI.addCommand("tc",     tc);
+  CLI.addCommand("dp",     dp);
+  CLI.addCommand("acc",    acc);
+  CLI.addCommand("sal",    sal);
+  CLI.addCommand("data",   data);
+  CLI.addCommand("calk",   calk);
 
   CLI.addClient(Serial);
 }

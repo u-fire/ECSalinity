@@ -1,4 +1,8 @@
-// For more information and documentation, visit ufire.co
+/*!
+   ufire.co for links to documentation, examples, and libraries
+   github.com/u-fire for feature requests, bug reports, and  questions
+   questions@ufire.co to get in touch with someone
+ */
 
 #include <ECSalinity.h>
 
