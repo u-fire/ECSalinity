@@ -35,9 +35,16 @@ const float EC_Salinity::tempCoefSalinity = 0.021;
 /*!
    \brief Class constructor
  */
+EC_Salinity::EC_Salinity(uint8_t i2c_address)
+{
+  Wire.begin();
+  this->_address = i2c_address;
+}
+
 EC_Salinity::EC_Salinity()
 {
   Wire.begin();
+  this->_address = 0x3c;
 }
 
 /*!
@@ -408,6 +415,27 @@ void EC_Salinity::setAccuracy(byte b)
 }
 
 /*!
+   \code
+    EC_Salinity::setI2CAddress(0x3d);
+   \endcode
+
+   \brief Changes the i2c address of the device.
+
+   If the default address of the device needs to be changed, call this function to
+   permanently change the address. If you forget the i2c address, you will need
+   to use an i2c scanner to recover it.
+ */
+void EC_Salinity::setI2CAddress(byte i2cAddress)
+{
+  uint8_t accuracy = getAccuracy();
+
+  _write_byte(EC_ACCURACY_REGISTER, i2cAddress);
+  _send_command(EC_I2C);
+  _address = i2cAddress;
+  setAccuracy(accuracy);
+}
+
+/*!
    \brief Retrieves the accuracy configuration of the device
    \return   accuracy
  */
@@ -478,7 +506,7 @@ bool EC_Salinity::usingDualPoint()
 
 void EC_Salinity::_change_register(byte r)
 {
-  Wire.beginTransmission(EC_SALINITY);
+  Wire.beginTransmission(this->_address);
   Wire.write(r);
   Wire.endTransmission();
   delay(10);
@@ -486,7 +514,7 @@ void EC_Salinity::_change_register(byte r)
 
 void EC_Salinity::_send_command(byte command)
 {
-  Wire.beginTransmission(EC_SALINITY);
+  Wire.beginTransmission(this->_address);
   Wire.write(EC_TASK_REGISTER);
   Wire.write(command);
   Wire.endTransmission();
@@ -503,7 +531,7 @@ void EC_Salinity::_write_register(byte reg, float f)
   b[2] = *((uint8_t *)&f_val + 1);
   b[3] = *((uint8_t *)&f_val + 2);
   b[4] = *((uint8_t *)&f_val + 3);
-  Wire.beginTransmission(EC_SALINITY);
+  Wire.beginTransmission(this->_address);
   Wire.write(b, 5);
   Wire.endTransmission();
   delay(10);
@@ -514,13 +542,13 @@ float EC_Salinity::_read_register(byte reg)
   float retval;
 
   _change_register(reg);
-  Wire.requestFrom(EC_SALINITY, 1);
+  Wire.requestFrom(this->_address, 1);
   *((uint8_t *)&retval) = Wire.read();
-  Wire.requestFrom(EC_SALINITY, 1);
+  Wire.requestFrom(this->_address, 1);
   *((uint8_t *)&retval + 1) = Wire.read();
-  Wire.requestFrom(EC_SALINITY, 1);
+  Wire.requestFrom(this->_address, 1);
   *((uint8_t *)&retval + 2) = Wire.read();
-  Wire.requestFrom(EC_SALINITY, 1);
+  Wire.requestFrom(this->_address, 1);
   *((uint8_t *)&retval + 3) = Wire.read();
   delay(10);
   return retval;
@@ -532,7 +560,7 @@ void EC_Salinity::_write_byte(byte reg, byte val)
 
   b[0] = reg;
   b[1] = val;
-  Wire.beginTransmission(EC_SALINITY);
+  Wire.beginTransmission(this->_address);
   Wire.write(b, 2);
   Wire.endTransmission();
   delay(10);
@@ -543,7 +571,7 @@ byte EC_Salinity::_read_byte(byte reg)
   byte retval;
 
   _change_register(reg);
-  Wire.requestFrom(EC_SALINITY, 1);
+  Wire.requestFrom(this->_address, 1);
   retval = Wire.read();
   delay(10);
   return retval;

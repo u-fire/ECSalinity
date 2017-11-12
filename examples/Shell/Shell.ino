@@ -44,6 +44,7 @@ CLI_COMMAND(acc);    // 'acc 21' sets accuracy of the device
 CLI_COMMAND(sal);    // 'sal' starts a salinity measurement
 CLI_COMMAND(data);   // 'data' shows all the data from the latest 'ec' or 'sal' call made
 CLI_COMMAND(calk);   // 'calk 9.82' calculates the K value of the connected probe and saves it to EEPROM
+CLI_COMMAND(i2c);    // 'ic2 62' changes the i2c address to 62
 
 EC_Salinity _ec;
 
@@ -68,6 +69,7 @@ void setup()
   CLI.addCommand("sal",    sal);
   CLI.addCommand("data",   data);
   CLI.addCommand("calk",   calk);
+  CLI.addCommand("i2c",    i2c);
 
   CLI.addClient(Serial);
 }
@@ -217,5 +219,13 @@ CLI_COMMAND(calk) {
   }
 
   dev->print("K: "); dev->print(_ec.getK(), 4);
+  return 0;
+}
+
+CLI_COMMAND(i2c) {
+  if (argc == 2) {
+    _ec.setI2CAddress(atof(argv[1]));
+  }
+
   return 0;
 }

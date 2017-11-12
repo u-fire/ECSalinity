@@ -33,13 +33,13 @@
 #include <Arduino.h>
 #include <Wire.h>
 
-#define EC_SALINITY 0x3C                  /*!< EC Salinity probe I2C address */
 #define EC_MEASURE_EC 80                  /*!< Command to start an EC measure */
 #define EC_MEASURE_TEMP 40                /*!< Command to measure temperature */
 #define EC_CALIBRATE_PROBE 20             /*!< Command to calibrate the probe */
 #define EC_CALIBRATE_LOW 10               /*!< Command to calibrate the low point of the probe */
 #define EC_CALIBRATE_HIGH 8               /*!< Command to calibrate the high point of the probe */
 #define EC_CALCULATE_K 2                  /*!< Command to calculate K of the probe */
+#define EC_I2C 1
 
 #define EC_VERSION_REGISTER 0             /*!< version register */
 #define EC_MS_REGISTER 1                  /*!< mS register */
@@ -83,6 +83,7 @@ public:
   float tempF;                         /*!< Temperature in F */
   static const float tempCoefEC;       /*!< Temperature compensation coefficient for EC measurement */
   static const float tempCoefSalinity; /*!< Temperature compensation coefficient for salinity measurement */
+  EC_Salinity(uint8_t i2c_address);
   EC_Salinity();
   ~EC_Salinity();
   float measureEC(float tempCoefficient);
@@ -119,9 +120,11 @@ public:
   void  setCalibrateOffset(float offset);
   float getCalibrateOffset();
   byte  getVersion();
+  void  setI2CAddress(byte i2cAddress);
 
 private:
 
+  uint8_t _address;
   void  _change_register(byte register);
   void  _send_command(byte command);
   void  _write_register(byte  reg,
