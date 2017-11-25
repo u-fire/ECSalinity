@@ -150,7 +150,7 @@ CLI_COMMAND(config) {
     _ec.usingTemperatureCompensation());
   dev->print("    constant: "); dev->println(_ec.getTempConstant());
   dev->print("  accuracy: "); dev->println(_ec.getAccuracy());
-  dev->print("  version: "); dev->print(_ec.getVersion());
+  dev->print("  version: "); dev->print(_ec.getVersion(), HEX);
   dev->println();
   dev->printPrompt();
   return 0;

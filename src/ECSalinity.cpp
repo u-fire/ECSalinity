@@ -37,14 +37,14 @@ const float EC_Salinity::tempCoefSalinity = 0.021;
  */
 EC_Salinity::EC_Salinity(uint8_t i2c_address)
 {
-  Wire.begin();
   this->_address = i2c_address;
+  Wire.begin();
 }
 
 EC_Salinity::EC_Salinity()
 {
+  this->_address = EC_SALINITY;
   Wire.begin();
-  this->_address = 0x3c;
 }
 
 /*!
@@ -338,8 +338,8 @@ float EC_Salinity::getCalibrateLowReading()
  */
 void EC_Salinity::useTemperatureCompensation(bool b)
 {
-  byte retval;
-  byte config = _read_byte(EC_CONFIG_REGISTER);
+  uint8_t retval;
+  uint8_t config = _read_byte(EC_CONFIG_REGISTER);
 
   if (b)
   {
@@ -359,8 +359,8 @@ void EC_Salinity::useTemperatureCompensation(bool b)
  */
 void EC_Salinity::useDualPoint(bool b)
 {
-  byte retval;
-  byte config = _read_byte(EC_CONFIG_REGISTER);
+  uint8_t retval;
+  uint8_t config = _read_byte(EC_CONFIG_REGISTER);
 
   if (b)
   {
@@ -378,7 +378,7 @@ void EC_Salinity::useDualPoint(bool b)
    \brief Retrieves the firmware version of the device
    \return   version of firmware
  */
-byte EC_Salinity::getVersion()
+uint8_t EC_Salinity::getVersion()
 {
   return _read_byte(EC_VERSION_REGISTER);
 }
@@ -409,7 +409,7 @@ void EC_Salinity::reset()
    evenly divisible by 3.
    \param b   accuracy of the device
  */
-void EC_Salinity::setAccuracy(byte b)
+void EC_Salinity::setAccuracy(uint8_t b)
 {
   _write_byte(EC_ACCURACY_REGISTER, b);
 }
@@ -425,7 +425,7 @@ void EC_Salinity::setAccuracy(byte b)
    permanently change the address. If you forget the i2c address, you will need
    to use an i2c scanner to recover it.
  */
-void EC_Salinity::setI2CAddress(byte i2cAddress)
+void EC_Salinity::setI2CAddress(uint8_t i2cAddress)
 {
   uint8_t accuracy = getAccuracy();
 
@@ -439,7 +439,7 @@ void EC_Salinity::setI2CAddress(byte i2cAddress)
    \brief Retrieves the accuracy configuration of the device
    \return   accuracy
  */
-byte EC_Salinity::getAccuracy()
+uint8_t EC_Salinity::getAccuracy()
 {
   return _read_byte(EC_ACCURACY_REGISTER);
 }
@@ -466,7 +466,7 @@ void EC_Salinity::setCalibrateOffset(float offset)
    can be specified. To use the actual temperature, restore the value to 0xFF.
    \param b   the temperature to use for compensation
  */
-void EC_Salinity::setTempConstant(byte b)
+void EC_Salinity::setTempConstant(uint8_t b)
 {
   _write_byte(EC_TEMP_COMPENSATION_REGISTER, b);
 }
@@ -475,7 +475,7 @@ void EC_Salinity::setTempConstant(byte b)
    \brief Retrieves the temperature constant
    \return   the temperature to used for compensation
  */
-byte EC_Salinity::getTempConstant()
+uint8_t EC_Salinity::getTempConstant()
 {
   return _read_byte(EC_TEMP_COMPENSATION_REGISTER);
 }
@@ -486,7 +486,7 @@ byte EC_Salinity::getTempConstant()
  */
 bool EC_Salinity::usingTemperatureCompensation()
 {
-  byte retval;
+  uint8_t retval;
 
   retval = _read_byte(EC_CONFIG_REGISTER);
   return (retval >> 1)  & 0x01;
@@ -498,13 +498,13 @@ bool EC_Salinity::usingTemperatureCompensation()
  */
 bool EC_Salinity::usingDualPoint()
 {
-  byte retval;
+  uint8_t retval;
 
   retval = _read_byte(EC_CONFIG_REGISTER);
   return (retval >> 0)  & 0x01;
 }
 
-void EC_Salinity::_change_register(byte r)
+void EC_Salinity::_change_register(uint8_t r)
 {
   Wire.beginTransmission(this->_address);
   Wire.write(r);
@@ -512,7 +512,7 @@ void EC_Salinity::_change_register(byte r)
   delay(10);
 }
 
-void EC_Salinity::_send_command(byte command)
+void EC_Salinity::_send_command(uint8_t command)
 {
   Wire.beginTransmission(this->_address);
   Wire.write(EC_TASK_REGISTER);
@@ -521,10 +521,10 @@ void EC_Salinity::_send_command(byte command)
   delay(10);
 }
 
-void EC_Salinity::_write_register(byte reg, float f)
+void EC_Salinity::_write_register(uint8_t reg, float f)
 {
-  byte  b[5];
-  float f_val = f;
+  uint8_t b[5];
+  float   f_val = f;
 
   b[0] = reg;
   b[1] = *((uint8_t *)&f_val);
@@ -537,7 +537,7 @@ void EC_Salinity::_write_register(byte reg, float f)
   delay(10);
 }
 
-float EC_Salinity::_read_register(byte reg)
+float EC_Salinity::_read_register(uint8_t reg)
 {
   float retval;
 
@@ -554,9 +554,9 @@ float EC_Salinity::_read_register(byte reg)
   return retval;
 }
 
-void EC_Salinity::_write_byte(byte reg, byte val)
+void EC_Salinity::_write_byte(uint8_t reg, uint8_t val)
 {
-  byte b[5];
+  uint8_t b[5];
 
   b[0] = reg;
   b[1] = val;
@@ -566,9 +566,9 @@ void EC_Salinity::_write_byte(byte reg, byte val)
   delay(10);
 }
 
-byte EC_Salinity::_read_byte(byte reg)
+uint8_t EC_Salinity::_read_byte(uint8_t reg)
 {
-  byte retval;
+  uint8_t retval;
 
   _change_register(reg);
   Wire.requestFrom(this->_address, 1);

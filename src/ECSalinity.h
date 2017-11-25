@@ -30,16 +30,28 @@
 #ifndef EC_SALINITY_H
 #define EC_SALINITY_H
 
-#include <Arduino.h>
-#include <Wire.h>
+#include <math.h>
 
+#if defined(PARTICLE)
+# include "application.h"
+# define bitRead(value, bit) (((value) >> (bit)) & 0x01)
+# define bitSet(value, bit) ((value) |= (1UL << (bit)))
+# define bitClear(value, bit) ((value) &= ~(1UL << (bit)))
+# define bitWrite(value, bit, bitvalue) (bitvalue ? bitSet(value, bit) : bitClear(value, bit))
+#else // if defined(PARTICLE)
+# include <Arduino.h>
+# include <Wire.h>
+#endif // if defined(PARTICLE)
+
+
+#define EC_SALINITY 0x3c
 #define EC_MEASURE_EC 80                  /*!< Command to start an EC measure */
 #define EC_MEASURE_TEMP 40                /*!< Command to measure temperature */
 #define EC_CALIBRATE_PROBE 20             /*!< Command to calibrate the probe */
 #define EC_CALIBRATE_LOW 10               /*!< Command to calibrate the low point of the probe */
 #define EC_CALIBRATE_HIGH 8               /*!< Command to calibrate the high point of the probe */
 #define EC_CALCULATE_K 2                  /*!< Command to calculate K of the probe */
-#define EC_I2C 1
+#define EC_I2C 1                          /*!< Command to change the i2c address */
 
 #define EC_VERSION_REGISTER 0             /*!< version register */
 #define EC_MS_REGISTER 1                  /*!< mS register */
@@ -102,37 +114,37 @@ public:
                                 float refHigh,
                                 float readLow,
                                 float readHigh);
-  void  setK(float k);
-  float getK();
-  void  setAccuracy(byte b);
-  byte  getAccuracy();
-  void  reset();
-  void  setTempConstant(byte b);
-  byte  getTempConstant();
-  void  useTemperatureCompensation(bool b);
-  bool  usingTemperatureCompensation();
-  void  useDualPoint(bool b);
-  bool  usingDualPoint();
-  float getCalibrateHigh();
-  float getCalibrateLow();
-  float getCalibrateHighReading();
-  float getCalibrateLowReading();
-  void  setCalibrateOffset(float offset);
-  float getCalibrateOffset();
-  byte  getVersion();
-  void  setI2CAddress(byte i2cAddress);
+  void    setK(float k);
+  float   getK();
+  void    setAccuracy(uint8_t b);
+  uint8_t getAccuracy();
+  void    reset();
+  void    setTempConstant(uint8_t b);
+  uint8_t getTempConstant();
+  void    useTemperatureCompensation(bool b);
+  bool    usingTemperatureCompensation();
+  void    useDualPoint(bool b);
+  bool    usingDualPoint();
+  float   getCalibrateHigh();
+  float   getCalibrateLow();
+  float   getCalibrateHighReading();
+  float   getCalibrateLowReading();
+  void    setCalibrateOffset(float offset);
+  float   getCalibrateOffset();
+  uint8_t getVersion();
+  void    setI2CAddress(uint8_t i2cAddress);
 
 private:
 
   uint8_t _address;
-  void  _change_register(byte register);
-  void  _send_command(byte command);
-  void  _write_register(byte  reg,
-                        float f);
-  void  _write_byte(byte reg,
-                    byte val);
-  float _read_register(byte reg);
-  byte  _read_byte(byte reg);
+  void    _change_register(uint8_t register);
+  void    _send_command(uint8_t command);
+  void    _write_register(uint8_t reg,
+                          float   f);
+  void    _write_byte(uint8_t reg,
+                      uint8_t val);
+  float   _read_register(uint8_t reg);
+  uint8_t _read_byte(uint8_t reg);
 };
 
 #endif // ifndef EC_SALINITY_H
