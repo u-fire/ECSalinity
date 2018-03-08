@@ -50,8 +50,8 @@
 #define EC_CALIBRATE_PROBE 20             /*!< Command to calibrate the probe */
 #define EC_CALIBRATE_LOW 10               /*!< Command to calibrate the low point of the probe */
 #define EC_CALIBRATE_HIGH 8               /*!< Command to calibrate the high point of the probe */
-#define EC_CALCULATE_K 2                  /*!< Command to calculate K of the probe */
 #define EC_I2C 1                          /*!< Command to change the i2c address */
+#define EC_DRY 81                         /*!< Command to calibrate the probe for being dry */
 
 #define EC_VERSION_REGISTER 0             /*!< version register */
 #define EC_MS_REGISTER 1                  /*!< mS register */
@@ -65,12 +65,12 @@
 #define EC_CALIBRATE_READLOW_REGISTER 33  /*!< reading high register */
 #define EC_CALIBRATE_OFFSET_REGISTER 37   /*!< caliration offset */
 #define EC_SALINITY_PSU 41                /*!< Salinity register */
-#define EC_TEMP_COMPENSATION_REGISTER 45  /*!< temperature compensation register */
-#define EC_ACCURACY_REGISTER 46           /*!< accuracy register */
-#define EC_CONFIG_REGISTER 47             /*!< config register */
-#define EC_TASK_REGISTER 48               /*!< task register */
+#define EC_DRY_REGISTER 45                /*!< Dry calibration register */
+#define EC_TEMP_COMPENSATION_REGISTER 49  /*!< temperature compensation register */
+#define EC_CONFIG_REGISTER 50             /*!< config register */
+#define EC_TASK_REGISTER 51               /*!< task register */
 
-#define EC_EC_MEASURMENT_TIME 10          /*!< delay between EC measurements */
+#define EC_EC_MEASUREMENT_TIME 150        /*!< delay between EC measurements */
 #define EC_TEMP_MEASURE_TIME 750          /*!< delay for temperature measurement */
 
 #define EC_DUALPOINT_CONFIG_BIT 0         /*!< dual point config bit */
@@ -98,7 +98,8 @@ public:
   EC_Salinity(uint8_t i2c_address);
   EC_Salinity();
   ~EC_Salinity();
-  float measureEC(float tempCoefficient);
+  float measureEC(float tempCoefficient,
+                  bool  newTemp);
   float measureEC();
   float measureSalinity();
   float measureTemp();
@@ -108,16 +109,13 @@ public:
                           float tempCoef);
   void  calibrateProbeHigh(float solutionEC,
                            float tempCoef);
-  void  calculateK(float solutionEC,
-                   float tempCoef);
+  void  calibrateDry();
   void  setDualPointCalibration(float refLow,
                                 float refHigh,
                                 float readLow,
                                 float readHigh);
   void    setK(float k);
   float   getK();
-  void    setAccuracy(uint8_t b);
-  uint8_t getAccuracy();
   void    reset();
   void    setTempConstant(uint8_t b);
   uint8_t getTempConstant();
@@ -130,6 +128,7 @@ public:
   float   getCalibrateHighReading();
   float   getCalibrateLowReading();
   void    setCalibrateOffset(float offset);
+  float   getCalibrateDry();
   float   getCalibrateOffset();
   uint8_t getVersion();
   void    setI2CAddress(uint8_t i2cAddress);

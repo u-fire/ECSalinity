@@ -20,7 +20,6 @@ void setup()
 
 void loop()
 {
-  ec.measureTemp();
   ec.measureSalinity();
   Serial.print("PPT / PSU: "); Serial.print(ec.salinityPPT);
   Serial.print(" / ");

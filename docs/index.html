@@ -243,7 +243,7 @@
       <div id="toc">
       </div>
         <ul class="toc-footer">
-            <li>for firmware version 1a</li>
+            <li>version 2018a.2</li>
         </ul>
     </div>
     <div class="page-wrapper">
@@ -251,25 +251,21 @@
       <div class="content">
         <h1 id="introduction">Introduction</h1>
 
-<p>Measure Electrical Conductivity in Siemens, Total Dissolved Solids in PPM, Salinity in PSU and PPT.</p>
+<p>Measure Electrical Conductivity in Siemens, Total Dissolved Solids in PPM, and Salinity in PSU and PPT.</p>
 
-<p>Monitor hydroponic nutrient levels, salinity levels in aquariums or the ocean, saltwater pools, soil salinity, water quality etc.</p>
-
-<p>It uses the standard Arduino Wire library to interface with the device.
-It&rsquo;s operating principle is based on sending a very short-duration DC pulse
-from one probe pin and measuring the conductivity on the other pin. The conductivity
-is then converted to a temperature compensated Siemen. Salinity is also derived
-from the measure and is in PSU, PPT, and PPM.</p>
+<p>Monitor hydroponic nutrient levels, salinity in aquariums, pools, or soil.</p>
 
 <h2 id="characteristics">Characteristics</h2>
 
 <ul>
-<li><strong>EC range</strong>: ~0.06 - ~200mS depending on probe</li>
+<li><strong>EC range</strong>: ~0.06 - ~200 mS depending on probe</li>
 <li><strong>Salinity range</strong>: 2 - 42</li>
+<li><strong>Accuracy</strong>: ± 5%</li>
+<li><strong>Temperature Accuracy</strong>: 0.05 C</li>
 <li><strong>Temperature range</strong>: -2 - 35C</li>
 <li><strong>Interface</strong>: I2C</li>
 <li><strong>Current use</strong>: ~10mA peak, low idle current ~1mA</li>
-<li><strong>Voltage range</strong>: 2.7 - 5.5V</li>
+<li><strong>Voltage range</strong>: 3.3 - 5.5V</li>
 </ul>
 
 <h1 id="connections">Connections</h1>
@@ -297,14 +293,18 @@ from the measure and is in PSU, PPT, and PPM.</p>
 <td style="text-align: center">SDA</td>
 </tr>
 <tr>
-<td style="text-align: center">VCC</td>
-<td style="text-align: center">2.7 - 5V</td>
+<td style="text-align: center">3.3/5v</td>
+<td style="text-align: center">3.3 - 5V</td>
 </tr>
 </tbody></table>
 
+<h2 id="i2c-bus-pull-ups">I2C Bus Pull-ups</h2>
+
+<p>Each device comes with 4.7k resistor pullups on the I2C bus. They pass through a 3-pad solder paste jumper. The outer pads are connected to the middle by thin traces. To disable the pullups, use a utility knife to cut both traces. To re-enable the pullups, connect all three pads together with solder.</p>
+
 <h2 id="temperature-probe-connections">Temperature Probe Connections</h2>
 
-<p>The temperature probe comes with a 3-wire header. The VCC pin is labeled with a triangle:</p>
+<p>The temperature probe comes with a 3-wire header; any 3-wire DS18B20 will work. The VCC pin is labeled with a triangle:</p>
 
 <table><thead>
 <tr>
@@ -313,98 +313,116 @@ from the measure and is in PSU, PPT, and PPM.</p>
 </tr>
 </thead><tbody>
 <tr>
-<td style="text-align: center">+</td>
-<td style="text-align: center">(triangle</td>
+<td style="text-align: center">▲ (VCC</td>
+<td style="text-align: center">▲</td>
 </tr>
 <tr>
-<td style="text-align: center">D</td>
-<td style="text-align: center"></td>
+<td style="text-align: center">(Data)</td>
+<td style="text-align: center">(pin 2)</td>
 </tr>
 <tr>
-<td style="text-align: center">-</td>
-<td style="text-align: center"></td>
+<td style="text-align: center">(GND)</td>
+<td style="text-align: center">(pin 3)</td>
 </tr>
 </tbody></table>
 
 <h2 id="ec-probe-connections">EC Probe Connections</h2>
 
-<p>The EC probe has two pins and can be connected either way.</p>
+<p>EC probes have two pins and can be connected either way.</p>
 
 <h3 id="probe-selection">Probe Selection</h3>
 
-<p>Any 2-electrode probe can be attached to the device.</p>
+<p>Any 2-electrode probe can be attached to the device. It is recommended to only use the probes provided by uFire. They are designed to be inexpensive and replaceable after approximately six months to a year of light use. The probe can be kept submerged, however it will require cleaning and re-calibration more often. The temperature range of the probe is -20 - 80 C.</p>
 
 <p>A probe with a K constant of:</p>
 
 <ul>
 <li>0.1K can measure from 0.06 - 199.9 uS</li>
 <li>1K from 0 - 1999 uS</li>
-<li>10K from 0 - 200 mS</li>
+<li>10K from 1 - 200 mS</li>
 </ul>
 
 <h1 id="getting-started">Getting Started</h1>
 
-<p>To start developing for the device, you need to install the library. Two are provided, one for the Arduino framework, and the other for python3 on the Raspberry Pi.</p>
+<p>To start developing for the device, you need to install this library for your board/platform.</p>
 
-<p>If you are using the Arduino IDE, you can go to the library manager (Sketch / Include Library / Manage Libraries&hellip;) and search for pH_Probe. Examples are included.</p>
+<ul>
+<li><p><strong>Arduino IDE</strong>:  go to the library manager (Sketch / Include Library / Manage Libraries&hellip;) and search for EC Salinity.</p></li>
+<li><p><strong>PlatformIO</strong>: install the library using the library manager (PlatformIO / PlatformIO Home / Libraries) and search for EC Salinity.</p></li>
+<li><p><strong>Particle.io</strong>: search for EC_Salinity in the Libraries section of the IDE.</p></li>
+<li><p><strong>MicroPython</strong>: clone the <a href="https://github.com/u-fire/ECSalinity">GitHub repo</a>. In the python/MicroPython directory, you will find the files for various boards and their accompanying README files with instructions.</p></li>
+<li><p><strong>Raspberry Pi</strong>:  clone the <a href="https://github.com/u-fire/ECSalinity">GitHub repo</a>. In the python/RaspberryPi directory, you will find the files for various boards and their accompanying README files with instructions. Be sure to read the section below for instructions.</p></li>
+</ul>
 
-<p>If you are using PlatformIO, you can install the library using the library manager (PlatformIO / PlatformIO Home / Libraries) and search for pH Probe. Examples are included.</p>
+<h2 id="raspberry-pi">Raspberry Pi</h2>
 
-<p>For Raspberry Pi 3, you can clone the <a href="https://github.com/u-fire/ECSalinity-python">GitHub repo</a>. Before you can run anything, you will need to enable software I2C, as the Pi&rsquo;s hardware implementation has a clock-stretching bug that will prevent it from working with the pH probe.</p>
+<p>Before you can run anything, you will need to enable software I2C, as the Pi&rsquo;s hardware implementation has a clock-stretching bug that will prevent it from working with the pH probe.
+1. <code class="prettyprint">sudo nano /boot/config.txt</code> and scroll to the bottom
+2. Add</p>
+
+<p><code class="prettyprint">dtoverlay=i2c-gpio,i2c_gpio_sda=&lt;pin&gt;,i2c_gpio_scl=&lt;pin&gt;</code></p>
+
+<p>replacing <code class="prettyprint">&lt;pin&gt;</code> with whatever pin you&rsquo;d like to use. Refer <a href="https://docs.microsoft.com/en-us/windows/iot-core/media/pinmappingsrpi/rp2_pinout.png">here</a> for the pin functions, you will need to use the orange GPIO xx labels in the picture to locate the pins. As an example, to use GPIO 17 as SDA and GPIO 27 as SCL, your line will look like this</p>
+
+<p><code class="prettyprint">dtoverlay=i2c-gpio,i2c_gpio_sda=17,i2c_gpio_scl=27</code></p>
+
+<p>Alternatively, you can choose to use the existing I2C pins, but using a software implementation of I2C, by pasting <code class="prettyprint">dtoverlay=i2c-gpio</code>. If you go this route, you will need to edit line #4 from</p>
+
+<p><code class="prettyprint">ph = phprobe(3)</code>, to <code class="prettyprint">ph = phprobe(1)</code></p>
 
 <ol>
-<li><code class="prettyprint">sudo nano /boot/config.txt</code> and scroll to the bottom</li>
-<li>Add <code class="prettyprint">dtoverlay=i2c-gpio,i2c_gpio_sda=&lt;pin&gt;,i2c_gpio_scl=&lt;pin&gt;</code>, replacing <code class="prettyprint">&lt;pin&gt;</code> with whatever pin you&rsquo;d like to use. Refer <a href="https://docs.microsoft.com/en-us/windows/iot-core/media/pinmappingsrpi/rp2_pinout.png">here</a> for the pin functions, you will need to use the orange GPIO xx labels in the picture to locate the pins. As an example, to use GPIO 17 as SDA and GPIO 27 as SCL, your line will look like this <code class="prettyprint">dtoverlay=i2c-gpio,i2c_gpio_sda=17,i2c_gpio_scl=27</code>
-Alternatively, you can choose to use the existing I2C pins, but using a software implementation of I2C, by pasting <code class="prettyprint">dtoverlay=i2c-gpio</code>. If you go this route, you will need to edit line #4 from <code class="prettyprint">ph = phprobe(3)</code>, to <code class="prettyprint">ph = phprobe(1)</code>.</li>
 <li><code class="prettyprint">ctrl + x</code> to exit, <code class="prettyprint">y</code> to save, and <code class="prettyprint">enter</code> to confirm the filename.</li>
 <li>Reboot</li>
 </ol>
 
-<p>From inside repo folder, execute <code class="prettyprint">sudo python3 shell.ph</code> and you should be presented with a <code class="prettyprint">&gt;</code> prompt as described below.</p>
-
 <h2 id="the-shell-example">The shell Example</h2>
 
-<p>An interactive shell interface is provided with both frameworks and is a quick and easy way to get started using the device. You will find the equivalent commands in the code area to the right when applicable. Upload it to your master device and start a serial terminal. You will be presented with a <code class="prettyprint">&gt;</code> prompt where you can enter commands and receive a response, similar to a shell command line or REPL. It is often quicker to experiment with things this way rather than rewriting, compiling, and uploading new versions every time.</p>
+<p>An interactive shell interface is provided with all frameworks and is a quick and easy way to get started using the device. You will find the equivalent commands in the code area to the right when applicable. Upload it to your master device, start a serial terminal and you will be presented with a <code class="prettyprint">&gt;</code> prompt where you can enter commands and receive a response, similar to a shell command line or REPL. It is often quicker to experiment with things this way rather than rewriting, compiling, and uploading new versions every time.</p>
 
 <h2 id="changing-the-i2c-address">Changing the I2C Address</h2>
 
-<p>If needed, the I2C address can be changed in programatically by calling <code class="prettyprint">setI2CAddress()</code>. The device will permanently change it&rsquo;s address to the passed value and continue to use it after a power reset. If you forget the new address, you will need to use an I2C bus scanner to locate it again.</p>
+<p>If needed, the I2C address can be changed programatically by calling <code class="prettyprint">setI2CAddress()</code>. The device will permanently change the address and continue to use it after a power reset. If you forget the new address, you will need to use an I2C bus scanner to locate it again.</p>
 
 <h1 id="calibration">Calibration</h1>
 <pre class="highlight cpp tab-cpp"><code><span class="cp">#include &lt;ECSalinity.h&gt;
 </span><span class="n">EC_Salinity</span> <span class="n">ec</span><span class="p">;</span>
 <span class="kt">float</span> <span class="n">calibrationSolution_mS</span> <span class="o">=</span> <span class="mf">2.77</span><span class="p">;</span>
 
-<span class="n">ec</span><span class="p">.</span><span class="n">setK</span><span class="p">(</span><span class="mf">10.0</span><span class="p">);</span>
+<span class="n">ec</span><span class="p">.</span><span class="n">setK</span><span class="p">(</span><span class="mf">1.0</span><span class="p">);</span>
+<span class="n">ec</span><span class="p">.</span><span class="n">calibrateDry</span><span class="p">();</span>
 <span class="n">ec</span><span class="p">.</span><span class="n">calibrateProbe</span><span class="p">(</span><span class="n">calibrationSolution_mS</span><span class="p">,</span> <span class="n">ec</span><span class="p">.</span><span class="n">tempCoefEC</span><span class="p">);</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">ecsalinity</span> <span class="kn">import</span> <span class="n">ecsalinity</span>
 <span class="n">ec</span> <span class="o">=</span> <span class="n">ecsalinity</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">calibrationSolution_mS</span> <span class="o">=</span> <span class="mf">2.77</span>
-<span class="n">ec</span><span class="o">.</span><span class="n">setK</span><span class="p">(</span><span class="mf">10.0</span><span class="p">)</span>
+<span class="n">ec</span><span class="o">.</span><span class="n">setK</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">ec</span><span class="o">.</span><span class="n">calibrateDry</span><span class="p">()</span>
 <span class="n">ec</span><span class="o">.</span><span class="n">calibrateProbe</span><span class="p">(</span><span class="n">calibrationSolution_mS</span><span class="p">,</span> <span class="n">ec</span><span class="o">.</span><span class="n">tempCoefEC</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>k 10.0
+</code></pre><pre class="highlight shell tab-shell"><code>k 1.0
+dry
 cal 2.77
 </code></pre>
-<p>When the device is powered for the first time, it will be uncalibrated. There are two calibration options: single and dual or double point. Single point determines a percent difference between actual readings and expected readings, then uses it to make adjustments. Double point uses two points, a high and low, to determine the adjustment to make. The choice of single or double depends on the expected use. A small range might be better measured by single point calibration whereas a large range may be more accurate with double point.</p>
+<p>When the device is powered for the first time, it will be uncalibrated. There are two calibration options: single and dual point. Single point determines a percent difference between actual readings and expected readings, then uses it to make adjustments. Dual point uses two points, a high and low, to determine the adjustment to make. The choice of single or dual depends on the expected use. A small range might be better measured by single point calibration whereas a large range may be more accurate with dual point.</p>
 
-<p>Before any measurements can be made, to include measurements to calibrate the probe, the cell constant (K) must be specified. This number is typically 0.1, 1.0, or 10.0. The exact value may be found on the probe itself (9.988 for example). After K has been set, you can expect to see values being returned. It will not be accurate and must be calibrated.</p>
+<p>Before any measurements can be made, to include measurements to calibrate the probe, the cell constant (K) must be specified. This number is typically 0.1, 1.0, or 10.0. The exact value may be found on the probe itself (9.988 for example).</p>
 
-<p>For best results, the probe should be cleaned with distilled water and then placed in the solution for 5-10 minutes before the probe is used. It shouldn&rsquo;t be placed on the bottom or side of the solution container. Note that any turbidity, air bubbles, large particles, etc will effect readings. An unstable temperature will decrease accuracy as well.</p>
+<p>After setting K, you can optionally calibrate the probe to determine the reading it returns when it is dry. <code class="prettyprint">calibrateDry()</code> will record the measurment and automatically be used for subsequent measurments. If the value is equal to or less than the dry value, -1 is returned. This indicates the probe is dry or also if it is unconnected.</p>
+
+<p>For best results, the probe should be cleaned with distilled water or vinegar and then placed in the solution for 5-10 minutes before the probe is used. It shouldn&rsquo;t be placed on the bottom or side of the solution container. Any turbidity, air bubbles, large particles, or unstable temperature will effect readings.</p>
 
 <p>When calibrating the probe, it is important to consider the expected temperature range. EC measurements are very temperature dependent, effecting the results by approximately 2% per degree C. The probe should be calibrated at the median expected temperature.</p>
 
 <p>Likewise, the probe should be calibrated in the median expected EC range. For example, if you are planning to measure the salinity of an aquarium, you might expect readings ±5 from 35PPT (equivalent to 53mS). So a 53mS solution for calibration would be appropriate, whereas a hydroponic calibration might be 2.77mS or lower.</p>
 
-<p>Another consideration is the placement of the probe. When the probe sends out a pulse of electricity, it leaves the probe in 360 degrees. If it is near a metal surface, you will experience fringing effects. The probe should be calibrated in an environment as similar as possible to the location it will be deployed in.</p>
+<p>Another consideration is the placement of the probe. When the probe sends out a pulse of electricity, it leaves the probe in 360 degrees. If it is near metal, you will experience fringing effects. The probe should be calibrated in an environment as similar as possible to the location it will be deployed in.</p>
 
 <h3 id="single-point">Single Point</h3>
 <pre class="highlight cpp tab-cpp"><code><span class="kt">float</span> <span class="n">solutionEC</span> <span class="o">=</span> <span class="mf">53.0</span><span class="p">;</span>
-<span class="n">ec</span><span class="p">.</span><span class="n">calibrationProbe</span><span class="p">(</span><span class="n">solutionEC</span><span class="p">,</span> <span class="n">ec</span><span class="p">.</span><span class="n">tempCoefSalinity</span><span class="p">);</span>
+<span class="n">ec</span><span class="p">.</span><span class="n">calibrateProbe</span><span class="p">(</span><span class="n">solutionEC</span><span class="p">,</span> <span class="n">ec</span><span class="p">.</span><span class="n">tempCoefSalinity</span><span class="p">);</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">solutionEC</span> <span class="o">=</span> <span class="mf">53.0</span>
-<span class="n">ec</span><span class="o">.</span><span class="n">calibrationProbe</span><span class="p">(</span><span class="n">solutionEC</span><span class="p">,</span> <span class="n">ec</span><span class="o">.</span><span class="n">tempCoefSalinity</span><span class="p">)</span>
+<span class="n">ec</span><span class="o">.</span><span class="n">calibrateProbe</span><span class="p">(</span><span class="n">solutionEC</span><span class="p">,</span> <span class="n">ec</span><span class="o">.</span><span class="n">tempCoefSalinity</span><span class="p">)</span>
 </code></pre><pre class="highlight shell tab-shell"><code>cal 53.0
 </code></pre>
-<p>For this method of calibrating, submerge the probe and wait for the readings to stabilize. Then call <code class="prettyprint">calibrateProbe()</code>. The calibration information will be stored in EEPROM and is the percent difference from the measured value and the expected value.</p>
+<p>For this method of calibration, submerge the probe and wait for the readings to stabilize. Then call <code class="prettyprint">calibrateProbe()</code>. The calibration information will be stored in EEPROM.</p>
 
 <h3 id="dual-point">Dual Point</h3>
 
@@ -413,9 +431,9 @@ cal 2.77
 <ol>
 <li>Determine the lowest and highest measurement you expect. For example, the lowest level you might measure would be 50 mS and the highest might be 58 mS. These points will be referred to as
 <code class="prettyprint">referenceLow</code> and <code class="prettyprint">referenceHigh</code></li>
-<li>Put the EC probe in a calibration solution at <code class="prettyprint">referenceLow</code> and wait for readings to stabilize, call
-<code class="prettyprint">calibrateProbeLow()</code>. Do the same for referenceHigh by calling &lsquo;calibrateProbeHigh&rsquo;.</li>
-<li>By default, the device does not use dual points. A call to <code class="prettyprint">useDualPoint()</code> must be made to enable it each time the device is powered.</li>
+<li>Put the EC probe in a calibration solution at <code class="prettyprint">referenceLow</code> and wait for readings to stabilize, then call
+<code class="prettyprint">calibrateProbeLow()</code>. Do the same for referenceHigh by calling &lsquo;calibrateProbeHigh()&rsquo;.</li>
+<li>By default, the device does not use dual point, even if the values are provided. A call to <code class="prettyprint">useDualPoint(true)</code> must be made to enable it. It will be saved in the configuration and used automatically.</li>
 </ol>
 
 <p>You can also set all four values directly using <code class="prettyprint">setDualPointCalibration()</code>.</p>
@@ -433,21 +451,9 @@ cal 2.77
 high 58.0
 dp 1
 </code></pre>
-<p><code class="prettyprint">getCalibrateHigh</code> and <code class="prettyprint">getCalibrateLow</code> can be used
-to get the currently set reference values.</p>
-
-<p>Each call to <code class="prettyprint">measureEC</code> will use the calibration to adjust
-the reading. It can be disabled by <code class="prettyprint">ec.useDualPoint(false);</code></p>
-
 <h1 id="use">Use</h1>
-<pre class="highlight cpp tab-cpp"><code><span class="kt">float</span> <span class="n">tempC</span> <span class="o">=</span> <span class="n">ec</span><span class="p">.</span><span class="n">measureTemp</span><span class="p">();</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="n">tempC</span> <span class="o">=</span> <span class="n">ec</span><span class="o">.</span><span class="n">measureTemp</span><span class="p">()</span>
-</code></pre><pre class="highlight shell tab-shell"><code>temp
-</code></pre>
-<p>Once the probe has been calibrated, a reading can be taken. The device will use
-the most recent temperature measurement obtained from <code class="prettyprint">measureTemp</code> if temperature
-compensation is enabled.The probe should be placed in the solution to be measured and <code class="prettyprint">measureEC</code>
-called to start a measurement.</p>
+
+<p>Once the probe has been calibrated, a reading can be taken.</p>
 
 <p>After the measurement is taken, the following class variables are updated:</p>
 
@@ -465,59 +471,47 @@ called to start a measurement.</p>
 <li><code class="prettyprint">tempF</code></li>
 </ul>
 
+<h2 id="temperature-compensation">Temperature Compensation</h2>
+<pre class="highlight cpp tab-cpp"><code><span class="n">byte</span> <span class="n">tempConstant</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+<span class="n">ec</span><span class="p">.</span><span class="n">setTempConstant</span><span class="p">(</span><span class="n">tempConstant</span><span class="p">);</span>
+<span class="n">ec</span><span class="p">.</span><span class="n">useTemperatureCompensation</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">tempConstant</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">ec</span><span class="o">.</span><span class="n">setTempConstant</span><span class="p">(</span><span class="n">tempConstant</span><span class="p">)</span>
+<span class="n">ec</span><span class="o">.</span><span class="n">useTemperatureCompensation</span><span class="p">(</span><span class="bp">True</span><span class="p">);</span>
+</code></pre><pre class="highlight shell tab-shell"><code>tc 1 20
+tc 0
+</code></pre>
+<p>Conductivity naturally changes with temperature. When the temperature drops, the solution condences, molecules move closer together and allow a charge to more easily pass. The opposite occurs when the temperature increases.</p>
+
+<p>Temperature compensation is used to calculate what the measured conductivity would be if it were measured at a different temperature. This is just an approximation and is determined by the temperature coefficient as explained below.</p>
+
+<p>To set the temperature used for compensation, call <code class="prettyprint">setTempConstant()</code> and pass the temperature to use; the temperature probe must be connected for this measurement. Calling <code class="prettyprint">measureEC()</code> or <code class="prettyprint">measureSalinity()</code> will also call <code class="prettyprint">measureTemp()</code> before taking a measurement if <code class="prettyprint">usingTemperatureCompensation()</code> has been set to true.</p>
+
+<p>The values passed to <code class="prettyprint">setTempConstant()</code> and <code class="prettyprint">useTemperatureCompensation()</code> will be saved and used automatically.</p>
+
 <h2 id="temperature-coefficients">Temperature Coefficients</h2>
 <pre class="highlight cpp tab-cpp"><code><span class="kt">float</span> <span class="n">pureWaterCompensation</span> <span class="o">=</span> <span class="mf">0.0455</span><span class="p">;</span>
-<span class="n">ec</span><span class="p">.</span><span class="n">measureEC</span><span class="p">(</span><span class="n">pureWaterCompensation</span><span class="p">);</span>
+<span class="n">ec</span><span class="p">.</span><span class="n">measureEC</span><span class="p">(</span><span class="n">pureWaterCompensation</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
 <span class="n">ec</span><span class="p">.</span><span class="n">measureEC</span><span class="p">();</span>
 <span class="n">ec</span><span class="p">.</span><span class="n">measureSalinity</span><span class="p">();</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">pureWaterCompensation</span> <span class="o">=</span> <span class="mf">0.0455</span>
-<span class="n">ec</span><span class="o">.</span><span class="n">measureEC</span><span class="p">(</span><span class="n">pureWaterCompensation</span><span class="p">)</span>
+<span class="n">ec</span><span class="o">.</span><span class="n">measureEC</span><span class="p">(</span><span class="n">pureWaterCompensation</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
 <span class="n">ec</span><span class="o">.</span><span class="n">measureEC</span><span class="p">()</span>
 <span class="n">ec</span><span class="o">.</span><span class="n">measureSalinity</span><span class="p">()</span>
 </code></pre><pre class="highlight shell tab-shell"><code>ec
 sal
 </code></pre>
-<p>If the solution to be measured is saltwater, use <code class="prettyprint">measureSalinity()</code>,
-if it is freshwater, use <code class="prettyprint">measureEC()</code>. A custom temperature
-coefficient can be used by passing it to <code class="prettyprint">measureEC()</code>.</p>
+<p>Temperature coefficients are used in compensating for temperature. Values vary depending on the type of solution being measured and the source providing the numbers. In common usage, ultra-pure, freshwater, and saltwater have distinct values.</p>
 
-<h2 id="temperature-compensation">Temperature Compensation</h2>
-<pre class="highlight cpp tab-cpp"><code><span class="n">byte</span> <span class="n">tempConstant</span> <span class="o">=</span> <span class="mi">25</span><span class="p">;</span>
-<span class="n">ec</span><span class="p">.</span><span class="n">setTempConstant</span><span class="p">(</span><span class="n">tempConstant</span><span class="p">);</span>
-
-<span class="n">ec</span><span class="p">.</span><span class="n">setTempConstant</span><span class="p">(</span><span class="mh">0xFF</span><span class="p">);</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="n">tempConstant</span> <span class="o">=</span> <span class="mi">25</span>
-<span class="n">ec</span><span class="o">.</span><span class="n">setTempConstant</span><span class="p">(</span><span class="n">tempConstant</span><span class="p">)</span>
-
-<span class="n">ec</span><span class="o">.</span><span class="n">setTempConstant</span><span class="p">(</span><span class="mh">0xFF</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>tc 1 25
-tc 0
-tc 1 255
-</code></pre>
-<p>To set the temperature used for compensation, call
-<code class="prettyprint">setTempConstant()</code> and pass the temperature to use. To use the
-actual temperature, pass 0xFF.</p>
-
-<h2 id="accuracy">Accuracy</h2>
-<pre class="highlight cpp tab-cpp"><code><span class="n">ec</span><span class="p">.</span><span class="n">setAccuracy</span><span class="p">(</span><span class="mi">21</span><span class="p">);</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="n">ec</span><span class="o">.</span><span class="n">setAccuracy</span><span class="p">(</span><span class="mi">21</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>acc 21
-</code></pre>
-<p>The accuracy of the device can be adjusted by modifying <code class="prettyprint">setAccuracy</code>.
-By default, 9 measurements are taken. A running median sort is applied and
-the middle third of the nine measurements are averaged together to provide the
-final result. Any number of measurements can be taken as long as it is evenly
-divisible by 3. The least number of measures possible is 3.</p>
+<p>If the solution to be measured is saltwater, use <code class="prettyprint">measureSalinity()</code>, if it is freshwater, use <code class="prettyprint">measureEC()</code>. A custom temperature coefficient can be used by passing it to <code class="prettyprint">measureEC()</code>.</p>
 
 <h2 id="measurement-time">Measurement Time</h2>
 
-<p>Each individual EC measurement takes 10ms. If the default accuracy is set to 9,
-a call to <code class="prettyprint">measureEC</code> will return in about 90ms. A temperature measurement
-takes 750ms.</p>
+<p>Each individual EC measurement takes 150ms. A temperature measurement takes 750ms.</p>
 
 <h1 id="more-help">More Help</h1>
 
-<p>If you have any questions, find a bug, or have any suggestions on improvements, go to this project&rsquo;s <a href="https://github.com/u-fire/ECSalinity">GitHub</a> page and submit an Issue or Pull Request.</p>
+<p>If you have any questions, find a bug, or have any suggestions, go to this project&rsquo;s <a href="https://github.com/u-fire/ECSalinity">GitHub</a> page and submit an Issue or Pull Request. Or you can send an email to <a href="mailto:questions@ufire.co">questions@ufire.co</a>.</p>
 
           <h1 id="class-members">Class Members</h1>
 
@@ -569,18 +563,19 @@ takes 750ms.</p>
 
 <hr>
 
-<h2 id="public-float-measureec-float-tempcoefficient"><code class="prettyprint">public float measureEC(float tempCoefficient)</code></h2>
+<h2 id="public-float-measureec-float-tempcoefficient-bool-newtemp"><code class="prettyprint">public float measureEC(float tempCoefficient, bool newTemp)</code></h2>
 
 <p>Starts an EC measurement.</p>
-<pre class="highlight cpp tab-cpp"><code><span class="kt">float</span> <span class="n">mS</span> <span class="o">=</span> <span class="n">EC_Salinity</span><span class="o">::</span><span class="n">measureEC</span><span class="p">(</span><span class="n">ec</span><span class="p">.</span><span class="n">tempCoefEC</span><span class="p">);</span>
-</code></pre><pre class="highlight python tab-python"><code>    <span class="n">ms</span> <span class="o">=</span> <span class="n">ec</span><span class="o">.</span><span class="n">measureEC</span><span class="p">(</span><span class="n">ecsalinity</span><span class="o">.</span><span class="n">tempCoefEC</span><span class="p">)</span>
+<pre class="highlight cpp tab-cpp"><code><span class="kt">float</span> <span class="n">mS</span> <span class="o">=</span> <span class="n">EC_Salinity</span><span class="o">::</span><span class="n">measureEC</span><span class="p">(</span><span class="n">ec</span><span class="p">.</span><span class="n">tempCoefEC</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+</code></pre><pre class="highlight python tab-python"><code>    <span class="n">ms</span> <span class="o">=</span> <span class="n">ec</span><span class="o">.</span><span class="n">measureEC</span><span class="p">(</span><span class="n">ecsalinity</span><span class="o">.</span><span class="n">tempCoefEC</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
 </code></pre>
-<p>The device starst an EC measurement. The accuracy can be specified in EC_Salinity::setAccuracy.</p>
+<p>The device starst an EC measurement.</p>
 
 <h3 id="parameters">Parameters</h3>
 
 <ul>
 <li><code class="prettyprint">tempCoefficient</code> the coefficient used to compensate for temperature.</li>
+<li><code class="prettyprint">newTemp</code> boolean to take a new temperature measurement.</li>
 </ul>
 
 <p>uS, mS, S, tempC, tempF, PPM_500, PPM_640, PPM_700, salinityPPM, salinityPPT, and salinityPSU are updated</p>
@@ -591,21 +586,18 @@ PPM is not valid if salinity is being measured, use salinityPPM or salinityPPT
 
 <h3 id="returns">Returns</h3>
 
-<p>milli-Siemens</p>
+<p>EC in mS</p>
 
 <hr>
 
 <h2 id="public-float-measureec"><code class="prettyprint">public float measureEC()</code></h2>
 
-<p>Convenience function to measure EC in freshwater.</p>
+<p>Convenience function to measure EC in freshwater and taking a new temperature measurement.</p>
 <pre class="highlight cpp tab-cpp"><code><span class="kt">float</span> <span class="n">mS</span> <span class="o">=</span> <span class="n">EC_Salinity</span><span class="o">::</span><span class="n">measureEC</span><span class="p">();</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">mS</span> <span class="o">=</span> <span class="n">ec</span><span class="o">.</span><span class="n">measureEC</span><span class="p">()</span>
 </code></pre><pre class="highlight shell tab-shell"><code>ec
 </code></pre>
-<p>Calls EC_Salinity::measureEC(EC_Salinity::tempCoefEC)</p>
-
-<aside class="note">
-Not available in the python library.
-</aside>
+<p>Calls <code class="prettyprint">EC_Salinity::measureEC(EC_Salinity::tempCoefEC, true);</code></p>
 
 <h3 id="returns">Returns</h3>
 
@@ -615,11 +607,14 @@ Not available in the python library.
 
 <h2 id="public-float-measuresalinity"><code class="prettyprint">public float measureSalinity()</code></h2>
 
-<p>Convenience function to measure salinity.</p>
+<p>Convenience function to measure salinity and taking a new temperature measurement.</p>
+
+<p>The PSU must be between 2 and 42; a value not within bounds will return -1. The temperature must be within -2 to 35, or -2 will be returned.</p>
 <pre class="highlight cpp tab-cpp"><code><span class="kt">float</span> <span class="n">PSU</span> <span class="o">=</span> <span class="n">EC_Salinity</span><span class="o">::</span><span class="n">measureSalinity</span><span class="p">();</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">PSU</span> <span class="o">=</span> <span class="n">ec</span><span class="o">.</span><span class="n">measureSalinity</span><span class="p">();</span>
 </code></pre><pre class="highlight shell tab-shell"><code>sal
 </code></pre>
-<p>Calls EC_Salinity::measureEC(EC_Salinity::tempCoefSalinity)</p>
+<p>Calls <code class="prettyprint">EC_Salinity::measureEC(EC_Salinity::tempCoefSalinity, true);</code></p>
 
 <h3 id="returns">Returns</h3>
 
@@ -696,19 +691,12 @@ A value of -127 means the device is not connected.
 
 <hr>
 
-<h2 id="public-void-calculatek-float-solutionec-float-tempcoef"><code class="prettyprint">public void calculateK(float solutionEC,float tempCoef)</code></h2>
-
-<p>Calculates the K value of the connected probe and saves it in EEPROM. Also essentially single-point calibrates the device.</p>
-<pre class="highlight cpp tab-cpp"><code><span class="n">EC_Salinity</span><span class="o">::</span><span class="n">calculateK</span><span class="p">(</span><span class="mf">2.77</span><span class="p">,</span> <span class="n">EC_Salinity</span><span class="o">::</span><span class="n">tempCoefEC</span><span class="p">);</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="n">ec</span><span class="o">.</span><span class="n">calculateK</span><span class="p">(</span><span class="mf">2.77</span><span class="p">,</span> <span class="n">ecsalinity</span><span class="o">.</span><span class="n">tempCoefEC</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>calk 2.77
+<h2 id="public-void-calibratedry"><code class="prettyprint">public void calibrateDry()</code></h2>
+<pre class="highlight cpp tab-cpp"><code><span class="n">EC_Salinity</span><span class="o">::</span><span class="n">calibrateDry</span><span class="p">();</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">ec</span><span class="o">.</span><span class="n">calibrateDry</span><span class="p">()</span>
+</code></pre><pre class="highlight shell tab-shell"><code>dry
 </code></pre>
-<h3 id="parameters">Parameters</h3>
-
-<ul>
-<li><p><code class="prettyprint">solutionEC</code> the EC of the calibration solution in mS</p></li>
-<li><p><code class="prettyprint">tempCoef</code> the coefficient used to calibrate the probe</p></li>
-</ul>
+<p>Determines the dry reading of the probe and saves the result in EEPROM. If subsequent measurements are taken that are less than the dry value, a -1 will be returned. This can be used to determine if the probe is not connected as well.</p>
 
 <hr>
 
@@ -757,31 +745,16 @@ A value of -127 means the device is not connected.
 
 <hr>
 
-<h2 id="public-void-setaccuracy-byte-b"><code class="prettyprint">public void setAccuracy(byte b)</code></h2>
-
-<p>Configures the accuracy of the device.</p>
-<pre class="highlight cpp tab-cpp"><code><span class="n">EC_Salinity</span><span class="o">::</span><span class="n">setAccuracy</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="n">ec</span><span class="o">.</span><span class="n">setAccuracy</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>acc 6
+<h2 id="public-float-getcalibratedry"><code class="prettyprint">public float getCalibrateDry()</code></h2>
+<pre class="highlight cpp tab-cpp"><code><span class="kt">float</span> <span class="n">dry</span> <span class="o">=</span> <span class="n">EC_Salinity</span><span class="o">::</span><span class="n">getCalibrateDry</span><span class="p">();</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">dry</span> <span class="o">=</span> <span class="n">ec</span><span class="o">.</span><span class="n">getCalibrateDry</span><span class="p">()</span>
+</code></pre><pre class="highlight shell tab-shell"><code>dry
 </code></pre>
-<p>The device maintains a running median of values. It throws out the top and bottom third of values, then averages the middle third together to return a single value. The accuracy increases with a high number. It must be evenly divisible by 3.</p>
-
-<h3 id="parameters">Parameters</h3>
-
-<ul>
-<li><code class="prettyprint">b</code> accuracy of the device</li>
-</ul>
-
-<hr>
-
-<h2 id="public-byte-getaccuracy"><code class="prettyprint">public byte getAccuracy()</code></h2>
-<pre class="highlight shell tab-shell"><code>acc
-</code></pre>
-<p>Retrieves the accuracy configuration of the device.</p>
+<p>Retrieves the dry reading of the probe</p>
 
 <h3 id="returns">Returns</h3>
 
-<p>accuracy</p>
+<p>dry reading</p>
 
 <hr>
 
@@ -803,7 +776,7 @@ A value of -127 means the device is not connected.
 tc 0
 tc 1 255
 </code></pre>
-<p>By default, the temperature constant is set to 0xFF which instructs the actual temperature to be used for temperature compensation, however any number can be specified. To use the actual temperature, restore the value to 0xFF.</p>
+<p>By default, the temperature constant is set to 25 which will adjust the measured values to 25C. To use the actual temperature, set the value to 0xFF.</p>
 
 <h3 id="parameters">Parameters</h3>
 
@@ -840,7 +813,8 @@ tc 1 255
 <hr>
 
 <h2 id="public-bool-usingtemperaturecompensation"><code class="prettyprint">public bool usingTemperatureCompensation()</code></h2>
-
+<pre class="highlight shell tab-shell"><code>tc
+</code></pre>
 <p>Determines if temperature compensation is being used.</p>
 
 <h3 id="returns">Returns</h3>
@@ -928,10 +902,10 @@ tc 1 255
 <hr>
 
 <h2 id="public-float-getcalibrateoffset"><code class="prettyprint">public float getCalibrateOffset()</code></h2>
-<pre class="highlight shell tab-shell"><code>cal
-</code></pre>
+
 <p>Retrieves the single point offset value.</p>
 <pre class="highlight cpp tab-cpp"><code><span class="kt">float</span> <span class="n">calibrateOffset</span> <span class="o">=</span> <span class="n">EC_Salinity</span><span class="o">::</span><span class="n">getCalibrateOffset</span><span class="p">();</span>
+</code></pre><pre class="highlight shell tab-shell"><code>cal
 </code></pre>
 <h3 id="returns">Returns</h3>
 
@@ -946,25 +920,6 @@ tc 1 255
 <h3 id="returns">Returns</h3>
 
 <p>version of firmware</p>
-
-<hr>
-
-<h2 id="public-void-seti2caddress-uint8_t-address"><code class="prettyprint">public void setI2CAddress(uint8_t address)</code></h2>
-
-<p>Changes the i2c address of the device. It will use the new address immediately
-and continue to use it even after a power reset.</p>
-
-<h3 id="parameters">Parameters</h3>
-
-<ul>
-<li><code class="prettyprint">address</code> new i2c address</li>
-</ul>
-
-<aside class="note">
-Not available in version 1
-</aside>
-
-<p>Generated by <a href="https://sourcey.com/moxygen">Moxygen</a></p>
 
       </div>
       <div class="dark-box">

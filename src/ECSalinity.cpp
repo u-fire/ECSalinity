@@ -37,13 +37,13 @@ const float EC_Salinity::tempCoefSalinity = 0.021;
  */
 EC_Salinity::EC_Salinity(uint8_t i2c_address)
 {
-  this->_address = i2c_address;
+  _address = i2c_address;
   Wire.begin();
 }
 
 EC_Salinity::EC_Salinity()
 {
-  this->_address = EC_SALINITY;
+  _address = EC_SALINITY;
   Wire.begin();
 }
 
@@ -55,24 +55,29 @@ EC_Salinity::~EC_Salinity()
 
 /*!
    \code
-      float mS = EC_Salinity::measureEC(ec.tempCoefEC);
+      float mS = EC_Salinity::measureEC(ec.tempCoefEC, true);
    \endcode
 
    \brief Starts an EC measurement
 
-   The device starst an EC measurement. The accuracy can be specified in
- #EC_Salinity::setAccuracy.
-   \param tempCoefficient the coefficient used to compensate for temperature.
+   The device starst an EC measurement.
+   \param tempCoefficient the coefficient used to compensate for temperature
+   \param newTemp boolean to take a new temperature measurement
    \post #uS, #mS, #S, #tempC, #tempF, #PPM_500, #PPM_640, #PPM_700,
  #salinityPPM, #salinityPPT, and #salinityPSU are updated
    \note PPM is not valid if salinity is being measured
    \return milli-Siemens
  */
-float EC_Salinity::measureEC(float tempCoefficient)
+float EC_Salinity::measureEC(float tempCoefficient, bool newTemp)
 {
+  if (newTemp)
+  {
+    measureTemp();
+  }
+
   _write_register(EC_TEMPCOEF_REGISTER, tempCoefficient);
   _send_command(EC_MEASURE_EC);
-  delay((getAccuracy() * EC_EC_MEASURMENT_TIME));
+  delay(EC_EC_MEASUREMENT_TIME);
   mS = _read_register(EC_MS_REGISTER);
 
   if (mS == mS)
@@ -103,7 +108,7 @@ float EC_Salinity::measureEC(float tempCoefficient)
  */
 float EC_Salinity::measureEC()
 {
-  return measureEC(tempCoefEC);
+  return measureEC(tempCoefEC, usingTemperatureCompensation());
 }
 
 /*!
@@ -118,7 +123,7 @@ float EC_Salinity::measureEC()
  */
 float EC_Salinity::measureSalinity()
 {
-  measureEC(tempCoefSalinity);
+  measureEC(tempCoefSalinity, usingTemperatureCompensation());
   return salinityPSU;
 }
 
@@ -160,7 +165,7 @@ void EC_Salinity::calibrateProbe(float solutionEC, float tempCoef)
   _write_register(EC_TEMPCOEF_REGISTER, tempCoef);
   _write_register(EC_SOLUTION_REGISTER, solutionEC);
   _send_command(EC_CALIBRATE_PROBE);
-  delay((getAccuracy() * EC_EC_MEASURMENT_TIME));
+  delay(EC_EC_MEASUREMENT_TIME);
   useDualPoint(dualpoint);
 }
 
@@ -182,7 +187,7 @@ void EC_Salinity::calibrateProbeLow(float solutionEC, float tempCoef)
   _write_register(EC_TEMPCOEF_REGISTER, tempCoef);
   _write_register(EC_SOLUTION_REGISTER, solutionEC);
   _send_command(EC_CALIBRATE_LOW);
-  delay((getAccuracy() * EC_EC_MEASURMENT_TIME));
+  delay(EC_EC_MEASUREMENT_TIME);
   useDualPoint(dualpoint);
 }
 
@@ -190,7 +195,6 @@ void EC_Salinity::calibrateProbeLow(float solutionEC, float tempCoef)
    \code
       EC_Salinity::calibrateProbeHigh(3.0, EC_Salinity::tempCoefEC);
    \endcode
-
 
    \brief Calibrates the dual-point values for the high reading and saves them
    in the devices's EEPROM.
@@ -205,29 +209,34 @@ void EC_Salinity::calibrateProbeHigh(float solutionEC, float tempCoef)
   _write_register(EC_TEMPCOEF_REGISTER, tempCoef);
   _write_register(EC_SOLUTION_REGISTER, solutionEC);
   _send_command(EC_CALIBRATE_HIGH);
-  delay((getAccuracy() * EC_EC_MEASURMENT_TIME));
+  delay(EC_EC_MEASUREMENT_TIME);
   useDualPoint(dualpoint);
 }
 
 /*!
-   \code
-    EC_Salinity::calculateK(2.77, EC_Salinity::tempCoefEC);
-   \endcode
+    \code
+      EC_Salinity::calibrateDry();
+    \endcode
 
-   \brief Calculates the K value of the connected probe and saves it in EEPROM.
-   \param solutionEC          the EC of the calibration solution in mS
-   \param tempCoef            the coefficient used to calibrate the probe
+   \brief Determines the dry reading of the probe and saves the result in EEPROM.
+
  */
-void EC_Salinity::calculateK(float solutionEC, float tempCoef)
+void EC_Salinity::calibrateDry()
 {
-  bool dualpoint = usingDualPoint();
+  _send_command(EC_DRY);
+  delay(EC_EC_MEASUREMENT_TIME);
+}
 
-  useDualPoint(false);
-  _write_register(EC_TEMPCOEF_REGISTER, tempCoef);
-  _write_register(EC_SOLUTION_REGISTER, solutionEC);
-  _send_command(EC_CALCULATE_K);
-  delay((getAccuracy() * EC_EC_MEASURMENT_TIME));
-  useDualPoint(dualpoint);
+/*!
+    \code
+      EC_Salinity::getCalibrateDry();
+    \endcode
+
+   \brief Gets the dry reading of the probe and saves the result in EEPROM
+ */
+float EC_Salinity::getCalibrateDry()
+{
+  return _read_register(EC_DRY_REGISTER);
 }
 
 /*!
@@ -394,54 +403,10 @@ void EC_Salinity::reset()
   _write_register(EC_CALIBRATE_REFLOW_REGISTER,   NAN);
   _write_register(EC_CALIBRATE_READHIGH_REGISTER, NAN);
   _write_register(EC_CALIBRATE_READLOW_REGISTER,  NAN);
-}
-
-/*!
-   \code
-    EC_Salinity::setAccuracy(6);
-   \endcode
-
-   \brief Configures the accuracy of the device.
-
-   The device maintains a running median of values. It throws out the top and
-   bottom third of values, then averages the middle third together to return
-   a single value. The accuracy increases with a high number. It must be
-   evenly divisible by 3.
-   \param b   accuracy of the device
- */
-void EC_Salinity::setAccuracy(uint8_t b)
-{
-  _write_byte(EC_ACCURACY_REGISTER, b);
-}
-
-/*!
-   \code
-    EC_Salinity::setI2CAddress(0x3d);
-   \endcode
-
-   \brief Changes the i2c address of the device.
-
-   If the default address of the device needs to be changed, call this function to
-   permanently change the address. If you forget the i2c address, you will need
-   to use an i2c scanner to recover it.
- */
-void EC_Salinity::setI2CAddress(uint8_t i2cAddress)
-{
-  uint8_t accuracy = getAccuracy();
-
-  _write_byte(EC_ACCURACY_REGISTER, i2cAddress);
-  _send_command(EC_I2C);
-  _address = i2cAddress;
-  setAccuracy(accuracy);
-}
-
-/*!
-   \brief Retrieves the accuracy configuration of the device
-   \return   accuracy
- */
-uint8_t EC_Salinity::getAccuracy()
-{
-  return _read_byte(EC_ACCURACY_REGISTER);
+  _write_register(EC_DRY_REGISTER,                NAN);
+  setTempConstant(0);
+  useDualPoint(false);
+  useTemperatureCompensation(false);
 }
 
 /*!
@@ -481,6 +446,22 @@ uint8_t EC_Salinity::getTempConstant()
 }
 
 /*!
+   \code
+    EC_Salinity::setI2CAddress(0x3d);
+   \endcode
+   \brief Changes the i2c address of the device.
+   If the default address of the device needs to be changed, call this function to
+   permanently change the address. If you forget the i2c address, you will need
+   to use an i2c scanner to recover it.
+ */
+void EC_Salinity::setI2CAddress(uint8_t i2cAddress)
+{
+  _write_register(EC_SOLUTION_REGISTER, i2cAddress);
+  _send_command(EC_I2C);
+  _address = i2cAddress;
+}
+
+/*!
    \brief Determines if temperature compensation is being used
    \return   true if using compensation, false otherwise
  */
@@ -506,7 +487,7 @@ bool EC_Salinity::usingDualPoint()
 
 void EC_Salinity::_change_register(uint8_t r)
 {
-  Wire.beginTransmission(this->_address);
+  Wire.beginTransmission(_address);
   Wire.write(r);
   Wire.endTransmission();
   delay(10);
@@ -514,7 +495,7 @@ void EC_Salinity::_change_register(uint8_t r)
 
 void EC_Salinity::_send_command(uint8_t command)
 {
-  Wire.beginTransmission(this->_address);
+  Wire.beginTransmission(_address);
   Wire.write(EC_TASK_REGISTER);
   Wire.write(command);
   Wire.endTransmission();
@@ -531,7 +512,7 @@ void EC_Salinity::_write_register(uint8_t reg, float f)
   b[2] = *((uint8_t *)&f_val + 1);
   b[3] = *((uint8_t *)&f_val + 2);
   b[4] = *((uint8_t *)&f_val + 3);
-  Wire.beginTransmission(this->_address);
+  Wire.beginTransmission(_address);
   Wire.write(b, 5);
   Wire.endTransmission();
   delay(10);
@@ -542,13 +523,13 @@ float EC_Salinity::_read_register(uint8_t reg)
   float retval;
 
   _change_register(reg);
-  Wire.requestFrom(this->_address, 1);
+  Wire.requestFrom(_address, (uint8_t)1);
   *((uint8_t *)&retval) = Wire.read();
-  Wire.requestFrom(this->_address, 1);
+  Wire.requestFrom(_address, (uint8_t)1);
   *((uint8_t *)&retval + 1) = Wire.read();
-  Wire.requestFrom(this->_address, 1);
+  Wire.requestFrom(_address, (uint8_t)1);
   *((uint8_t *)&retval + 2) = Wire.read();
-  Wire.requestFrom(this->_address, 1);
+  Wire.requestFrom(_address, (uint8_t)1);
   *((uint8_t *)&retval + 3) = Wire.read();
   delay(10);
   return retval;
@@ -560,7 +541,7 @@ void EC_Salinity::_write_byte(uint8_t reg, uint8_t val)
 
   b[0] = reg;
   b[1] = val;
-  Wire.beginTransmission(this->_address);
+  Wire.beginTransmission(_address);
   Wire.write(b, 2);
   Wire.endTransmission();
   delay(10);
@@ -571,7 +552,7 @@ uint8_t EC_Salinity::_read_byte(uint8_t reg)
   uint8_t retval;
 
   _change_register(reg);
-  Wire.requestFrom(this->_address, 1);
+  Wire.requestFrom(_address, (uint8_t)1);
   retval = Wire.read();
   delay(10);
   return retval;

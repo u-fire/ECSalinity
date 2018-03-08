@@ -1,0 +1,427 @@
+<h1 id="class-members">Class Members</h1>
+
+<h3 id="public-float-s"><code class="prettyprint">public float S</code></h3>
+
+<p>EC in Siemens</p>
+
+<h3 id="public-float-ms"><code class="prettyprint">public float mS</code></h3>
+
+<p>EC in milli-Siemens</p>
+
+<h3 id="public-float-us"><code class="prettyprint">public float uS</code></h3>
+
+<p>EC in micro-Siemens</p>
+
+<h3 id="public-long-ppm_500"><code class="prettyprint">public long PPM_500</code></h3>
+
+<p>Parts per million using 500 as a multiplier</p>
+
+<h3 id="public-long-ppm_640"><code class="prettyprint">public long PPM_640</code></h3>
+
+<p>Parts per million using 640 as a multiplier</p>
+
+<h3 id="public-long-ppm_700"><code class="prettyprint">public long PPM_700</code></h3>
+
+<p>Parts per million using 700 as a multiplier</p>
+
+<h3 id="public-float-salinitypsu"><code class="prettyprint">public float salinityPSU</code></h3>
+
+<p>Salinity measured practical salinity units</p>
+
+<h3 id="public-float-salinityppt"><code class="prettyprint">public float salinityPPT</code></h3>
+
+<p>Salinity measured parts per thousand</p>
+
+<h3 id="public-float-salinityppm"><code class="prettyprint">public float salinityPPM</code></h3>
+
+<p>Salinity measured parts per million</p>
+
+<h3 id="public-float-tempc"><code class="prettyprint">public float tempC</code></h3>
+
+<p>Temperature in C</p>
+
+<h3 id="public-float-tempf"><code class="prettyprint">public float tempF</code></h3>
+
+<p>Temperature in F</p>
+
+<h1 id="class-functions">Class Functions</h1>
+
+<hr>
+
+<h2 id="public-float-measureec-float-tempcoefficient-bool-newtemp"><code class="prettyprint">public float measureEC(float tempCoefficient, bool newTemp)</code></h2>
+
+<p>Starts an EC measurement.</p>
+<pre class="highlight cpp tab-cpp"><code><span class="kt">float</span> <span class="n">mS</span> <span class="o">=</span> <span class="n">EC_Salinity</span><span class="o">::</span><span class="n">measureEC</span><span class="p">(</span><span class="n">ec</span><span class="p">.</span><span class="n">tempCoefEC</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+</code></pre><pre class="highlight python tab-python"><code>    <span class="n">ms</span> <span class="o">=</span> <span class="n">ec</span><span class="o">.</span><span class="n">measureEC</span><span class="p">(</span><span class="n">ecsalinity</span><span class="o">.</span><span class="n">tempCoefEC</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+</code></pre>
+<p>The device starst an EC measurement. The accuracy can be specified in EC_Salinity::setAccuracy.</p>
+
+<h3 id="parameters">Parameters</h3>
+
+<ul>
+<li><code class="prettyprint">tempCoefficient</code> the coefficient used to compensate for temperature.</li>
+<li><code class="prettyprint">newTemp</code> boolean to take a new temperature measurement.</li>
+</ul>
+
+<p>uS, mS, S, tempC, tempF, PPM_500, PPM_640, PPM_700, salinityPPM, salinityPPT, and salinityPSU are updated</p>
+
+<aside class="warning">
+PPM is not valid if salinity is being measured, use salinityPPM or salinityPPT
+</aside>
+
+<h3 id="returns">Returns</h3>
+
+<p>EC in mS</p>
+
+<hr>
+
+<h2 id="public-float-measureec"><code class="prettyprint">public float measureEC()</code></h2>
+
+<p>Convenience function to measure EC in freshwater and taking a new temperature measurement.</p>
+<pre class="highlight cpp tab-cpp"><code><span class="kt">float</span> <span class="n">mS</span> <span class="o">=</span> <span class="n">EC_Salinity</span><span class="o">::</span><span class="n">measureEC</span><span class="p">();</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">mS</span> <span class="o">=</span> <span class="n">ec</span><span class="o">.</span><span class="n">measureEC</span><span class="p">()</span>
+</code></pre><pre class="highlight shell tab-shell"><code>ec
+</code></pre>
+<p>Calls <code class="prettyprint">EC_Salinity::measureEC(EC_Salinity::tempCoefEC, true);</code></p>
+
+<h3 id="returns">Returns</h3>
+
+<p>EC in mS</p>
+
+<hr>
+
+<h2 id="public-float-measuresalinity"><code class="prettyprint">public float measureSalinity()</code></h2>
+
+<p>Convenience function to measure salinity and taking a new temperature measurement.</p>
+<pre class="highlight cpp tab-cpp"><code><span class="kt">float</span> <span class="n">PSU</span> <span class="o">=</span> <span class="n">EC_Salinity</span><span class="o">::</span><span class="n">measureSalinity</span><span class="p">();</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">PSU</span> <span class="o">=</span> <span class="n">ec</span><span class="o">.</span><span class="n">measureSalinity</span><span class="p">();</span>
+</code></pre><pre class="highlight shell tab-shell"><code>sal
+</code></pre>
+<p>Calls <code class="prettyprint">EC_Salinity::measureEC(EC_Salinity::tempCoefSalinity, true);</code></p>
+
+<h3 id="returns">Returns</h3>
+
+<p>salinity in PSU</p>
+
+<hr>
+
+<h2 id="public-float-measuretemp"><code class="prettyprint">public float measureTemp()</code></h2>
+
+<p>Starts a temperature measurement.</p>
+<pre class="highlight cpp tab-cpp"><code><span class="kt">float</span> <span class="n">tempC</span> <span class="o">=</span> <span class="n">EC_Salinity</span><span class="o">::</span><span class="n">measureTemp</span><span class="p">();</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">tempC</span> <span class="o">=</span> <span class="n">ec</span><span class="o">.</span><span class="n">measureTemp</span><span class="p">()</span>
+</code></pre><pre class="highlight shell tab-shell"><code>temp
+</code></pre>
+<p>tempC and tempF are updated</p>
+
+<aside class="notice">
+A value of -127 means the device is not connected.
+</aside>
+
+<h3 id="returns">Returns</h3>
+
+<p>temperature in C</p>
+
+<hr>
+
+<h2 id="public-void-calibrateprobe-float-solutionec-float-tempcoef"><code class="prettyprint">public void calibrateProbe(float solutionEC,float tempCoef)</code></h2>
+
+<p>Calibrates the connected probe and saves the result in EEPROM.</p>
+<pre class="highlight cpp tab-cpp"><code><span class="n">EC_Salinity</span><span class="o">::</span><span class="n">calibrateProbe</span><span class="p">(</span><span class="mf">2.77</span><span class="p">,</span> <span class="n">EC_Salinity</span><span class="o">::</span><span class="n">tempCoefEC</span><span class="p">);</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">ec</span><span class="o">.</span><span class="n">calibrateProbe</span><span class="p">(</span><span class="mf">2.77</span><span class="p">,</span> <span class="n">ecsalinity</span><span class="o">.</span><span class="n">tempCoefEC</span><span class="p">)</span>
+</code></pre><pre class="highlight shell tab-shell"><code>cal 2.77
+</code></pre>
+<h3 id="parameters">Parameters</h3>
+
+<ul>
+<li><p><code class="prettyprint">solutionEC</code> the EC of the calibration solution in mS</p></li>
+<li><p><code class="prettyprint">tempCoef</code> the coefficient used to calibrate the probe</p></li>
+</ul>
+
+<p>offset will be saved in the device&rsquo;s EEPROM and used automatically thereafter</p>
+
+<hr>
+
+<h2 id="public-void-calibrateprobelow-float-solutionec-float-tempcoef"><code class="prettyprint">public void calibrateProbeLow(float solutionEC,float tempCoef)</code></h2>
+
+<p>Calibrates the dual-point values for the low reading and saves them in the devices&rsquo;s EEPROM.</p>
+<pre class="highlight cpp tab-cpp"><code><span class="n">EC_Salinity</span><span class="o">::</span><span class="n">calibrateProbeLow</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">EC_Salinity</span><span class="o">::</span><span class="n">tempCoefEC</span><span class="p">);</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">ec</span><span class="o">.</span><span class="n">calibrateProbeLow</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">ecsalinity</span><span class="o">.</span><span class="n">tempCoefEC</span><span class="p">)</span>
+</code></pre><pre class="highlight shell tab-shell"><code>low 1.0
+</code></pre>
+<h3 id="parameters">Parameters</h3>
+
+<ul>
+<li><p><code class="prettyprint">solutionEC</code> the EC of the calibration solution in mS</p></li>
+<li><p><code class="prettyprint">tempCoef</code> the coefficient used to calibrate the probe</p></li>
+</ul>
+
+<hr>
+
+<h2 id="public-void-calibrateprobehigh-float-solutionec-float-tempcoef"><code class="prettyprint">public void calibrateProbeHigh(float solutionEC,float tempCoef)</code></h2>
+
+<p>Calibrates the dual-point values for the high reading and saves them in the devices&rsquo;s EEPROM.</p>
+<pre class="highlight cpp tab-cpp"><code><span class="n">EC_Salinity</span><span class="o">::</span><span class="n">calibrateProbeHigh</span><span class="p">(</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">EC_Salinity</span><span class="o">::</span><span class="n">tempCoefEC</span><span class="p">);</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">ec</span><span class="p">:</span><span class="n">calibrateProbeHigh</span><span class="p">(</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">ecsalinity</span><span class="o">.</span><span class="n">tempCoefEC</span><span class="p">)</span>
+</code></pre><pre class="highlight shell tab-shell"><code>high 3.0
+</code></pre>
+<h3 id="parameters">Parameters</h3>
+
+<ul>
+<li><p><code class="prettyprint">solutionEC</code> the EC of the calibration solution in mS</p></li>
+<li><p><code class="prettyprint">tempCoef</code> the coefficient used to calibrate the probe</p></li>
+</ul>
+
+<hr>
+
+<h2 id="public-void-calculatek-float-solutionec-float-tempcoef"><code class="prettyprint">public void calculateK(float solutionEC,float tempCoef)</code></h2>
+
+<p>Calculates the K value of the connected probe and saves it in EEPROM. Also, by the process it follows, single-point calibrates the device. A call to <code class="prettyprint">getCalibrateOffset()</code> will still return NaN after calling this though.</p>
+<pre class="highlight cpp tab-cpp"><code><span class="n">EC_Salinity</span><span class="o">::</span><span class="n">calculateK</span><span class="p">(</span><span class="mf">2.77</span><span class="p">,</span> <span class="n">EC_Salinity</span><span class="o">::</span><span class="n">tempCoefEC</span><span class="p">);</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">ec</span><span class="o">.</span><span class="n">calculateK</span><span class="p">(</span><span class="mf">2.77</span><span class="p">,</span> <span class="n">ecsalinity</span><span class="o">.</span><span class="n">tempCoefEC</span><span class="p">)</span>
+</code></pre><pre class="highlight shell tab-shell"><code>calk 2.77
+</code></pre>
+<h3 id="parameters">Parameters</h3>
+
+<ul>
+<li><p><code class="prettyprint">solutionEC</code> the EC of the calibration solution in mS</p></li>
+<li><p><code class="prettyprint">tempCoef</code> the coefficient used to calibrate the probe</p></li>
+</ul>
+
+<hr>
+
+<h2 id="public-void-setdualpointcalibration-float-reflow-float-refhigh-float-readlow-float-readhigh"><code class="prettyprint">public void setDualPointCalibration(float refLow,float refHigh,float readLow,float readHigh)</code></h2>
+
+<p>Sets all the values for dual point calibration and saves them in the devices&rsquo;s EEPROM.</p>
+<pre class="highlight cpp tab-cpp"><code><span class="n">EC_Salinity</span><span class="o">::</span><span class="n">setDualPointCalibration</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">);</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">ec</span><span class="o">.</span><span class="n">setDualPointCalibration</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">)</span>
+</code></pre>
+<h3 id="parameters">Parameters</h3>
+
+<ul>
+<li><p><code class="prettyprint">refLow</code> the reference low point</p></li>
+<li><p><code class="prettyprint">refHigh</code> the reference high point</p></li>
+<li><p><code class="prettyprint">readLow</code> the measured low point in mS</p></li>
+<li><p><code class="prettyprint">readHigh</code> the measured high point in mS</p></li>
+</ul>
+
+<hr>
+
+<h2 id="public-void-setk-float-k"><code class="prettyprint">public void setK(float k)</code></h2>
+
+<p>Updates the device with a new cell constant and saves it in EEPROM.</p>
+<pre class="highlight cpp tab-cpp"><code><span class="n">EC_Salinity</span><span class="o">::</span><span class="n">setK</span><span class="p">(</span><span class="mf">1.121</span><span class="p">);</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">ec</span><span class="o">.</span><span class="n">setK</span><span class="p">(</span><span class="mf">1.121</span><span class="p">)</span>
+</code></pre><pre class="highlight shell tab-shell"><code>k 1.121
+</code></pre>
+<h3 id="parameters">Parameters</h3>
+
+<ul>
+<li><code class="prettyprint">k</code> the new cell constant</li>
+</ul>
+
+<hr>
+
+<h2 id="public-float-getk"><code class="prettyprint">public float getK()</code></h2>
+
+<p>Retrieves the cell constant from the device.</p>
+<pre class="highlight cpp tab-cpp"><code><span class="kt">float</span> <span class="n">k</span> <span class="o">=</span> <span class="n">EC_Salinity</span><span class="o">::</span><span class="n">getK</span><span class="p">();</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">k</span> <span class="o">=</span> <span class="n">ec</span><span class="o">.</span><span class="n">getK</span><span class="p">()</span>
+</code></pre><pre class="highlight shell tab-shell"><code>k
+</code></pre>
+<h3 id="returns">Returns</h3>
+
+<p>the cell constant</p>
+
+<hr>
+
+<h2 id="public-void-setaccuracy-byte-b"><code class="prettyprint">public void setAccuracy(byte b)</code></h2>
+
+<p>Configures the accuracy of the device.</p>
+<pre class="highlight cpp tab-cpp"><code><span class="n">EC_Salinity</span><span class="o">::</span><span class="n">setAccuracy</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">ec</span><span class="o">.</span><span class="n">setAccuracy</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+</code></pre><pre class="highlight shell tab-shell"><code>acc 6
+</code></pre>
+<p>The device maintains a running median of values. It throws out the top and bottom third of values, then averages the middle third together to return a single value. Valid accuracy values are: 3, 6, 9, 12, 15, and 18.</p>
+
+<h3 id="parameters">Parameters</h3>
+
+<ul>
+<li><code class="prettyprint">b</code> accuracy of the device</li>
+</ul>
+
+<hr>
+
+<h2 id="public-byte-getaccuracy"><code class="prettyprint">public byte getAccuracy()</code></h2>
+<pre class="highlight shell tab-shell"><code>acc
+</code></pre>
+<p>Retrieves the accuracy configuration of the device.</p>
+
+<h3 id="returns">Returns</h3>
+
+<p>accuracy</p>
+
+<hr>
+
+<h2 id="public-void-reset"><code class="prettyprint">public void reset()</code></h2>
+<pre class="highlight shell tab-shell"><code>reset
+</code></pre>
+<p>Resets all the stored calibration information.</p>
+
+<hr>
+
+<h2 id="public-void-settempconstant-byte-b"><code class="prettyprint">public void setTempConstant(byte b)</code></h2>
+
+<p>Configures device to use the provided temperature constant.</p>
+<pre class="highlight cpp tab-cpp"><code><span class="n">EC_Salinity</span><span class="o">::</span><span class="n">setTempConstant</span><span class="p">(</span><span class="mi">25</span><span class="p">);</span>
+<span class="n">EC_Salinity</span><span class="o">::</span><span class="n">setTempConstant</span><span class="p">(</span><span class="mh">0xFF</span><span class="p">);</span>   <span class="c1">// use the actual tempeature
+</span></code></pre><pre class="highlight python tab-python"><code><span class="n">ec</span><span class="o">.</span><span class="n">setTempConstant</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span>
+<span class="n">ec</span><span class="o">.</span><span class="n">setTempConstant</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+</code></pre><pre class="highlight shell tab-shell"><code>tc 1 25
+tc 0
+tc 1 255
+</code></pre>
+<p>By default, the temperature constant is set to 25 which will adjust the measured values to 25C. To use the actual temperature, set the value to 0xFF.</p>
+
+<h3 id="parameters">Parameters</h3>
+
+<ul>
+<li><code class="prettyprint">b</code> the temperature to use for compensation</li>
+</ul>
+
+<hr>
+
+<h2 id="public-byte-gettempconstant"><code class="prettyprint">public byte getTempConstant()</code></h2>
+<pre class="highlight shell tab-shell"><code>tc
+</code></pre>
+<p>Retrieves the temperature constant.</p>
+
+<h3 id="returns">Returns</h3>
+
+<p>the temperature to used for compensation</p>
+
+<hr>
+
+<h2 id="public-void-usetemperaturecompensation-bool-b"><code class="prettyprint">public void useTemperatureCompensation(bool b)</code></h2>
+
+<p>Configures device to use temperature compensation or not.</p>
+<pre class="highlight cpp tab-cpp"><code><span class="n">EC_Salinity</span><span class="o">::</span><span class="n">useTemperatureCompensation</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">ec</span><span class="o">.</span><span class="n">useTemperatureCompensation</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+</code></pre><pre class="highlight shell tab-shell"><code>tc 1
+</code></pre>
+<h3 id="parameters">Parameters</h3>
+
+<ul>
+<li><code class="prettyprint">b</code> true/false</li>
+</ul>
+
+<hr>
+
+<h2 id="public-bool-usingtemperaturecompensation"><code class="prettyprint">public bool usingTemperatureCompensation()</code></h2>
+<pre class="highlight shell tab-shell"><code>tc
+</code></pre>
+<p>Determines if temperature compensation is being used.</p>
+
+<h3 id="returns">Returns</h3>
+
+<p>true if using compensation, false otherwise</p>
+
+<hr>
+
+<h2 id="public-void-usedualpoint-bool-b"><code class="prettyprint">public void useDualPoint(bool b)</code></h2>
+<pre class="highlight shell tab-shell"><code>dp 1
+</code></pre>
+<p>Configures device to use dual-point calibration.</p>
+
+<h3 id="parameters">Parameters</h3>
+
+<ul>
+<li><code class="prettyprint">b</code> true/false</li>
+</ul>
+
+<hr>
+
+<h2 id="public-bool-usingdualpoint"><code class="prettyprint">public bool usingDualPoint()</code></h2>
+<pre class="highlight shell tab-shell"><code>dp
+</code></pre>
+<p>Determines if dual point calibration is being used.</p>
+
+<h3 id="returns">Returns</h3>
+
+<p>true if using compensation, false otherwise</p>
+
+<hr>
+
+<h2 id="public-float-getcalibratehigh"><code class="prettyprint">public float getCalibrateHigh()</code></h2>
+<pre class="highlight shell tab-shell"><code>high
+</code></pre>
+<p>Retrieves the dual-point calibration high value.</p>
+
+<h3 id="returns">Returns</h3>
+
+<p>the dual-point calibration high value</p>
+
+<hr>
+
+<h2 id="public-float-getcalibratelow"><code class="prettyprint">public float getCalibrateLow()</code></h2>
+<pre class="highlight shell tab-shell"><code>low
+</code></pre>
+<p>Retrieves the dual-point calibration low value.</p>
+
+<h3 id="returns">Returns</h3>
+
+<p>the dual-point calibration low value</p>
+
+<hr>
+
+<h3 id="public-float-getcalibratehighreading"><code class="prettyprint">public float getCalibrateHighReading()</code></h3>
+
+<p>Retrieves the dual-point calibration reading high value.</p>
+
+<h3 id="returns">Returns</h3>
+
+<p>the dual-point calibration high value</p>
+
+<hr>
+
+<h2 id="public-float-getcalibratelowreading"><code class="prettyprint">public float getCalibrateLowReading()</code></h2>
+
+<p>Retrieves the dual-point calibration reading low value.</p>
+
+<h3 id="returns">Returns</h3>
+
+<p>the dual-point calibration low value</p>
+
+<hr>
+
+<h2 id="public-void-setcalibrateoffset-float-offset"><code class="prettyprint">public void setCalibrateOffset(float offset)</code></h2>
+
+<p>Sets the single point offset value.</p>
+
+<h3 id="parameters">Parameters</h3>
+
+<ul>
+<li><code class="prettyprint">offset</code> single point offset value</li>
+</ul>
+
+<hr>
+
+<h2 id="public-float-getcalibrateoffset"><code class="prettyprint">public float getCalibrateOffset()</code></h2>
+
+<p>Retrieves the single point offset value.</p>
+<pre class="highlight cpp tab-cpp"><code><span class="kt">float</span> <span class="n">calibrateOffset</span> <span class="o">=</span> <span class="n">EC_Salinity</span><span class="o">::</span><span class="n">getCalibrateOffset</span><span class="p">();</span>
+</code></pre><pre class="highlight shell tab-shell"><code>cal
+</code></pre>
+<h3 id="returns">Returns</h3>
+
+<p>single point offset value</p>
+
+<hr>
+
+<h2 id="public-byte-getversion"><code class="prettyprint">public byte getVersion()</code></h2>
+
+<p>Retrieves the firmware version of the device.</p>
+
+<h3 id="returns">Returns</h3>
+
+<p>version of firmware</p>

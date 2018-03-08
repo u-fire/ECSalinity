@@ -3,26 +3,16 @@
 
 ### EC_Salinity Probe Interface
 
->Monitor hydroponic nutrient levels, salinity in aquariums, the ocean,
-or pools, measure soil salinity, monitor water quality
+>Measure Electrical Conductivity in Siemens, Total Dissolved Solids in PPM, and Salinity in PSU and PPT. Monitor hydroponic nutrient levels or salinity in aquariums, pools, and soil.
 * Electrical Conductivity in Siemens
 * Total Dissolved Solids in PPM
 * Salinity in PSU and PPT
 
-[Buy one](https://www.tindie.com/products/ufire/ec-salinity-probe-interface/)    
-or make one with the [source code](https://www.github.com/u-fire/ec-salinity-probe) and [schematics](https://upverter.com/justind000/19cb71ec38391a95/EC-Salinity-Probe/).  
-You can also have the [board made](http://dirtypcbs.com/store/designer/details/7682/4142/ecsalinity-rev1-zip)
-and get all the board components at [Mouser](http://www.mouser.com/ProjectManager/ProjectDetail.aspx?AccessID=02223dd686)
+Available on [Tindie](https://www.tindie.com/products/ufire/ec-salinity-probe-interface/)    
+or make one with the [source code](https://www.github.com/u-fire/ec-salinity-probe) and [schematics](https://upverter.com/ufire/6cab745dd03f6f6d/EC-Salinity-Probe-2018a/)  
 
 #### What it is
-An ATTiny85 programmed as an I2C slave, a DS18B20 waterproof temperature probe, and a two-electrode EC probe. It measures conductance and converts it into a temperature-compensated Siemen. From that value, it derives PPM and salinity. Any two-electrode probe can be used, including a hand-made probe.
+An ATTiny85 programmed as an I2C slave, a DS18B20 waterproof temperature probe, and a two-electrode EC probe. It measures conductance and converts it into a temperature-compensated SI derived unit called a Siemens. From that value, it determines TDS and salinity. Any two-electrode probe can be used.
 
 #### Using it
-An Arduino-compatible [library](https://github.com/u-fire/ECSalinity) is provided to make using the probe easy and there is extensive [documentation](http://ufire.co/ECSalinity/) on the use and setup of the device.
-
-~~~
-#include <ECSalinity.h>
-EC_Salinity ec;
-
-mS = ec.measureEC(ec.tempCoefEC);
-~~~
+There is extensive [documentation](http://ufire.co/ECSalinity/) on the use and setup of the device. The library is available for download and installation in the Arduino Library Manager, PlatformIO Library Manager, and Particle.io IDE. There are also python implementations for Raspberry Pi and MicroPython.

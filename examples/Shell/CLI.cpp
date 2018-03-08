@@ -1,6 +1,3 @@
-// This file is included with the example Shell.ino with very minor
-// modification from the original.
-
 /*
  * Copyright (c) 2013, Majenko Technologies
  * All rights reserved.
@@ -31,7 +28,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "CLI.h"
+#include <CLI.h>
 
 CLIServer CLI;
 
@@ -81,7 +78,7 @@ CLIClient * CLIServer::addClient(Stream *dev, void *data) {
     return newClient->client;
   }
 
-  for (scan = clients; scan->next; scan = scan->next) ;
+  for (scan = clients; scan->next; scan = scan->next);
   scan->next = newClient;
   return newClient->client;
 }
@@ -103,7 +100,7 @@ void CLIServer::addCommand(const char *command, int (*function)(CLIClient *,
     return;
   }
 
-  for (scan = commands; scan->next; scan = scan->next) ;
+  for (scan = commands; scan->next; scan = scan->next);
   scan->next = newCommand;
 }
 
@@ -124,7 +121,7 @@ void CLIServer::addPrefix(const char *command, int (*function)(CLIClient *,
     return;
   }
 
-  for (scan = commands; scan->next; scan = scan->next) ;
+  for (scan = commands; scan->next; scan = scan->next);
   scan->next = newCommand;
 }
 
@@ -137,7 +134,7 @@ static inline char* getWord(char *buf) {
     ptr = buf;
   }
 
-  while (*ptr == ' ' || *ptr == '\t' && *ptr != '\0') {
+  while ((*ptr == ' ') || (*ptr == '\t' && *ptr != '\0')) {
     ptr++;
   }
   if (*ptr == '\0') {
@@ -394,40 +391,5 @@ void CLIServer::onDisconnect(int (*function)(CLIClient *,
 CLIClient::~CLIClient() {
   if (prompt) {
     free(prompt);
-  }
-}
-
-void CLIServer::removeClient(CLIClient& c) {
-  removeClient(&c);
-}
-
-void CLIServer::removeClient(CLIClient *c) {
-  removeClient(c->dev);
-}
-
-void CLIServer::removeClient(Stream& dev) {
-  removeClient(&dev);
-}
-
-void CLIServer::removeClient(Stream *dev) {
-  CLIClientList *scan;
-  CLIClientList *oldClient;
-
-  if (clients->client->dev == dev) {
-    oldClient = clients;
-    clients   = oldClient->next;
-    delete oldClient->client;
-      free(oldClient);
-    return;
-  }
-
-  for (scan = clients; scan->next; scan = scan->next) {
-    if (scan->next->client->dev == dev) {
-      oldClient  = scan->next;
-      scan->next = oldClient->next;
-      delete oldClient->client;
-      free(oldClient);
-      return;
-    }
   }
 }

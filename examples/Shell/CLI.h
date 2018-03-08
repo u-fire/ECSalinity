@@ -179,10 +179,6 @@ public:
                        void   *data);
   CLIClient* addClient(Stream *dev);
   CLIClient* addClient(Stream& dev);
-  void       removeClient(CLIClient *c);
-  void       removeClient(CLIClient& c);
-  void       removeClient(Stream *dev);
-  void       removeClient(Stream& dev);
   void       onConnect(int (*function)(CLIClient *,
                                        int,
                                        char **));

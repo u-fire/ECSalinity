@@ -9,26 +9,38 @@
 
 /*
    This allows you to run various functions on a command-line like interface.
-   Remember, the device doesn't take a temperature reading, it uses the last
-   measured value. If you don't want to use the actual temperature, you must
-   disable it using 'tc 0' or 'tc 1 25' to use 25C as the temp.
-   Otherwise, you will get innaccurate readings.
+   Enter `config` to see the configuration of the device. Type 'ec' to get a
+   measurement in mS, 'data' to see all the data members of the class like uS,
+   and S, 'temp' to read the temperature, 'sal' to use salinity parameters for
+   a measurment.
 
    To use an unconfigured device:
-   1. temp
-   2. k <K constant value eg. 10.0>
+   1. k <K constant value eg. 1.0>
+   2. dry (while probe is dry)
    3. cal <calibration solution in mS eg 2.77>
    4. ec
-   Type 'ec' to get a measurement in mS, 'data' to see all the data members
-   of the class like uS, and S, 'temp' to read the temperature, 'sal' to use
-   salinity parameters for a measurment.
 
-   To use a handmade probe:
-   1. temp
-   2. calk <mS of calibration solution>
-   3. ec
+   Determine K of a custom probe:
+   1. calk <mS of calibration solution>
+   2. ec
+
+   Dual Point Calibration:
+   1. k <K constant value eg. 1.0>
+   2. dry (while probe is dry)
+   3. low <calibration solution in mS eg 0.5>
+   4. high <calibration solution in mS eg 2.77>
+   5. dp 1
+
+   Using Temperature compensation:
+   1. reset
+   2. tc 1 25 <to adjust readings as if they were at 25 C>
+   3. (recalibrate all values using `dry`, `cal`, `low`, `high`)
+   4. ec
+
+   Measure saltwater with a configured device:
+   1. sal
+
  */
-
 
 CLI_COMMAND(reset);  // 'reset' reset all calibration configuration
 CLI_COMMAND(temp);   // 'temp' measure temperature
@@ -40,7 +52,7 @@ CLI_COMMAND(high);   // 'high 10.0'calibrates the high dual-point calibration se
 CLI_COMMAND(config); // 'config' shows configuration information
 CLI_COMMAND(tc);     // 'tc 0/1 25' temperature compensation; first argument to use it, second the constant to use
 CLI_COMMAND(dp);     // 'dp 0/1' to use dual-point calibration or not
-CLI_COMMAND(acc);    // 'acc 21' sets accuracy of the device
+CLI_COMMAND(dry);    // 'dry' determines the probe reading when dry
 CLI_COMMAND(sal);    // 'sal' starts a salinity measurement
 CLI_COMMAND(data);   // 'data' shows all the data from the latest 'ec' or 'sal' call made
 CLI_COMMAND(calk);   // 'calk 9.82' calculates the K value of the connected probe and saves it to EEPROM
@@ -65,11 +77,11 @@ void setup()
   CLI.addCommand("config", config);
   CLI.addCommand("tc",     tc);
   CLI.addCommand("dp",     dp);
-  CLI.addCommand("acc",    acc);
   CLI.addCommand("sal",    sal);
   CLI.addCommand("data",   data);
   CLI.addCommand("calk",   calk);
   CLI.addCommand("i2c",    i2c);
+  CLI.addCommand("dry",    dry);
 
   CLI.addClient(Serial);
 }
@@ -111,9 +123,14 @@ CLI_COMMAND(k) {
 }
 
 CLI_COMMAND(ec) {
+  // for (;;) {
   _ec.measureEC();
   dev->print("mS: ");
   dev->print(_ec.mS, 4);
+
+  // dev->println();
+  // delay(1000);
+  // }
   return 0;
 }
 
@@ -141,6 +158,7 @@ CLI_COMMAND(config) {
   dev->println("Config:");
   dev->print("  K: "); dev->println(_ec.getK(), 4);
   dev->print("  offset: "); dev->println(_ec.getCalibrateOffset(), 4);
+  dev->print("  dry: "); dev->println(_ec.getCalibrateDry(), 4);
   dev->print("  dual point: "); dev->println(_ec.usingDualPoint(), 4);
   dev->print("  low reference / read: "); dev->print(_ec.getCalibrateLow(), 4);
   dev->print(" /  "); dev->println(_ec.getCalibrateLowReading(), 4);
@@ -149,7 +167,6 @@ CLI_COMMAND(config) {
   dev->print("  temp. compensation: "); dev->println(
     _ec.usingTemperatureCompensation());
   dev->print("    constant: "); dev->println(_ec.getTempConstant());
-  dev->print("  accuracy: "); dev->println(_ec.getAccuracy());
   dev->print("  version: "); dev->print(_ec.getVersion(), HEX);
   dev->println();
   dev->printPrompt();
@@ -180,16 +197,6 @@ CLI_COMMAND(dp) {
 
   dev->print("dual point: ");
   dev->print(_ec.usingDualPoint());
-  return 0;
-}
-
-CLI_COMMAND(acc) {
-  if (argc == 2) {
-    _ec.setAccuracy(atof(argv[1]));
-  }
-
-  dev->print("accuracy: ");
-  dev->print(_ec.getAccuracy());
   return 0;
 }
 
@@ -226,6 +233,13 @@ CLI_COMMAND(i2c) {
   if (argc == 2) {
     _ec.setI2CAddress(atof(argv[1]));
   }
+
+  return 0;
+}
+
+CLI_COMMAND(dry) {
+  _ec.calibrateDry();
+  dev->print("dry: "); dev->print(_ec.getCalibrateDry(), 4);
 
   return 0;
 }
