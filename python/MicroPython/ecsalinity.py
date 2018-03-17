@@ -33,7 +33,7 @@ EC_TEMP_COMPENSATION_REGISTER = 49  # temperature compensation register
 EC_CONFIG_REGISTER = 50             # config register
 EC_TASK_REGISTER = 51               # task register
 
-EC_EC_MEASUREMENT_TIME = 150          # delay between EC measurements
+EC_EC_MEASUREMENT_TIME = 1150          # delay between EC measurements
 EC_TEMP_MEASURE_TIME = 750          # delay for temperature measurement
 
 EC_DUALPOINT_CONFIG_BIT = 0         # dual point config bit
