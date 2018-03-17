@@ -70,7 +70,7 @@
 #define EC_CONFIG_REGISTER 50             /*!< config register */
 #define EC_TASK_REGISTER 51               /*!< task register */
 
-#define EC_EC_MEASUREMENT_TIME 150        /*!< delay between EC measurements */
+#define EC_EC_MEASUREMENT_TIME 1150       /*!< delay between EC measurements */
 #define EC_TEMP_MEASURE_TIME 750          /*!< delay for temperature measurement */
 
 #define EC_DUALPOINT_CONFIG_BIT 0         /*!< dual point config bit */
