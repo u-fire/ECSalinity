@@ -28,7 +28,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <CLI.h>
+#include "CLI.h"
 
 CLIServer CLI;
 
