@@ -2,6 +2,8 @@
    ufire.co for links to documentation, examples, and libraries
    github.com/u-fire for feature requests, bug reports, and  questions
    questions@ufire.co to get in touch with someone
+
+   This example is compatible with hardware board version 1c
  */
 
 #include <ECSalinity.h>
@@ -55,7 +57,6 @@ CLI_COMMAND(dp);     // 'dp 0/1' to use dual-point calibration or not
 CLI_COMMAND(dry);    // 'dry' determines the probe reading when dry
 CLI_COMMAND(sal);    // 'sal' starts a salinity measurement
 CLI_COMMAND(data);   // 'data' shows all the data from the latest 'ec' or 'sal' call made
-CLI_COMMAND(calk);   // 'calk 9.82' calculates the K value of the connected probe and saves it to EEPROM
 CLI_COMMAND(i2c);    // 'ic2 62' changes the i2c address to 62
 
 EC_Salinity _ec;
@@ -79,7 +80,6 @@ void setup()
   CLI.addCommand("dp",     dp);
   CLI.addCommand("sal",    sal);
   CLI.addCommand("data",   data);
-  CLI.addCommand("calk",   calk);
   CLI.addCommand("i2c",    i2c);
   CLI.addCommand("dry",    dry);
 
@@ -217,15 +217,6 @@ CLI_COMMAND(data) {
   dev->print(" / "); dev->println(_ec.PPM_700);
   dev->print("salinity PSU / PPT: "); dev->print(_ec.salinityPSU, 4);
   dev->print(" / "); dev->print(_ec.salinityPPT, 4);
-  return 0;
-}
-
-CLI_COMMAND(calk) {
-  if (argc == 2) {
-    _ec.calculateK(atof(argv[1]), _ec.tempCoefEC);
-  }
-
-  dev->print("K: "); dev->print(_ec.getK(), 4);
   return 0;
 }
 
