@@ -818,7 +818,7 @@ configure:12428: $? = 0
 configure:12428: result: yes
 configure:12447: checking for getexecname
 configure:12447: cc -o conftest -O0 -ffunction-sections -fdata-sections -fPIC -g -m64 -Wall -Wextra   conftest.c  >&5
-/tmp/cclKDKd3.o: In function `main':
+/tmp/ccLB8fb2.o: In function `main':
 /home/justin/Development/ec-class/lib/ECSalinity/rust/target/package/ufire_ec-0.9.0/target/debug/build/backtrace-sys-2cdc8a484b35546a/out/conftest.c:69: undefined reference to `getexecname'
 collect2: error: ld returned 1 exit status
 configure:12447: $? = 1
