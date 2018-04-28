@@ -47,7 +47,7 @@ const EC_TASK_REGISTER: u8 = 51;
 const EC_DUALPOINT_CONFIG_BIT: u8 = 0;
 const EC_TEMP_COMPENSATION_CONFIG_BIT: u8 = 1;
 
-const EC_EC_MEASURMENT_TIME: u64 = 1150;
+const EC_EC_MEASURMENT_TIME: u64 = 250;
 const EC_TEMP_MEASURE_TIME: u64 = 750;
 
 const PSU_TO_PPT_CONVERSION: f32 = 1.004715;
@@ -127,12 +127,12 @@ impl EcProbe {
         Ok(self._read_register(EC_TEMP_REGISTER)?)
     }
 
-    /// Calibrates the probe using a single point using a mV value.
+    /// Calibrates the probe using a single point using a mS value.
     ///
     /// # Example
     /// ```
     /// let mut ec = ufire_ise::EcProbe::new("/dev/i2c-3", 0x3c).unwrap();
-    /// ec.calibrate_single(500.0);
+    /// ec.calibrate_single(2.77);
     /// ```
     pub fn calibrate_single(&mut self, solution_ec: f32) -> Result<(), Box<LinuxI2CError>> {
         self._write_register(EC_SOLUTION_REGISTER, solution_ec)?;
@@ -142,7 +142,7 @@ impl EcProbe {
         Ok(())
     }
 
-    /// Calibrates the dual-point values for the low reading, in mV, and saves them in the
+    /// Calibrates the dual-point values for the low reading, in mS, and saves them in the
     /// devices's EEPROM.
     ///
     /// # Example
@@ -158,13 +158,13 @@ impl EcProbe {
         Ok(())
     }
 
-    /// Calibrates the dual-point values for the high reading, in mV, and saves them in the
+    /// Calibrates the dual-point values for the high reading, in mS, and saves them in the
     /// devices's EEPROM.
     ///
     /// # Example
     /// ```
     /// let mut ec = ufire_ise::EcProbe::new("/dev/i2c-3", 0x3c).unwrap();
-    /// ec.calibrate_probe_low(500.0);
+    /// ec.calibrate_probe_low(58.0);
     /// ```
     pub fn calibrate_probe_high(&mut self, solution_ec: f32) -> Result<(), Box<LinuxI2CError>> {
         self._write_register(EC_SOLUTION_REGISTER, solution_ec)?;
@@ -174,13 +174,13 @@ impl EcProbe {
         Ok(())
     }
 
-    /// Sets all the values, in mV, for dual point calibration and saves them in the devices's
+    /// Sets all the values, in mS, for dual point calibration and saves them in the devices's
     /// EEPROM.
     ///
     /// # Example
     /// ```
     /// let mut ec = ufire_ise::EcProbe::new("/dev/i2c-3", 0x3c).unwrap();
-    /// ec.set_dual_point_calibration(50.0, 500.0, 34.0, 553.0);
+    /// ec.set_dual_point_calibration(50, 58.0, 47.0, 62.0);
     /// ```
     pub fn set_dual_point_calibration(
         &mut self,
@@ -227,7 +227,7 @@ impl EcProbe {
     /// # Example
     /// ```
     /// let mut ec = ufire_ec::EcProbe::new("/dev/i2c-3", 0x3c).unwrap();
-    /// ec.get_temp_constant();
+    /// let mut temp_const = ec.get_temp_constant().unwrap();
     /// ```
     pub fn get_temp_constant(&mut self) -> Result<(u8), Box<LinuxI2CError>> {
         self._change_register(EC_TEMP_COMPENSATION_REGISTER)?;
@@ -239,7 +239,7 @@ impl EcProbe {
     /// # Example
     /// ```
     /// let mut ec = ufire_ise::EcProbe::new("/dev/i2c-3", 0x3c).unwrap();
-    /// ec.set_dual_point_calibration(0.0, 500.0, 0.0, 0.0);
+    /// let mut high_ref = ec.get_calibrate_high_reference().unwrap();
     /// ```
     pub fn get_calibrate_high_reference(&mut self) -> Result<(f32), Box<LinuxI2CError>> {
         Ok(self._read_register(EC_CALIBRATE_REFHIGH_REGISTER)?)
@@ -250,8 +250,8 @@ impl EcProbe {
     /// # Example
     /// ```
     /// let mut ec = ufire_ise::EcProbe::new("/dev/i2c-3", 0x3c).unwrap();
-    /// ec.set_dual_point_calibration(0.0, 0.0, 0.0, 553.0);
-    /// assert_eq!(553.0, ec.get_calibrate_high_reading().unwrap());
+    /// ec.set_dual_point_calibration(0.0, 0.0, 0.0, 62.0);
+    /// assert_eq!(62.0, ec.get_calibrate_high_reading().unwrap());
     /// ```
     pub fn get_calibrate_high_reading(&mut self) -> Result<(f32), Box<LinuxI2CError>> {
         Ok(self._read_register(EC_CALIBRATE_READHIGH_REGISTER)?)
@@ -330,11 +330,10 @@ impl EcProbe {
     /// # Example
     /// ```
     /// let mut ec = ufire_ise::EcProbe::new("/dev/i2c-3", 0x3c).unwrap();
-    /// assert_eq!(0x1a, ec.get_version().unwrap());
+    /// assert_eq!(0x1c, ec.get_version().unwrap());
     /// ```
     pub fn get_version(&mut self) -> Result<(u8), Box<LinuxI2CError>> {
         self._change_register(EC_VERSION_REGISTER)?;
-        //thread::sleep(Duration::from_millis(25));
         Ok(self.dev.smbus_read_byte()?)
     }
 
