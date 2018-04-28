@@ -1,0 +1,1 @@
+initSidebarItems({"trait":[["I2CDevice","Interface to an I2C Slave Device from an I2C Master"]]});

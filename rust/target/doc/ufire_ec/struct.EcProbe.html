@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `EcProbe` struct in crate `ufire_ec`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, EcProbe">
+
+    <title>ufire_ec::EcProbe - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc struct">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'>Struct EcProbe</p><div class="block items"><ul><li><a href="#methods">Methods</a></li></ul></div><p class='location'><a href='index.html'>ufire_ec</a></p><script>window.sidebarCurrent = {name: 'EcProbe', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>ufire_ec</a>::<wbr><a class="struct" href=''>EcProbe</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/ufire_ec/lib.rs.html#52-54' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct EcProbe { /* fields omitted */ }</pre>
+                    <h2 id='methods' class='small-section-header'>
+                      Methods<a href='#methods' class='anchor'></a>
+                    </h2>
+                <h3 id='impl' class='impl'><span class='in-band'><code>impl <a class="struct" href="../ufire_ec/struct.EcProbe.html" title="struct ufire_ec::EcProbe">EcProbe</a></code><a href='#impl' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#56-475' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.new' class="method"><span id='new.v' class='invisible'><code>pub fn <a href='#method.new' class='fnname'>new</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;filename: &amp;'static <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;address: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a><br>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;Self, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#64-67' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Create a new EcProbe object</p>
+
+<p>Pass the i2c port to use, it must be a software overlay device, and I2C address.</p>
+
+<h1 id='example' class='section-header'><a href='#example'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();</pre>
+</div><h4 id='method.measure_temp' class="method"><span id='measure_temp.v' class='invisible'><code>pub fn <a href='#method.measure_temp' class='fnname'>measure_temp</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#76-82' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Start a temperature measurement</p>
+
+<h1 id='example-1' class='section-header'><a href='#example-1'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="ident">ec</span>.<span class="ident">measure_temp</span>();</pre>
+</div><h4 id='method.calibrate_single' class="method"><span id='calibrate_single.v' class='invisible'><code>pub fn <a href='#method.calibrate_single' class='fnname'>calibrate_single</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;mut self, <br>&nbsp;&nbsp;&nbsp;&nbsp;solution_ec: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a><br>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#91-97' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Calibrates the probe using a single point using a mS value.</p>
+
+<h1 id='example-2' class='section-header'><a href='#example-2'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="ident">ec</span>.<span class="ident">calibrate_single</span>(<span class="number">500.0</span>);</pre>
+</div><h4 id='method.calibrate_probe_low' class="method"><span id='calibrate_probe_low.v' class='invisible'><code>pub fn <a href='#method.calibrate_probe_low' class='fnname'>calibrate_probe_low</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;mut self, <br>&nbsp;&nbsp;&nbsp;&nbsp;solution_ec: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a><br>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#107-113' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Calibrates the dual-point values for the low reading, in mS, and saves them in the
+devices&#39;s EEPROM.</p>
+
+<h1 id='example-3' class='section-header'><a href='#example-3'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="ident">ec</span>.<span class="ident">calibrate_probe_low</span>(<span class="number">50.0</span>);</pre>
+</div><h4 id='method.calibrate_probe_high' class="method"><span id='calibrate_probe_high.v' class='invisible'><code>pub fn <a href='#method.calibrate_probe_high' class='fnname'>calibrate_probe_high</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;mut self, <br>&nbsp;&nbsp;&nbsp;&nbsp;solution_ec: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a><br>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#123-129' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Calibrates the dual-point values for the high reading, in mS, and saves them in the
+devices&#39;s EEPROM.</p>
+
+<h1 id='example-4' class='section-header'><a href='#example-4'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="ident">ec</span>.<span class="ident">calibrate_probe_high</span>(<span class="number">56.0</span>);</pre>
+</div><h4 id='method.measure_ec' class="method"><span id='measure_ec.v' class='invisible'><code>pub fn <a href='#method.measure_ec' class='fnname'>measure_ec</a>(&amp;mut self, temp_coef: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#138-148' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Starts an EC measurement.</p>
+
+<h1 id='example-5' class='section-header'><a href='#example-5'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="ident">ec</span>.<span class="ident">measure_ec</span>(<span class="number">0.019</span>);</pre>
+</div><h4 id='method.measure_salinity' class="method"><span id='measure_salinity.v' class='invisible'><code>pub fn <a href='#method.measure_salinity' class='fnname'>measure_salinity</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#157-163' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Starts an EC measurement and returns the salinity in PSU.</p>
+
+<h1 id='example-6' class='section-header'><a href='#example-6'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="ident">ec</span>.<span class="ident">measure_salinity</span>();</pre>
+</div><h4 id='method.calibrate_dry' class="method"><span id='calibrate_dry.v' class='invisible'><code>pub fn <a href='#method.calibrate_dry' class='fnname'>calibrate_dry</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#172-176' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Determines the probes dry reading.</p>
+
+<h1 id='example-7' class='section-header'><a href='#example-7'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="ident">ec</span>.<span class="ident">calibrate_dry</span>();</pre>
+</div><h4 id='method.set_dual_point_calibration' class="method"><span id='set_dual_point_calibration.v' class='invisible'><code>pub fn <a href='#method.set_dual_point_calibration' class='fnname'>set_dual_point_calibration</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;mut self, <br>&nbsp;&nbsp;&nbsp;&nbsp;ref_low: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;ref_high: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;read_low: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;read_high: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a><br>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#186-199' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Sets all the values, in mS, for dual point calibration and saves them in the devices&#39;s
+EEPROM.</p>
+
+<h1 id='example-8' class='section-header'><a href='#example-8'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="ident">ec</span>.<span class="ident">set_dual_point_calibration</span>(<span class="number">50.0</span>, <span class="number">58.0</span>, <span class="number">48.0</span>, <span class="number">56.0</span>);</pre>
+</div><h4 id='method.get_k' class="method"><span id='get_k.v' class='invisible'><code>pub fn <a href='#method.get_k' class='fnname'>get_k</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#208-210' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns the cell-constant from the device.</p>
+
+<h1 id='example-9' class='section-header'><a href='#example-9'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="ident">ec</span>.<span class="ident">get_k</span>();</pre>
+</div><h4 id='method.set_k' class="method"><span id='set_k.v' class='invisible'><code>pub fn <a href='#method.set_k' class='fnname'>set_k</a>(&amp;mut self, k: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#219-223' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Sets the cell-constant and saves it in the devices&#39;s EEPROM.</p>
+
+<h1 id='example-10' class='section-header'><a href='#example-10'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="ident">ec</span>.<span class="ident">set_k</span>(<span class="number">1.0</span>);</pre>
+</div><h4 id='method.set_temp_constant' class="method"><span id='set_temp_constant.v' class='invisible'><code>pub fn <a href='#method.set_temp_constant' class='fnname'>set_temp_constant</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;mut self, <br>&nbsp;&nbsp;&nbsp;&nbsp;temp_constant: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a><br>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#232-237' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Sets the temperature constant to use for compensation and saves it in the devices&#39;s EEPROM.</p>
+
+<h1 id='example-11' class='section-header'><a href='#example-11'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="ident">ec</span>.<span class="ident">set_temp_constant</span>(<span class="number">20</span>);</pre>
+</div><h4 id='method.get_temp_constant' class="method"><span id='get_temp_constant.v' class='invisible'><code>pub fn <a href='#method.get_temp_constant' class='fnname'>get_temp_constant</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#246-249' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns the temperature constant from the device.</p>
+
+<h1 id='example-12' class='section-header'><a href='#example-12'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="ident">ec</span>.<span class="ident">get_temp_constant</span>();</pre>
+</div><h4 id='method.get_calibrate_offset' class="method"><span id='get_calibrate_offset.v' class='invisible'><code>pub fn <a href='#method.get_calibrate_offset' class='fnname'>get_calibrate_offset</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#258-260' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns the single-point offset from the device.</p>
+
+<h1 id='example-13' class='section-header'><a href='#example-13'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="ident">ec</span>.<span class="ident">get_calibrate_offset</span>();</pre>
+</div><h4 id='method.get_calibrate_dry' class="method"><span id='get_calibrate_dry.v' class='invisible'><code>pub fn <a href='#method.get_calibrate_dry' class='fnname'>get_calibrate_dry</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#269-271' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns the dry calibration value.</p>
+
+<h1 id='example-14' class='section-header'><a href='#example-14'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="ident">ec</span>.<span class="ident">get_calibrate_dry</span>();</pre>
+</div><h4 id='method.get_calibrate_high_reference' class="method"><span id='get_calibrate_high_reference.v' class='invisible'><code>pub fn <a href='#method.get_calibrate_high_reference' class='fnname'>get_calibrate_high_reference</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;mut self<br>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#280-282' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns the dual-point calibration high reference value.</p>
+
+<h1 id='example-15' class='section-header'><a href='#example-15'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="ident">ec</span>.<span class="ident">set_dual_point_calibration</span>(<span class="number">0.0</span>, <span class="number">500.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>);</pre>
+</div><h4 id='method.get_calibrate_high_reading' class="method"><span id='get_calibrate_high_reading.v' class='invisible'><code>pub fn <a href='#method.get_calibrate_high_reading' class='fnname'>get_calibrate_high_reading</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#292-294' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns the dual-point calibration high reading value.</p>
+
+<h1 id='example-16' class='section-header'><a href='#example-16'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="ident">ec</span>.<span class="ident">set_dual_point_calibration</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">553.0</span>);
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">553.0</span>, <span class="ident">ec</span>.<span class="ident">get_calibrate_high_reading</span>().<span class="ident">unwrap</span>());</pre>
+</div><h4 id='method.get_calibrate_low_reference' class="method"><span id='get_calibrate_low_reference.v' class='invisible'><code>pub fn <a href='#method.get_calibrate_low_reference' class='fnname'>get_calibrate_low_reference</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#304-306' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns the dual-point calibration low reference value.</p>
+
+<h1 id='example-17' class='section-header'><a href='#example-17'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="ident">ec</span>.<span class="ident">set_dual_point_calibration</span>(<span class="number">50.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>);
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">50.0</span>, <span class="ident">ec</span>.<span class="ident">get_calibrate_low_reference</span>().<span class="ident">unwrap</span>());</pre>
+</div><h4 id='method.get_calibrate_low_reading' class="method"><span id='get_calibrate_low_reading.v' class='invisible'><code>pub fn <a href='#method.get_calibrate_low_reading' class='fnname'>get_calibrate_low_reading</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#316-318' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns the dual-point calibration low reading value.</p>
+
+<h1 id='example-18' class='section-header'><a href='#example-18'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="ident">ec</span>.<span class="ident">set_dual_point_calibration</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">34.0</span>, <span class="number">0.0</span>);
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">34.0</span>, <span class="ident">ec</span>.<span class="ident">get_calibrate_low_reading</span>().<span class="ident">unwrap</span>());</pre>
+</div><h4 id='method.use_temperature_compensation' class="method"><span id='use_temperature_compensation.v' class='invisible'><code>pub fn <a href='#method.use_temperature_compensation' class='fnname'>use_temperature_compensation</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;mut self, <br>&nbsp;&nbsp;&nbsp;&nbsp;b: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a><br>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#328-340' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Configures the device to use temperature compensation or not.</p>
+
+<h1 id='example-19' class='section-header'><a href='#example-19'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="ident">ec</span>.<span class="ident">use_temperature_compensation</span>(<span class="bool-val">true</span>);
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">1</span>, <span class="ident">ec</span>.<span class="ident">using_temperature_compensation</span>().<span class="ident">unwrap</span>());</pre>
+</div><h4 id='method.use_dual_point' class="method"><span id='use_dual_point.v' class='invisible'><code>pub fn <a href='#method.use_dual_point' class='fnname'>use_dual_point</a>(&amp;mut self, b: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#350-362' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Configures device to use dual-point calibration.</p>
+
+<h1 id='example-20' class='section-header'><a href='#example-20'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="ident">ec</span>.<span class="ident">use_dual_point</span>(<span class="bool-val">true</span>);
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">1</span>, <span class="ident">ec</span>.<span class="ident">using_dual_point</span>().<span class="ident">unwrap</span>());</pre>
+</div><h4 id='method.get_version' class="method"><span id='get_version.v' class='invisible'><code>pub fn <a href='#method.get_version' class='fnname'>get_version</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#371-375' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns the firmware version of the device.</p>
+
+<h1 id='example-21' class='section-header'><a href='#example-21'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">0x1c</span>, <span class="ident">ec</span>.<span class="ident">get_version</span>().<span class="ident">unwrap</span>());</pre>
+</div><h4 id='method.reset' class="method"><span id='reset.v' class='invisible'><code>pub fn <a href='#method.reset' class='fnname'>reset</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#389-396' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Resets all the stored calibration information.</p>
+
+<h1 id='example-22' class='section-header'><a href='#example-22'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="ident">ec</span>.<span class="ident">reset</span>();
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="bool-val">true</span>, <span class="ident">ec</span>.<span class="ident">get_calibrate_offset</span>().<span class="ident">unwrap</span>().<span class="ident">is_nan</span>());
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="bool-val">true</span>, <span class="ident">ec</span>.<span class="ident">get_calibrate_low_reading</span>().<span class="ident">unwrap</span>().<span class="ident">is_nan</span>());
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="bool-val">true</span>, <span class="ident">ec</span>.<span class="ident">get_calibrate_high_reading</span>().<span class="ident">unwrap</span>().<span class="ident">is_nan</span>());
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="bool-val">true</span>, <span class="ident">ec</span>.<span class="ident">get_calibrate_low_reference</span>().<span class="ident">unwrap</span>().<span class="ident">is_nan</span>());
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="bool-val">true</span>, <span class="ident">ec</span>.<span class="ident">get_calibrate_high_reference</span>().<span class="ident">unwrap</span>().<span class="ident">is_nan</span>());</pre>
+</div><h4 id='method.using_temperature_compensation' class="method"><span id='using_temperature_compensation.v' class='invisible'><code>pub fn <a href='#method.using_temperature_compensation' class='fnname'>using_temperature_compensation</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;mut self<br>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#406-410' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Configures the device to use temperature compensation.</p>
+
+<h1 id='example-23' class='section-header'><a href='#example-23'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="ident">ec</span>.<span class="ident">use_temperature_compensation</span>(<span class="bool-val">true</span>);
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">1</span>, <span class="ident">ec</span>.<span class="ident">using_temperature_compensation</span>().<span class="ident">unwrap</span>());</pre>
+</div><h4 id='method.using_dual_point' class="method"><span id='using_dual_point.v' class='invisible'><code>pub fn <a href='#method.using_dual_point' class='fnname'>using_dual_point</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#420-424' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Configures device to use dual-point calibration.</p>
+
+<h1 id='example-24' class='section-header'><a href='#example-24'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="ident">ec</span>.<span class="ident">use_dual_point</span>(<span class="bool-val">true</span>);
+<span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">1</span>, <span class="ident">ec</span>.<span class="ident">using_dual_point</span>().<span class="ident">unwrap</span>());</pre>
+</div><h4 id='method.set_i2c_address' class="method"><span id='set_i2c_address.v' class='invisible'><code>pub fn <a href='#method.set_i2c_address' class='fnname'>set_i2c_address</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;mut self, <br>&nbsp;&nbsp;&nbsp;&nbsp;i2c_address: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a><br>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#433-438' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Sets the I2C address of the device.</p>
+
+<h1 id='example-25' class='section-header'><a href='#example-25'>Example</a></h1>
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ec</span> <span class="op">=</span> <span class="ident">ufire_ec</span>::<span class="ident">EcProbe</span>::<span class="ident">new</span>(<span class="string">&quot;/dev/i2c-3&quot;</span>, <span class="number">0x3c</span>).<span class="ident">unwrap</span>();
+<span class="comment">// ec.set_i2c_address(0x4f);</span></pre>
+</div><h4 id='method._write_register' class="method"><span id='_write_register.v' class='invisible'><code>pub fn <a href='#method._write_register' class='fnname'>_write_register</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;mut self, <br>&nbsp;&nbsp;&nbsp;&nbsp;register: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;f_val: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a><br>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#440-454' title='goto source code'>[src]</a></span></h4>
+<h4 id='method._read_register' class="method"><span id='_read_register.v' class='invisible'><code>pub fn <a href='#method._read_register' class='fnname'>_read_register</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;mut self, <br>&nbsp;&nbsp;&nbsp;&nbsp;register: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a><br>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#456-468' title='goto source code'>[src]</a></span></h4>
+<h4 id='method._change_register' class="method"><span id='_change_register.v' class='invisible'><code>pub fn <a href='#method._change_register' class='fnname'>_change_register</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;mut self, <br>&nbsp;&nbsp;&nbsp;&nbsp;register: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a><br>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="enum" href="../i2cdev/linux/enum.LinuxI2CError.html" title="enum i2cdev::linux::LinuxI2CError">LinuxI2CError</a>&gt;&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/ufire_ec/lib.rs.html#470-474' title='goto source code'>[src]</a></span></h4>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "ufire_ec";
+    </script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>
