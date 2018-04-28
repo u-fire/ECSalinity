@@ -81,7 +81,7 @@ impl EcProbe {
         Ok(self._read_register(EC_TEMP_REGISTER)?)
     }
 
-    /// Calibrates the probe using a single point using a mV value.
+    /// Calibrates the probe using a single point using a mS value.
     ///
     /// # Example
     /// ```
@@ -92,11 +92,11 @@ impl EcProbe {
         self._write_register(EC_SOLUTION_REGISTER, solution_ec)?;
         self.dev
             .smbus_write_byte_data(EC_TASK_REGISTER, EC_CALIBRATE_PROBE)?;
-        thread::sleep(Duration::from_millis(1750));
+        thread::sleep(Duration::from_millis(EC_EC_MEASUREMENT_TIME));
         Ok(())
     }
 
-    /// Calibrates the dual-point values for the low reading, in mV, and saves them in the
+    /// Calibrates the dual-point values for the low reading, in mS, and saves them in the
     /// devices's EEPROM.
     ///
     /// # Example
@@ -108,23 +108,23 @@ impl EcProbe {
         self._write_register(EC_SOLUTION_REGISTER, solution_ec)?;
         self.dev
             .smbus_write_byte_data(EC_TASK_REGISTER, EC_CALIBRATE_LOW)?;
-        thread::sleep(Duration::from_millis(1750));
+        thread::sleep(Duration::from_millis(EC_EC_MEASUREMENT_TIME));
         Ok(())
     }
 
-    /// Calibrates the dual-point values for the high reading, in mV, and saves them in the
+    /// Calibrates the dual-point values for the high reading, in mS, and saves them in the
     /// devices's EEPROM.
     ///
     /// # Example
     /// ```
     /// let mut ec = ufire_ec::EcProbe::new("/dev/i2c-3", 0x3c).unwrap();
-    /// ec.calibrate_probe_low(500.0);
+    /// ec.calibrate_probe_high(56.0);
     /// ```
     pub fn calibrate_probe_high(&mut self, solution_ec: f32) -> Result<(), Box<LinuxI2CError>> {
         self._write_register(EC_SOLUTION_REGISTER, solution_ec)?;
         self.dev
             .smbus_write_byte_data(EC_TASK_REGISTER, EC_CALIBRATE_HIGH)?;
-        thread::sleep(Duration::from_millis(1750));
+        thread::sleep(Duration::from_millis(EC_EC_MEASUREMENT_TIME));
         Ok(())
     }
 
@@ -141,14 +141,9 @@ impl EcProbe {
             .smbus_write_byte_data(EC_TASK_REGISTER, EC_MEASURE_EC)?;
         thread::sleep(Duration::from_millis(EC_EC_MEASUREMENT_TIME));
 
-	if self.using_temperature_compensation()? == 1
-	{
-		self.measure_temp()?;
-	}
-
-
-
-
+        if self.using_temperature_compensation()? == 1 {
+            self.measure_temp()?;
+        }
         Ok(self._read_register(EC_MS_REGISTER)?)
     }
 
@@ -180,13 +175,13 @@ impl EcProbe {
         Ok(())
     }
 
-    /// Sets all the values, in mV, for dual point calibration and saves them in the devices's
+    /// Sets all the values, in mS, for dual point calibration and saves them in the devices's
     /// EEPROM.
     ///
     /// # Example
     /// ```
     /// let mut ec = ufire_ec::EcProbe::new("/dev/i2c-3", 0x3c).unwrap();
-    /// ec.set_dual_point_calibration(50.0, 500.0, 34.0, 553.0);
+    /// ec.set_dual_point_calibration(50.0, 58.0, 48.0, 56.0);
     /// ```
     pub fn set_dual_point_calibration(
         &mut self,
@@ -221,8 +216,7 @@ impl EcProbe {
     /// let mut ec = ufire_ec::EcProbe::new("/dev/i2c-3", 0x3c).unwrap();
     /// ec.set_k(1.0);
     /// ```
-    pub fn set_k(
-        &mut self, k: f32) -> Result<(), Box<LinuxI2CError>> {
+    pub fn set_k(&mut self, k: f32) -> Result<(), Box<LinuxI2CError>> {
         self._write_register(EC_K_REGISTER, k)?;
 
         Ok(())
@@ -235,13 +229,13 @@ impl EcProbe {
     /// let mut ec = ufire_ec::EcProbe::new("/dev/i2c-3", 0x3c).unwrap();
     /// ec.set_temp_constant(20);
     /// ```
-    pub fn set_temp_constant(
-        &mut self, temp_constant: u8) -> Result<(), Box<LinuxI2CError>> {
-	self.dev.smbus_write_byte_data(EC_TEMP_COMPENSATION_REGISTER, temp_constant)?;
+    pub fn set_temp_constant(&mut self, temp_constant: u8) -> Result<(), Box<LinuxI2CError>> {
+        self.dev
+            .smbus_write_byte_data(EC_TEMP_COMPENSATION_REGISTER, temp_constant)?;
 
         Ok(())
     }
-    
+
     /// Returns the temperature constant from the device.
     ///
     /// # Example
@@ -479,4 +473,3 @@ impl EcProbe {
         Ok(())
     }
 }
-
