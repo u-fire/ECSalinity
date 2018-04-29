@@ -1,1 +1,0 @@
-{"rustc":16448434725525097460,"features":"[]","target":7843909782223352037,"profile":12472537617123984595,"deps":[["byteorder v1.2.1",12484377685701291688],["i2cdev v0.3.2",4905917213900163992]],"local":[{"Precalculated":"1524953738.819168270s (/home/justin/Development/ec-class/lib/ECSalinity/rust/src/lib.rs)"}],"rustflags":[]}

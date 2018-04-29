@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["LinuxI2CError",""]],"struct":[["LinuxI2CDevice",""]]});
