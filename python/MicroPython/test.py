@@ -1,8 +1,7 @@
 import unittest
 import math
 from ecsalinity import ecsalinity
-
-ec = ecsalinity(3)
+ec = ecsalinity(-1, 15, 4)
 
 
 class TestMethods(unittest.TestCase):
@@ -85,5 +84,4 @@ class TestMethods(unittest.TestCase):
 if __name__ == '__main__':
     unittest.main()
     ec.reset()
-    ec.setAccuracy(18)
     ec.useDualPoint(False)

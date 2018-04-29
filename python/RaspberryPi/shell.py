@@ -84,7 +84,7 @@ class ECShell(cmd.Cmd):
 
     def do_dry(self, a):
         """Determines the probes dry reading"""
-        ec.getCalibrateDry()
+        ec.calibrateDry()
 
         print("\tdry: " + str(ec.getCalibrateDry()))
 

@@ -1,0 +1,1 @@
+/home/justin/Development/ec-class/lib/ECSalinity/rust/target/package/ufire_ec-0.9.1/target/debug/libufire_ec.rlib: /home/justin/Development/ec-class/lib/ECSalinity/rust/target/package/ufire_ec-0.9.1/src/lib.rs

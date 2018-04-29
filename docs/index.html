@@ -326,15 +326,17 @@
 </tr>
 </tbody></table>
 
+<p>A standalone DS18B20 can be directly connected to the board, no resistor is required.</p>
+
 <h2 id="ec-probe-connections">EC Probe Connections</h2>
 
-<p>EC probes have two pins and can be connected either way.</p>
+<p>A probe with a BNC connector is available and the preferred connection method, however other EC probes have two pins and can be connected either way.</p>
 
 <h3 id="probe-selection">Probe Selection</h3>
 
-<p>Any 2-electrode probe can be attached to the device. It is recommended to only use the probes provided by uFire. They are designed to be inexpensive and replaceable after approximately six months to a year of light use. The probe can be kept submerged, however it will require cleaning and re-calibration more often. The temperature range of the probe is -20 - 80 C.</p>
+<p>Any 2-electrode probe can be attached to the device.</p>
 
-<p>A probe with a K constant of:</p>
+<p>A probe with a K cell-constant of:</p>
 
 <ul>
 <li>0.1K can measure from 0.06 - 199.9 uS</li>
@@ -350,29 +352,22 @@
 <li><p><strong>Arduino IDE</strong>:  go to the library manager (Sketch / Include Library / Manage Libraries&hellip;) and search for EC Salinity.</p></li>
 <li><p><strong>PlatformIO</strong>: install the library using the library manager (PlatformIO / PlatformIO Home / Libraries) and search for EC Salinity.</p></li>
 <li><p><strong>Particle.io</strong>: search for EC_Salinity in the Libraries section of the IDE.</p></li>
-<li><p><strong>MicroPython</strong>: clone the <a href="https://github.com/u-fire/ECSalinity">GitHub repo</a>. In the python/MicroPython directory, you will find the files for various boards and their accompanying README files with instructions.</p></li>
-<li><p><strong>Raspberry Pi</strong>:  clone the <a href="https://github.com/u-fire/ECSalinity">GitHub repo</a>. In the python/RaspberryPi directory, you will find the files for various boards and their accompanying README files with instructions. Be sure to read the section below for instructions.</p></li>
+<li><p><strong>MicroPython</strong>: clone the <a href="https://github.com/u-fire/ECSalinity">GitHub repo</a>. In the <code class="prettyprint">python/MicroPython</code> directory, you will find the files for various boards and their accompanying README files with instructions.</p></li>
+<li><p><strong>Raspberry Pi</strong>:  clone the <a href="https://github.com/u-fire/ECSalinity">GitHub repo</a>. In the <code class="prettyprint">python/RaspberryPi</code> directory, you will find the files for various boards and their accompanying README files with instructions. Be sure to read the section below for instructions.</p></li>
+<li><p><strong>Rust</strong>: Download/install/documentation for the <a href="https://crates.io/crates/ufire_ec">crate</a></p></li>
 </ul>
 
 <h2 id="raspberry-pi">Raspberry Pi</h2>
 
-<p>Before you can run anything, you will need to enable software I2C, as the Pi&rsquo;s hardware implementation has a clock-stretching bug that will prevent it from working with the pH probe.
-1. <code class="prettyprint">sudo nano /boot/config.txt</code> and scroll to the bottom
-2. Add</p>
-
-<p><code class="prettyprint">dtoverlay=i2c-gpio,i2c_gpio_sda=&lt;pin&gt;,i2c_gpio_scl=&lt;pin&gt;</code></p>
-
-<p>replacing <code class="prettyprint">&lt;pin&gt;</code> with whatever pin you&rsquo;d like to use. Refer <a href="https://docs.microsoft.com/en-us/windows/iot-core/media/pinmappingsrpi/rp2_pinout.png">here</a> for the pin functions, you will need to use the orange GPIO xx labels in the picture to locate the pins. As an example, to use GPIO 17 as SDA and GPIO 27 as SCL, your line will look like this</p>
-
-<p><code class="prettyprint">dtoverlay=i2c-gpio,i2c_gpio_sda=17,i2c_gpio_scl=27</code></p>
-
-<p>Alternatively, you can choose to use the existing I2C pins, but using a software implementation of I2C, by pasting <code class="prettyprint">dtoverlay=i2c-gpio</code>. If you go this route, you will need to edit line #4 from</p>
-
-<p><code class="prettyprint">ph = phprobe(3)</code>, to <code class="prettyprint">ph = phprobe(1)</code></p>
+<p>Before you can run anything, you will need to enable software I2C, as the Pi&rsquo;s hardware implementation has a clock-stretching bug that will prevent it from working with the pH probe.</p>
 
 <ol>
-<li><code class="prettyprint">ctrl + x</code> to exit, <code class="prettyprint">y</code> to save, and <code class="prettyprint">enter</code> to confirm the filename.</li>
-<li>Reboot</li>
+<li><code class="prettyprint">sudo nano /boot/config.txt</code> and scroll to the bottom</li>
+<li><p>Add
+<code class="prettyprint">dtoverlay=i2c-gpio,i2c_gpio_sda=&lt;pin&gt;,i2c_gpio_scl=&lt;pin&gt;</code>
+replacing <code class="prettyprint">&lt;pin&gt;</code> with whatever pin you&rsquo;d like to use. Refer <a href="https://docs.microsoft.com/en-us/windows/iot-core/media/pinmappingsrpi/rp2_pinout.png">here</a> for the pin functions, you will need to use the orange GPIO xx labels in the picture to locate the pins. As an example, to use GPIO 17 as SDA and GPIO 27 as SCL, your line will look like this</p></li>
+<li><p><code class="prettyprint">ctrl + x</code> to exit, <code class="prettyprint">y</code> to save, and <code class="prettyprint">enter</code> to confirm the filename.</p></li>
+<li><p>Reboot</p></li>
 </ol>
 
 <h2 id="the-shell-example">The shell Example</h2>
@@ -509,6 +504,28 @@ sal
 
 <p>Each individual EC measurement takes 150ms. A temperature measurement takes 750ms.</p>
 
+<h2 id="interference">Interference</h2>
+
+<p>Multiple ISE probes and multiple EC-Salinity probes can all be connected together. The probes have been designed, using hardware and software, to eliminate ground loops. <strong><em>It is not galvanic isolation and you may run into difficulties using these devices in a pre-existing design.</em></strong></p>
+
+<p>The way various probes interact with each other, in varying solutions, additional hardware or circuits, power source, path(s) to ground, and innumerable other factors, play a role in interference. A majority of the above issues can be corrected with a galvanic isolation circuit; the trade-off is cost and complexity.</p>
+
+<table><thead>
+<tr>
+<th style="text-align: center">ISE Probe Interface</th>
+<th style="text-align: center">EC-Salinity</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: center">with pH probe</td>
+<td style="text-align: center">No interference</td>
+</tr>
+<tr>
+<td style="text-align: center">with ORP probes</td>
+<td style="text-align: center">Slight offset</td>
+</tr>
+</tbody></table>
+
 <h1 id="more-help">More Help</h1>
 
 <p>If you have any questions, find a bug, or have any suggestions, go to this project&rsquo;s <a href="https://github.com/u-fire/ECSalinity">GitHub</a> page and submit an Issue or Pull Request. Or you can send an email to <a href="mailto:questions@ufire.co">questions@ufire.co</a>.</p>
@@ -569,7 +586,7 @@ sal
 <pre class="highlight cpp tab-cpp"><code><span class="kt">float</span> <span class="n">mS</span> <span class="o">=</span> <span class="n">EC_Salinity</span><span class="o">::</span><span class="n">measureEC</span><span class="p">(</span><span class="n">ec</span><span class="p">.</span><span class="n">tempCoefEC</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
 </code></pre><pre class="highlight python tab-python"><code>    <span class="n">ms</span> <span class="o">=</span> <span class="n">ec</span><span class="o">.</span><span class="n">measureEC</span><span class="p">(</span><span class="n">ecsalinity</span><span class="o">.</span><span class="n">tempCoefEC</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
 </code></pre>
-<p>The device starst an EC measurement.</p>
+<p>The device starts an EC measurement.</p>
 
 <h3 id="parameters">Parameters</h3>
 
@@ -586,7 +603,7 @@ PPM is not valid if salinity is being measured, use salinityPPM or salinityPPT
 
 <h3 id="returns">Returns</h3>
 
-<p>EC in mS</p>
+<p>EC in mS, -1 on error</p>
 
 <hr>
 
@@ -601,24 +618,22 @@ PPM is not valid if salinity is being measured, use salinityPPM or salinityPPT
 
 <h3 id="returns">Returns</h3>
 
-<p>EC in mS</p>
+<p>EC in mS, -1 on error</p>
 
 <hr>
 
 <h2 id="public-float-measuresalinity"><code class="prettyprint">public float measureSalinity()</code></h2>
 
-<p>Convenience function to measure salinity and taking a new temperature measurement.</p>
+<p>Convenience function to measure salinity..</p>
 
-<p>The PSU must be between 2 and 42; a value not within bounds will return -1. The temperature must be within -2 to 35, or -2 will be returned.</p>
+<p>The PSU must be between 2 and 42; a value not within bounds will return -1. The temperature must be within -2 to 35.</p>
 <pre class="highlight cpp tab-cpp"><code><span class="kt">float</span> <span class="n">PSU</span> <span class="o">=</span> <span class="n">EC_Salinity</span><span class="o">::</span><span class="n">measureSalinity</span><span class="p">();</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">PSU</span> <span class="o">=</span> <span class="n">ec</span><span class="o">.</span><span class="n">measureSalinity</span><span class="p">();</span>
 </code></pre><pre class="highlight shell tab-shell"><code>sal
 </code></pre>
-<p>Calls <code class="prettyprint">EC_Salinity::measureEC(EC_Salinity::tempCoefSalinity, true);</code></p>
-
 <h3 id="returns">Returns</h3>
 
-<p>salinity in PSU</p>
+<p>salinity in PSU, -1 on error</p>
 
 <hr>
 
@@ -847,7 +862,7 @@ tc 1 255
 
 <hr>
 
-<h2 id="public-float-getcalibratehigh"><code class="prettyprint">public float getCalibrateHigh()</code></h2>
+<h2 id="public-float-getcalibratehighreference"><code class="prettyprint">public float getCalibrateHighReference()</code></h2>
 <pre class="highlight shell tab-shell"><code>high
 </code></pre>
 <p>Retrieves the dual-point calibration high value.</p>
@@ -858,7 +873,7 @@ tc 1 255
 
 <hr>
 
-<h2 id="public-float-getcalibratelow"><code class="prettyprint">public float getCalibrateLow()</code></h2>
+<h2 id="public-float-getcalibratelowreference"><code class="prettyprint">public float getCalibrateLowReference()</code></h2>
 <pre class="highlight shell tab-shell"><code>low
 </code></pre>
 <p>Retrieves the dual-point calibration low value.</p>

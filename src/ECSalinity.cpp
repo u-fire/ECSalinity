@@ -92,6 +92,19 @@ float EC_Salinity::measureEC(float tempCoefficient, bool newTemp)
     salinityPPT = salinityPSU * PSU_TO_PPT_CONVERSION;
     salinityPPM = salinityPPT * 1000;
   }
+  else
+  {
+    mS      = -1;
+    PPM_500 = -1;
+    PPM_640 = -1;
+    PPM_700 = -1;
+    uS      = -1;
+    S       = -1;
+
+    salinityPSU = -1;
+    salinityPPT = -1;
+    salinityPPM = -1;
+  }
 
   return mS;
 }
@@ -305,7 +318,7 @@ float EC_Salinity::getCalibrateOffset()
    \brief Retrieves the dual-point calibration high value
    \return   the dual-point calibration high value
  */
-float EC_Salinity::getCalibrateHigh()
+float EC_Salinity::getCalibrateHighReference()
 {
   return _read_register(EC_CALIBRATE_REFHIGH_REGISTER);
 }
@@ -314,7 +327,7 @@ float EC_Salinity::getCalibrateHigh()
    \brief Retrieves the dual-point calibration low value
    \return   the dual-point calibration low value
  */
-float EC_Salinity::getCalibrateLow()
+float EC_Salinity::getCalibrateLowReference()
 {
   return _read_register(EC_CALIBRATE_REFLOW_REGISTER);
 }
@@ -438,7 +451,7 @@ void EC_Salinity::setTempConstant(uint8_t b)
 
 /*!
    \brief Retrieves the temperature constant
-   \return   the temperature to used for compensation
+   \return   the temperature to use for compensation
  */
 uint8_t EC_Salinity::getTempConstant()
 {

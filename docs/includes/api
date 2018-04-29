@@ -54,7 +54,7 @@
 <pre class="highlight cpp tab-cpp"><code><span class="kt">float</span> <span class="n">mS</span> <span class="o">=</span> <span class="n">EC_Salinity</span><span class="o">::</span><span class="n">measureEC</span><span class="p">(</span><span class="n">ec</span><span class="p">.</span><span class="n">tempCoefEC</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
 </code></pre><pre class="highlight python tab-python"><code>    <span class="n">ms</span> <span class="o">=</span> <span class="n">ec</span><span class="o">.</span><span class="n">measureEC</span><span class="p">(</span><span class="n">ecsalinity</span><span class="o">.</span><span class="n">tempCoefEC</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
 </code></pre>
-<p>The device starst an EC measurement.</p>
+<p>The device starts an EC measurement.</p>
 
 <h3 id="parameters">Parameters</h3>
 
@@ -71,7 +71,7 @@ PPM is not valid if salinity is being measured, use salinityPPM or salinityPPT
 
 <h3 id="returns">Returns</h3>
 
-<p>EC in mS</p>
+<p>EC in mS, -1 on error</p>
 
 <hr>
 
@@ -86,24 +86,22 @@ PPM is not valid if salinity is being measured, use salinityPPM or salinityPPT
 
 <h3 id="returns">Returns</h3>
 
-<p>EC in mS</p>
+<p>EC in mS, -1 on error</p>
 
 <hr>
 
 <h2 id="public-float-measuresalinity"><code class="prettyprint">public float measureSalinity()</code></h2>
 
-<p>Convenience function to measure salinity and taking a new temperature measurement.</p>
+<p>Convenience function to measure salinity..</p>
 
-<p>The PSU must be between 2 and 42; a value not within bounds will return -1. The temperature must be within -2 to 35, or -2 will be returned.</p>
+<p>The PSU must be between 2 and 42; a value not within bounds will return -1. The temperature must be within -2 to 35.</p>
 <pre class="highlight cpp tab-cpp"><code><span class="kt">float</span> <span class="n">PSU</span> <span class="o">=</span> <span class="n">EC_Salinity</span><span class="o">::</span><span class="n">measureSalinity</span><span class="p">();</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">PSU</span> <span class="o">=</span> <span class="n">ec</span><span class="o">.</span><span class="n">measureSalinity</span><span class="p">();</span>
 </code></pre><pre class="highlight shell tab-shell"><code>sal
 </code></pre>
-<p>Calls <code class="prettyprint">EC_Salinity::measureEC(EC_Salinity::tempCoefSalinity, true);</code></p>
-
 <h3 id="returns">Returns</h3>
 
-<p>salinity in PSU</p>
+<p>salinity in PSU, -1 on error</p>
 
 <hr>
 
@@ -332,7 +330,7 @@ tc 1 255
 
 <hr>
 
-<h2 id="public-float-getcalibratehigh"><code class="prettyprint">public float getCalibrateHigh()</code></h2>
+<h2 id="public-float-getcalibratehighreference"><code class="prettyprint">public float getCalibrateHighReference()</code></h2>
 <pre class="highlight shell tab-shell"><code>high
 </code></pre>
 <p>Retrieves the dual-point calibration high value.</p>
@@ -343,7 +341,7 @@ tc 1 255
 
 <hr>
 
-<h2 id="public-float-getcalibratelow"><code class="prettyprint">public float getCalibrateLow()</code></h2>
+<h2 id="public-float-getcalibratelowreference"><code class="prettyprint">public float getCalibrateLowReference()</code></h2>
 <pre class="highlight shell tab-shell"><code>low
 </code></pre>
 <p>Retrieves the dual-point calibration low value.</p>

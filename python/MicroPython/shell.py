@@ -82,9 +82,9 @@ class ECShell(cmd.Cmd):
 
         print("\tdual point: " + str(ec.usingDualPoint()))
 
-    def do_dry(self):
+    def do_dry(self, a):
         """Determines the probes dry reading"""
-        ec.getCalibrateDry()
+        ec.calibrateDry()
 
         print("\tdry: " + str(ec.getCalibrateDry()))
 
