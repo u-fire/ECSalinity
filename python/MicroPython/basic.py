@@ -1,5 +1,6 @@
 from ecsalinity import ecsalinity
 
+# connect board SCL to pin 5, SDA to pin 4, but any pins can be used. -1 indicates software I2C.
 ec = ecsalinity(-1, 5, 4)
 
 ec.calculateK(2.77, 0.019)

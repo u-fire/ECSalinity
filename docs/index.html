@@ -298,10 +298,6 @@
 </tr>
 </tbody></table>
 
-<h2 id="i2c-bus-pull-ups">I2C Bus Pull-ups</h2>
-
-<p>Each device comes with 4.7k resistor pullups on the I2C bus. They pass through a 3-pad solder paste jumper. The outer pads are connected to the middle by thin traces. To disable the pullups, use a utility knife to cut both traces. To re-enable the pullups, connect all three pads together with solder.</p>
-
 <h2 id="temperature-probe-connections">Temperature Probe Connections</h2>
 
 <p>The temperature probe comes with a 3-wire header; any 3-wire DS18B20 will work. The VCC pin is labeled with a triangle:</p>
@@ -328,9 +324,13 @@
 
 <p>A standalone DS18B20 can be directly connected to the board, no resistor is required.</p>
 
+<h2 id="i2c-bus-pull-ups">I2C Bus Pull-ups</h2>
+
+<p>Each device comes with 4.7k resistor pullups on the I2C bus. They pass through a 3-pad solder paste jumper. The outer pads are connected to the middle by thin traces. To disable the pullups, use a utility knife to cut both traces. To re-enable the pullups, connect all three pads together with solder.</p>
+
 <h2 id="ec-probe-connections">EC Probe Connections</h2>
 
-<p>A probe with a BNC connector is available and the preferred connection method, however other EC probes have two pins and can be connected either way.</p>
+<p>A board with a BNC connector is available and the preferred connection method. For probes that use an alternate connector, the board can be purchased with a two-pin header instead of the BNC. Modification of the probe&rsquo;s wires may be needed and isn&rsquo;t recommended unless you know what you are doing.</p>
 
 <h3 id="probe-selection">Probe Selection</h3>
 
@@ -346,7 +346,7 @@
 
 <h1 id="getting-started">Getting Started</h1>
 
-<p>To start developing for the device, you need to install this library for your board/platform.</p>
+<p>To start developing for the device, you need to install a library for your board/platform.</p>
 
 <ul>
 <li><p><strong>Arduino IDE</strong>:  go to the library manager (Sketch / Include Library / Manage Libraries&hellip;) and search for EC Salinity.</p></li>
@@ -359,13 +359,13 @@
 
 <h2 id="raspberry-pi">Raspberry Pi</h2>
 
-<p>Before you can run anything, you will need to enable software I2C, as the Pi&rsquo;s hardware implementation has a clock-stretching bug that will prevent it from working with the pH probe.</p>
+<p>Before you can run anything, you will need to enable software I2C, as the Pi&rsquo;s hardware implementation has a clock-stretching bug that will prevent it from working with the probe (or any other device that uses clock-stretching).</p>
 
 <ol>
 <li><code class="prettyprint">sudo nano /boot/config.txt</code> and scroll to the bottom</li>
 <li><p>Add
 <code class="prettyprint">dtoverlay=i2c-gpio,i2c_gpio_sda=&lt;pin&gt;,i2c_gpio_scl=&lt;pin&gt;</code>
-replacing <code class="prettyprint">&lt;pin&gt;</code> with whatever pin you&rsquo;d like to use. Refer <a href="https://docs.microsoft.com/en-us/windows/iot-core/media/pinmappingsrpi/rp2_pinout.png">here</a> for the pin functions, you will need to use the orange GPIO xx labels in the picture to locate the pins. As an example, to use GPIO 17 as SDA and GPIO 27 as SCL, your line will look like this</p></li>
+replacing <code class="prettyprint">&lt;pin&gt;</code> with whatever pin you&rsquo;d like to use. Refer <a href="https://docs.microsoft.com/en-us/windows/iot-core/media/pinmappingsrpi/rp2_pinout.png">here</a> for the pin functions, you will need to use the orange GPIO xx labels in the picture to locate the pins.</p></li>
 <li><p><code class="prettyprint">ctrl + x</code> to exit, <code class="prettyprint">y</code> to save, and <code class="prettyprint">enter</code> to confirm the filename.</p></li>
 <li><p>Reboot</p></li>
 </ol>
@@ -502,7 +502,7 @@ sal
 
 <h2 id="measurement-time">Measurement Time</h2>
 
-<p>Each individual EC measurement takes 150ms. A temperature measurement takes 750ms.</p>
+<p>Each individual EC measurement takes 250ms. A temperature measurement takes 750ms.</p>
 
 <h1 id="more-help">More Help</h1>
 
