@@ -15,8 +15,8 @@ class ECShell(cmd.Cmd):
         print("\toffset: " + str(ec.getCalibrateOffset()))
         print("\tdry: " + str(ec.getCalibrateDry()))
         print("\tdual point: " + str(ec.usingDualPoint()))
-        print("\tlow reference / read: " + str(ec.getCalibrateLow()) + " / " + str(ec.getCalibrateLowReading()))
-        print("\thigh reference / reading: " + str(ec.getCalibrateHigh()) + " / " + str(ec.getCalibrateHighReading()))
+        print("\tlow reference / read: " + str(ec.getCalibrateLowReference()) + " / " + str(ec.getCalibrateLowReading()))
+        print("\thigh reference / reading: " + str(ec.getCalibrateHighReference()) + " / " + str(ec.getCalibrateHighReading()))
         print("\ttemp. compensation: " + str(ec.usingTemperatureCompensation()))
         print("\t\tconstant: " + str(ec.getTempConstant()))
         print("\tversion: " + (hex(ec.getVersion())))
@@ -54,14 +54,14 @@ class ECShell(cmd.Cmd):
         if low_reference_mS:
             ec.calibrateProbeLow(float(low_reference_mS), ec.tempCoefEC)
 
-        print("\tlow reference / read: " + str(ec.getCalibrateLow()) + " / " + str(ec.getCalibrateLowReading()))
+        print("\tlow reference / read: " + str(ec.getCalibrateLowReference()) + " / " + str(ec.getCalibrateLowReading()))
 
     def do_high(self, high_reference_mS):
         """returns or sets the high referencen/reading values\nparameters\n\thigh reference solution in mS"""
         if high_reference_mS:
             ec.calibrateProbeHigh(float(high_reference_mS), ec.tempCoefEC)
 
-        print("\thigh reference / reading: " + str(ec.getCalibrateHigh()) + " / " + str(ec.getCalibrateHighReading()))
+        print("\thigh reference / reading: " + str(ec.getCalibrateHighReference()) + " / " + str(ec.getCalibrateHighReading()))
 
     def do_tc(self, arg):
         """returns or sets temperature compensation information\nparameters\n\tbool to use compensation\n\ttemperature constant to use (255 for actual)"""

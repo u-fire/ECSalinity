@@ -152,10 +152,10 @@ class ecsalinity(object):
     def getCalibrateOffset(self):
         return self._read_register(EC_CALIBRATE_OFFSET_REGISTER)
 
-    def getCalibrateHigh(self):
+    def getCalibrateHighReference(self):
         return self._read_register(EC_CALIBRATE_REFHIGH_REGISTER)
 
-    def getCalibrateLow(self):
+    def getCalibrateLowReference(self):
         return self._read_register(EC_CALIBRATE_REFLOW_REGISTER)
 
     def getCalibrateHighReading(self):

@@ -139,7 +139,7 @@ CLI_COMMAND(low) {
     _ec.calibrateProbeLow(atof(argv[1]), _ec.tempCoefEC);
   }
 
-  dev->print("low reference / read: "); dev->print(_ec.getCalibrateLow(), 4);
+  dev->print("low reference / read: "); dev->print(_ec.getCalibrateLowReference(), 4);
   dev->print(" / "); dev->print(_ec.getCalibrateLowReading(), 4);
   return 0;
 }
@@ -149,7 +149,7 @@ CLI_COMMAND(high) {
     _ec.calibrateProbeHigh(atof(argv[1]), _ec.tempCoefEC);
   }
 
-  dev->print("high reference / read: "); dev->print(_ec.getCalibrateHigh(), 4);
+  dev->print("high reference / read: "); dev->print(_ec.getCalibrateHighReference(), 4);
   dev->print(" / "); dev->print(_ec.getCalibrateHighReading(), 4);
   return 0;
 }
@@ -160,9 +160,9 @@ CLI_COMMAND(config) {
   dev->print("  offset: "); dev->println(_ec.getCalibrateOffset(), 4);
   dev->print("  dry: "); dev->println(_ec.getCalibrateDry(), 4);
   dev->print("  dual point: "); dev->println(_ec.usingDualPoint(), 4);
-  dev->print("  low reference / read: "); dev->print(_ec.getCalibrateLow(), 4);
+  dev->print("  low reference / read: "); dev->print(_ec.getCalibrateLowReference(), 4);
   dev->print(" /  "); dev->println(_ec.getCalibrateLowReading(), 4);
-  dev->print("  high reference / read: "); dev->print(_ec.getCalibrateHigh(), 4);
+  dev->print("  high reference / read: "); dev->print(_ec.getCalibrateHighReference(), 4);
   dev->print(" / "); dev->println(_ec.getCalibrateHighReading(), 4);
   dev->print("  temp. compensation: "); dev->println(
     _ec.usingTemperatureCompensation());
