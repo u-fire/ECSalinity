@@ -35,6 +35,7 @@ const float EC_Salinity::tempCoefSalinity = 0.021;
 /*!
    \brief Class constructor
  */
+
 EC_Salinity::EC_Salinity(uint8_t i2c_address)
 {
   _address = i2c_address;
@@ -46,6 +47,21 @@ EC_Salinity::EC_Salinity()
   _address = EC_SALINITY;
   Wire.begin();
 }
+
+#ifdef ESP32
+EC_Salinity::EC_Salinity(uint8_t sda, uint8_t scl, uint8_t i2c_address)
+{
+  _address = i2c_address;
+  Wire.begin(sda, scl, 100000);
+}
+
+EC_Salinity::EC_Salinity(uint8_t sda, uint8_t scl)
+{
+  _address = EC_SALINITY;
+  Wire.begin(sda, scl, 100000);
+}
+
+#endif // ifndef ESP32
 
 /*!
    \brief Class destructor

@@ -97,6 +97,13 @@ public:
   static const float tempCoefSalinity; /*!< Temperature compensation coefficient for salinity measurement */
   EC_Salinity(uint8_t i2c_address);
   EC_Salinity();
+  #ifdef ESP32
+  EC_Salinity(uint8_t sda,
+              uint8_t scl,
+              uint8_t i2c_address);
+  EC_Salinity(uint8_t sda,
+              uint8_t scl);
+  #endif // ifndef ESP32
   ~EC_Salinity();
   float measureEC(float tempCoefficient,
                   bool  newTemp);
