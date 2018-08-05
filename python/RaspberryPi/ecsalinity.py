@@ -57,8 +57,9 @@ class ecsalinity(object):
     tempCoefSalinity = 0.021
     address = EC_SALINITY
 
-    def __init__(self, i2c_bus, **kwargs):
+    def __init__(self, address, i2c_bus, **kwargs):
         global i2c
+        self.address = address
         i2c = smbus.SMBus(i2c_bus)
 
     def measureTemp(self):

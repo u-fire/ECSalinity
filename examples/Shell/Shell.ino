@@ -3,234 +3,224 @@
    github.com/u-fire for feature requests, bug reports, and  questions
    questions@ufire.co to get in touch with someone
 
-   This example is compatible with hardware board version 1c
- */
+    This allows you to run various functions on a command-line like interface.
+    Enter `config` to see the configuration of the device. Type 'ec' to get a
+    measurement in mS, 'data' to see all the data members of the class like uS,
+    and S, 'temp' to read the temperature, 'sal' to use salinity parameters for
+    a measurment.
 
-#include <ECSalinity.h>
-#include "CLI.h"
+    To use an unconfigured device:
+     k <K constant value eg. 1.0>
+     dry (while probe is dry, not needed)
+     cal <calibration solution in mS eg 2.77>
+     ec
 
-/*
-   This allows you to run various functions on a command-line like interface.
-   Enter `config` to see the configuration of the device. Type 'ec' to get a
-   measurement in mS, 'data' to see all the data members of the class like uS,
-   and S, 'temp' to read the temperature, 'sal' to use salinity parameters for
-   a measurment.
+    Dual Point Calibration:
+     k <K constant value eg. 1.0>
+     dry (while probe is dry, not needed)
+     low <calibration solution in mS eg 0.5>
+     high <calibration solution in mS eg 2.77>
+     dp 1
 
-   To use an unconfigured device:
-   1. k <K constant value eg. 1.0>
-   2. dry (while probe is dry)
-   3. cal <calibration solution in mS eg 2.77>
-   4. ec
+    Using Temperature compensation:
+     tc 1 25 <to adjust readings as if they were at 25 C>
+     (recalibrate all values using `dry`, `cal`, `low`, `high`)
+     ec
 
-   Determine K of a custom probe:
-   1. calk <mS of calibration solution>
-   2. ec
-
-   Dual Point Calibration:
-   1. k <K constant value eg. 1.0>
-   2. dry (while probe is dry)
-   3. low <calibration solution in mS eg 0.5>
-   4. high <calibration solution in mS eg 2.77>
-   5. dp 1
-
-   Using Temperature compensation:
-   1. reset
-   2. tc 1 25 <to adjust readings as if they were at 25 C>
-   3. (recalibrate all values using `dry`, `cal`, `low`, `high`)
-   4. ec
-
-   Measure saltwater with a configured device:
-   1. sal
+    Measure saltwater with a configured device:
+     sal
 
  */
 
-CLI_COMMAND(reset);  // 'reset' reset all calibration configuration
-CLI_COMMAND(temp);   // 'temp' measure temperature
-CLI_COMMAND(cal);    // 'cal 2.77' calibrate the offset of the probe using mS of the solution
-CLI_COMMAND(k);      // 'k 10.0' sets the K value of the probe being used
-CLI_COMMAND(ec);     // 'ec' starts an EC measurement, returns mS
-CLI_COMMAND(low);    // 'low 1.0' calibrates the low dual-point calibration settings using mS as solution
-CLI_COMMAND(high);   // 'high 10.0'calibrates the high dual-point calibration settings using mS as solution
-CLI_COMMAND(config); // 'config' shows configuration information
-CLI_COMMAND(tc);     // 'tc 0/1 25' temperature compensation; first argument to use it, second the constant to use
-CLI_COMMAND(dp);     // 'dp 0/1' to use dual-point calibration or not
-CLI_COMMAND(dry);    // 'dry' determines the probe reading when dry
-CLI_COMMAND(sal);    // 'sal' starts a salinity measurement
-CLI_COMMAND(data);   // 'data' shows all the data from the latest 'ec' or 'sal' call made
-CLI_COMMAND(i2c);    // 'ic2 62' changes the i2c address to 62
+ #include <Arduino.h>
+ #include "ECSalinity.h"
 
-EC_Salinity _ec;
+EC_Salinity EC(19, 23); // ESP32 custom pin notation
+// EC_Salinity EC;        // Arduino pre-set pins
 
-void setup()
-{
+String buffer, cmd, p1, p2;
+
+void config() {
+  Serial.println("EC Config:");
+  Serial.print("  K: "); Serial.println(EC.getK(), 4);
+  Serial.print("  offset: "); Serial.println(EC.getCalibrateOffset(), 4);
+  Serial.print("  dry: "); Serial.println(EC.getCalibrateDry(), 4);
+  Serial.print("  dual point: "); Serial.println(EC.usingDualPoint(), 4);
+  Serial.print("  low reference / read: "); Serial.print(EC.getCalibrateLowReference(), 4);
+  Serial.print(" /  "); Serial.println(EC.getCalibrateLowReading(), 4);
+  Serial.print("  high reference / read: "); Serial.print(EC.getCalibrateHighReference(), 4);
+  Serial.print(" / "); Serial.println(EC.getCalibrateHighReading(), 4);
+  Serial.print("  temp. compensation: "); Serial.println(
+    EC.usingTemperatureCompensation());
+  Serial.print("    constant: "); Serial.println(EC.getTempConstant());
+  Serial.print("  version: "); Serial.println(EC.getVersion(), HEX);
+}
+
+void reset() {
+  EC.reset();
+  config();
+}
+
+void temperature() {
+  EC.measureTemp();
+  Serial.print("C|F: "); Serial.print(EC.tempC);
+  Serial.print(" | "); Serial.println(EC.tempF);
+}
+
+void calibrate() {
+  if (p1.length()) {
+    EC.calibrateProbe(p1.toFloat(), EC.tempCoefEC);
+  }
+
+  Serial.print("offset: ");
+  Serial.println(EC.getCalibrateOffset(), 5);
+}
+
+void data() {
+  Serial.print("S: "); Serial.println(EC.S, 4);
+  Serial.print("mS: "); Serial.println(EC.mS, 4);
+  Serial.print("uS: "); Serial.println(EC.uS);
+  Serial.print("TDS 500|640|700: "); Serial.print(EC.PPM_500);
+  Serial.print(" | "); Serial.print(EC.PPM_640);
+  Serial.print(" | "); Serial.println(EC.PPM_700);
+  Serial.print("salinity PSU | PPT: "); Serial.print(EC.salinityPSU, 4);
+  Serial.print(" | "); Serial.println(EC.salinityPPT, 4);
+  Serial.print("C|F: "); Serial.print(EC.tempC);
+  Serial.print(" |  "); Serial.println(EC.tempF);
+}
+
+void low() {
+  if (p1.length()) {
+    EC.calibrateProbeLow(p1.toFloat(), EC.tempCoefEC);
+  }
+
+  Serial.print("low reference | read: "); Serial.print(EC.getCalibrateLowReference(), 2);
+  Serial.print(" | "); Serial.println(EC.getCalibrateLowReading(), 2);
+}
+
+void high() {
+  if (p1.length()) {
+    EC.calibrateProbeHigh(p1.toFloat(), EC.tempCoefEC);
+  }
+
+  Serial.print("high reference | read: "); Serial.print(EC.getCalibrateHighReference(), 2);
+  Serial.print(" | "); Serial.println(EC.getCalibrateHighReading(), 2);
+}
+
+void temp_comp() {
+  if (p1.length()) {
+    EC.useTemperatureCompensation(p1.toInt());
+  }
+
+  if (p2.length()) {
+    EC.useTemperatureCompensation(p1.toInt());
+    EC.setTempConstant(p2.toInt());
+  }
+
+  Serial.print("temp. compensation: ");
+  Serial.println(EC.usingTemperatureCompensation());
+  Serial.print("   constant: ");
+  Serial.println(EC.getTempConstant());
+}
+
+void dual_point() {
+  if (p1.length()) {
+    EC.useDualPoint(p1.toInt());
+  }
+
+  Serial.print("dual point: ");
+  Serial.println(EC.usingDualPoint());
+}
+
+void i2c() {
+  if (p1.length()) {
+    EC.setI2CAddress(p1.toInt());
+  }
+}
+
+void k() {
+  if (p1.length()) {
+    EC.setK(p1.toFloat());
+  }
+
+  Serial.print("K: ");
+  Serial.println(EC.getK(), 4);
+}
+
+void ec() {
+  for (;;) {
+    EC.measureEC(EC.tempCoefEC, false);
+    Serial.print("mS: ");
+    Serial.println(EC.mS, 4);
+  }
+}
+
+void sal() {
+  for (;;) {
+    EC.measureSalinity();
+    Serial.print("salinity PSU / PPT / PPM: "); Serial.println(EC.salinityPSU, 2);
+    Serial.print(" / "); Serial.print(EC.salinityPPT, 2);
+    Serial.print(" / "); Serial.print(EC.salinityPPM, 2);
+  }
+}
+
+void dry() {
+  EC.calibrateDry();
+  Serial.print("dry: ");
+  Serial.println(EC.getCalibrateDry(), 4);
+}
+
+void cmd_run() {
+  if ((cmd == "conf") || (cmd == "config") || (cmd == "c")) config();
+  if ((cmd == "reset") || (cmd == "r")) reset();
+  if ((cmd == "temp") || (cmd == "t")) temperature();
+  if ((cmd == "calibrate") || (cmd == "cal")) calibrate();
+  if ((cmd == "data") || (cmd == "d")) data();
+  if (cmd == "low") low();
+  if (cmd == "high") high();
+  if (cmd == "tc") temp_comp();
+  if (cmd == "dp") dual_point();
+  if (cmd == "i2c") i2c();
+  if (cmd == "k") k();
+  if (cmd == "ec") ec();
+  if (cmd == "sal") sal();
+}
+
+void cli_process() {
+  while (Serial.available()) {
+    char c = Serial.read();
+
+    switch (c) {
+    case '\n': // new line
+      Serial.println();
+      cmd = buffer.substring(0, buffer.indexOf(" ", 0)); cmd.trim();
+      buffer.remove(0, buffer.indexOf(" ", 0)); buffer.trim();
+      p1 = buffer.substring(0, buffer.indexOf(" ", 0)); p1.trim();
+      buffer.remove(0, buffer.indexOf(" ", 0)); buffer.trim();
+      p2 = buffer.substring(0, buffer.indexOf(" ", 0)); p2.trim();
+      cmd_run();
+      Serial.print("> ");
+      buffer = "";
+      break;
+
+    case '\b': // backspace
+      buffer.remove(buffer.length() - 1);
+      Serial.print("\b \b");
+      break;
+
+    default: // everything else
+      buffer += c;
+      Serial.print(c);
+    }
+  }
+}
+
+void setup() {
   Serial.begin(9600);
-  delay(1000); Serial.println();
-  CLI.setDefaultPrompt("> ");
-  CLI.onConnect(config);
-
-  CLI.addCommand("reset",  reset);
-  CLI.addCommand("temp",   temp);
-  CLI.addCommand("cal",    cal);
-  CLI.addCommand("k",      k);
-  CLI.addCommand("ec",     ec);
-  CLI.addCommand("low",    low);
-  CLI.addCommand("high",   high);
-  CLI.addCommand("config", config);
-  CLI.addCommand("tc",     tc);
-  CLI.addCommand("dp",     dp);
-  CLI.addCommand("sal",    sal);
-  CLI.addCommand("data",   data);
-  CLI.addCommand("i2c",    i2c);
-  CLI.addCommand("dry",    dry);
-
-  CLI.addClient(Serial);
+  config();
+  Serial.print("> ");
 }
 
-void loop()
-{
-  CLI.process();
-}
-
-CLI_COMMAND(reset) {
-  _ec.reset();
-  return 0;
-}
-
-CLI_COMMAND(temp) {
-  _ec.measureTemp();
-  dev->print("C/F: "); dev->print(_ec.tempC);
-  dev->print(" /  "); dev->println(_ec.tempF);
-  return 0;
-}
-
-CLI_COMMAND(cal) {
-  if (argc == 2) {
-    _ec.calibrateProbe(atof(argv[1]), _ec.tempCoefEC);
-  }
-
-  dev->print("offset: ");
-  dev->print(_ec.getCalibrateOffset(), 4);
-  return 0;
-}
-
-CLI_COMMAND(k) {
-  if (argc == 2) {
-    _ec.setK(atof(argv[1]));
-  }
-  dev->print("K: ");
-  dev->print(_ec.getK(), 4);
-  return 0;
-}
-
-CLI_COMMAND(ec) {
-  // for (;;) {
-  _ec.measureEC();
-  dev->print("mS: ");
-  dev->print(_ec.mS, 4);
-
-  // dev->println();
-  // delay(1000);
-  // }
-  return 0;
-}
-
-CLI_COMMAND(low) {
-  if (argc == 2) {
-    _ec.calibrateProbeLow(atof(argv[1]), _ec.tempCoefEC);
-  }
-
-  dev->print("low reference / read: "); dev->print(_ec.getCalibrateLowReference(), 4);
-  dev->print(" / "); dev->print(_ec.getCalibrateLowReading(), 4);
-  return 0;
-}
-
-CLI_COMMAND(high) {
-  if (argc == 2) {
-    _ec.calibrateProbeHigh(atof(argv[1]), _ec.tempCoefEC);
-  }
-
-  dev->print("high reference / read: "); dev->print(_ec.getCalibrateHighReference(), 4);
-  dev->print(" / "); dev->print(_ec.getCalibrateHighReading(), 4);
-  return 0;
-}
-
-CLI_COMMAND(config) {
-  dev->println("Config:");
-  dev->print("  K: "); dev->println(_ec.getK(), 4);
-  dev->print("  offset: "); dev->println(_ec.getCalibrateOffset(), 4);
-  dev->print("  dry: "); dev->println(_ec.getCalibrateDry(), 4);
-  dev->print("  dual point: "); dev->println(_ec.usingDualPoint(), 4);
-  dev->print("  low reference / read: "); dev->print(_ec.getCalibrateLowReference(), 4);
-  dev->print(" /  "); dev->println(_ec.getCalibrateLowReading(), 4);
-  dev->print("  high reference / read: "); dev->print(_ec.getCalibrateHighReference(), 4);
-  dev->print(" / "); dev->println(_ec.getCalibrateHighReading(), 4);
-  dev->print("  temp. compensation: "); dev->println(
-    _ec.usingTemperatureCompensation());
-  dev->print("    constant: "); dev->println(_ec.getTempConstant());
-  dev->print("  version: "); dev->print(_ec.getVersion(), HEX);
-  dev->println();
-  dev->printPrompt();
-  return 0;
-}
-
-CLI_COMMAND(tc) {
-  if (argc == 2) {
-    _ec.useTemperatureCompensation(atof(argv[1]));
-  }
-
-  if (argc == 3) {
-    _ec.useTemperatureCompensation(atof(argv[1]));
-    _ec.setTempConstant(atof(argv[2]));
-  }
-
-  dev->print("temp. compensation: ");
-  dev->println(_ec.usingTemperatureCompensation());
-  dev->print("   constant: ");
-  dev->print(_ec.getTempConstant());
-  return 0;
-}
-
-CLI_COMMAND(dp) {
-  if (argc == 2) {
-    _ec.useDualPoint(atof(argv[1]));
-  }
-
-  dev->print("dual point: ");
-  dev->print(_ec.usingDualPoint());
-  return 0;
-}
-
-CLI_COMMAND(sal) {
-  _ec.measureSalinity();
-  dev->print("salinity PSU / PPT / PPM: "); dev->print(_ec.salinityPSU, 2);
-  dev->print(" / "); dev->print(_ec.salinityPPT, 2);
-  dev->print(" / "); dev->print(_ec.salinityPPM, 2);
-  return 0;
-}
-
-CLI_COMMAND(data) {
-  dev->print("S: "); dev->println(_ec.S, 4);
-  dev->print("mS: "); dev->println(_ec.mS, 4);
-  dev->print("uS: "); dev->println(_ec.uS);
-  dev->print("TDS 500/640/700: "); dev->print(_ec.PPM_500);
-  dev->print(" / "); dev->print(_ec.PPM_640);
-  dev->print(" / "); dev->println(_ec.PPM_700);
-  dev->print("salinity PSU / PPT: "); dev->print(_ec.salinityPSU, 4);
-  dev->print(" / "); dev->print(_ec.salinityPPT, 4);
-  return 0;
-}
-
-CLI_COMMAND(i2c) {
-  if (argc == 2) {
-    _ec.setI2CAddress(atof(argv[1]));
-  }
-
-  return 0;
-}
-
-CLI_COMMAND(dry) {
-  _ec.calibrateDry();
-  dev->print("dry: "); dev->print(_ec.getCalibrateDry(), 4);
-
-  return 0;
+void loop() {
+  cli_process();
 }

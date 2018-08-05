@@ -27,12 +27,10 @@
 class ServerCallback : public BLEServerCallbacks {
 public:
 
-  void onConnect(BLEServer *pServer) {
-    Serial.println("connected");
-  }
+  void onConnect(BLEServer *pServer) {}
 
   void onDisconnect(BLEServer *pServer) {
-    Serial.println("disconnected");
+    ESP.restart();
   }
 };
 
@@ -180,6 +178,7 @@ public:
   void startBLE();
   void measureEC();
   void measureTemp();
+  bool connected();
 
 private:
 

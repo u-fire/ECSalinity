@@ -3,6 +3,17 @@
 
 # include "uFire_EC_BLE.h"
 
+bool uFire_EC_BLE::connected() {
+  if (pServer->getConnectedCount() > 0)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
 void uFire_EC_BLE::startBLE() {
   // setup the server
   BLEDevice::init("uFire EC");
