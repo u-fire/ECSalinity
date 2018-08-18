@@ -69,6 +69,10 @@ class ecsalinity(object):
         self.tempF = ((self.tempC * 9) / 5) + 32
         return self.tempC
 
+    def setTemp(self, temp_C):
+        self._write_register(EC_TEMP_REGISTER, temp_C)
+        self.tempF = ((self.tempC * 9) / 5) + 32
+        
     def measureEC(self, tempCoefficient=None, newTemp=None):
         if tempCoefficient is None:
             tempCoefficient = self.tempCoefEC
