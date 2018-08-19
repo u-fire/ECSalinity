@@ -23,17 +23,15 @@ fn main() {
         "	temp. compensation: {}",
         ec.using_temperature_compensation().unwrap()
     );
-    ec.set_temp_constant(20).unwrap();
     println!("	temp. constant: {}", ec.get_temp_constant().unwrap());
     println!("	version: {:x}", ec.get_version().unwrap());
-    
+
     loop {
         let ms = ec.measure_ec(0.019).unwrap();
-    	let temp = ec.measure_temp().unwrap();
-   
+        let temp = ec.measure_temp().unwrap();
+
         println!("mS: {}", ms);
         println!("C: {}", temp);
         println!("");
-	}
+    }
 }
-
