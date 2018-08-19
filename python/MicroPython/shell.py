@@ -25,8 +25,11 @@ class ECShell(cmd.Cmd):
         """reset all saved values\nparameters: none"""
         ec.reset()
 
-    def do_temp(self, a):
+    def do_temp(self, temp_C):
         """measures the temperature\nparameters: none"""
+        if temp_C:
+            ec.setTemp(float(temp_C)
+
         ec.measureTemp()
         print("C/F: " + str(ec.tempC) + " / " + str(ec.tempF))
 
