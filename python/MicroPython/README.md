@@ -11,7 +11,7 @@ To get started with the basic example:
 - `pip install adafruit-ampy`
 - `esptool.py --port [/dev/ttyUSB0|COM1] erase_flash`
 - `esptool.py --chip esp32 --port [/dev/ttyUSB0|COM1] write_flash -z 0x1000 [firmware file]`
-- `git clone https://github.com/u-fire/ECSalinity.git`
+- `git clone https://github.com/u-fire/ECSalinity.git --depth=1`
 - `cd ECSalinity/python/MicroPython`
 - `ampy --port [/dev/ttyUSB0|COM1] put ecsalinity.py`
 - `ampy --port [/dev/ttyUSB0|COM1] put basic.py`
