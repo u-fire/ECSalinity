@@ -62,7 +62,11 @@ void reset() {
 }
 
 void temperature() {
-  EC.measureTemp();
+  if (p1.length()) {
+    EC.setTemp(p1.toFloat());
+  } else {
+    EC.measureTemp();
+  }
   Serial.print("C|F: "); Serial.print(EC.tempC);
   Serial.print(" | "); Serial.println(EC.tempF);
 }

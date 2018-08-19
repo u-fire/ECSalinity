@@ -110,6 +110,7 @@ public:
   float measureEC();
   float measureSalinity();
   float measureTemp();
+  void  setTemp(float temp_C);
   void  calibrateProbe(float solutionEC,
                        float tempCoef);
   void  calibrateProbeLow(float solutionEC,
