@@ -177,6 +177,21 @@ float EC_Salinity::measureTemp()
 
 /*!
     \code
+        EC_Salinity::setTemp(20.2);
+    \endcode
+
+   \brief Sets the temperature used by the device.
+   \post #tempC and #tempF are updated
+ */
+void EC_Salinity::setTemp(float temp_C)
+{
+  _write_register(EC_TEMP_REGISTER, temp_C);
+  tempC = temp_C;
+  tempF = ((tempC * 9) / 5) + 32;
+}
+
+/*!
+    \code
       EC_Salinity::calibrateProbe(2.77, EC_Salinity::tempCoefEC);
     \endcode
 
