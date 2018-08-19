@@ -35,8 +35,9 @@
  #include <Arduino.h>
  #include "ECSalinity.h"
 
-EC_Salinity EC(19, 23); // ESP32 custom pin notation
-// EC_Salinity EC;        // Arduino pre-set pins
+// Comment/uncomment the appropriate line below
+// EC_Salinity EC(19, 23); // ESP32 custom pin notation
+EC_Salinity EC; // Arduino pre-set pins
 
 String buffer, cmd, p1, p2;
 
@@ -156,6 +157,7 @@ void ec() {
     EC.measureEC(EC.tempCoefEC, false);
     Serial.print("mS: ");
     Serial.println(EC.mS, 4);
+    delay(500);
   }
 }
 
