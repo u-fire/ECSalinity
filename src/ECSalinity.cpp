@@ -209,7 +209,7 @@ void EC_Salinity::calibrateProbe(float solutionEC, float tempCoef)
   _write_register(EC_TEMPCOEF_REGISTER, tempCoef);
   _write_register(EC_SOLUTION_REGISTER, solutionEC);
   _send_command(EC_CALIBRATE_PROBE);
-  delay(EC_EC_MEASUREMENT_TIME);
+  delay(EC_EC_MEASUREMENT_TIME + 750);
   useDualPoint(dualpoint);
 }
 
@@ -231,7 +231,7 @@ void EC_Salinity::calibrateProbeLow(float solutionEC, float tempCoef)
   _write_register(EC_TEMPCOEF_REGISTER, tempCoef);
   _write_register(EC_SOLUTION_REGISTER, solutionEC);
   _send_command(EC_CALIBRATE_LOW);
-  delay(EC_EC_MEASUREMENT_TIME);
+  delay(EC_EC_MEASUREMENT_TIME + 750);
   useDualPoint(dualpoint);
 }
 
@@ -253,7 +253,7 @@ void EC_Salinity::calibrateProbeHigh(float solutionEC, float tempCoef)
   _write_register(EC_TEMPCOEF_REGISTER, tempCoef);
   _write_register(EC_SOLUTION_REGISTER, solutionEC);
   _send_command(EC_CALIBRATE_HIGH);
-  delay(EC_EC_MEASUREMENT_TIME);
+  delay(EC_EC_MEASUREMENT_TIME + 750);
   useDualPoint(dualpoint);
 }
 
@@ -268,7 +268,7 @@ void EC_Salinity::calibrateProbeHigh(float solutionEC, float tempCoef)
 void EC_Salinity::calibrateDry()
 {
   _send_command(EC_DRY);
-  delay(EC_EC_MEASUREMENT_TIME);
+  delay(EC_EC_MEASUREMENT_TIME + 750);
 }
 
 /*!
@@ -304,6 +304,7 @@ void EC_Salinity::setDualPointCalibration(float refLow,
   _write_register(EC_CALIBRATE_REFHIGH_REGISTER,  refHigh);
   _write_register(EC_CALIBRATE_READLOW_REGISTER,  readLow);
   _write_register(EC_CALIBRATE_READHIGH_REGISTER, readHigh);
+  delay(750);
 }
 
 /*!
