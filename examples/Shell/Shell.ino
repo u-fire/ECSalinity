@@ -153,12 +153,13 @@ void k() {
 }
 
 void ec() {
-  for (;;) {
-    EC.measureEC(EC.tempCoefEC, false);
-    Serial.print("mS: ");
-    Serial.println(EC.mS, 4);
-    delay(500);
-  }
+  // for (;;) {
+  EC.measureEC(EC.tempCoefEC, false);
+  Serial.print("mS: ");
+  Serial.println(EC.mS, 4);
+  delay(500);
+
+  // }
 }
 
 void sal() {
