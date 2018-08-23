@@ -32,7 +32,6 @@ class ECShell(cmd.Cmd):
         else:
             ec.measureTemp()
 
-        ec.measureTemp()
         print("C/F: " + str(ec.tempC) + " / " + str(ec.tempF))
 
     def do_cal(self, solution_mS):
