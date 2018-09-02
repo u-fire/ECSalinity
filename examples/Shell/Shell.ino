@@ -57,7 +57,7 @@ void config() {
   Serial.print("  version: "); Serial.println(EC.getVersion(), HEX);
 }
 
-void reset() {
+void _reset() {
   EC.reset();
   config();
 }
@@ -179,7 +179,7 @@ void dry() {
 
 void cmd_run() {
   if ((cmd == "conf") || (cmd == "config") || (cmd == "c")) config();
-  if ((cmd == "reset") || (cmd == "r")) reset();
+  if ((cmd == "reset") || (cmd == "r")) _reset();
   if ((cmd == "temp") || (cmd == "t")) temperature();
   if ((cmd == "calibrate") || (cmd == "cal")) calibrate();
   if ((cmd == "data") || (cmd == "d")) data();

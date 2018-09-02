@@ -7,7 +7,7 @@
     <meta name="description" content="">
     
     
-    <link rel="preload" href="/ECSalinity/assets/css/0.styles.86182990.css" as="style"><link rel="preload" href="/ECSalinity/assets/js/app.da32b27e.js" as="script"><link rel="preload" href="/ECSalinity/assets/js/4.e6aa4c9e.js" as="script"><link rel="prefetch" href="/ECSalinity/assets/js/2.c736891e.js"><link rel="prefetch" href="/ECSalinity/assets/js/3.4ad423ee.js"><link rel="prefetch" href="/ECSalinity/assets/js/5.7cd5aa99.js">
+    <link rel="preload" href="/ECSalinity/assets/css/0.styles.86182990.css" as="style"><link rel="preload" href="/ECSalinity/assets/js/app.27fd0b8d.js" as="script"><link rel="preload" href="/ECSalinity/assets/js/4.3f65ec58.js" as="script"><link rel="prefetch" href="/ECSalinity/assets/js/2.c736891e.js"><link rel="prefetch" href="/ECSalinity/assets/js/3.4ad423ee.js"><link rel="prefetch" href="/ECSalinity/assets/js/5.4f5224c5.js">
     <link rel="stylesheet" href="/ECSalinity/assets/css/0.styles.86182990.css">
   </head>
   <body>
@@ -22,7 +22,7 @@ ec<span class="token punctuation">.</span><span class="token function">setK</spa
 </code></pre></div></div><div><!----></div><div><!----></div></div> <h4>Example</h4> <div class="code-toggle"><ul class="code-language-switcher"><li><a class="active">C++</a></li><li><a>Python</a></li></ul> <div><div class="language-cpp extra-class"><pre class="language-cpp"><code><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;ECSalinity.h&gt;</span></span>
 EC_Salinity ec<span class="token punctuation">;</span>
 
-ec<span class="token punctuation">.</span><span class="token function">setK</span><span class="token punctuation">(</span><span class="token number">10.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ec<span class="token punctuation">.</span><span class="token function">setK</span><span class="token punctuation">(</span><span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token keyword">float</span> sal <span class="token operator">=</span> ec<span class="token punctuation">.</span><span class="token function">measureSalinity</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre></div></div><div><!----></div></div> <h4>Related</h4> <ul><li><a href="/ECSalinity/api.html#setk">setK</a></li> <li><a href="/ECSalinity/api.html#measureec">measureEC</a></li></ul> <h4>Returns</h4> <p>salinity in PSU, -1 on error</p> <div class="warning custom-block"><p class="custom-block-title">WARNING</p> <p>The PSU must be between 2 and 42; a value not within bounds will return -1. The temperature must be within -2 to 35.</p> <p><code>K</code> must be set before taking a reading.</p></div></div> <div class="right"></div></div> <h2 id="measuretemp"><a href="#measuretemp" aria-hidden="true" class="header-anchor">#</a> measureTemp</h2> <div class="split"><div class="left"><p>Starts a temperature measurement.</p> <h4>Usage</h4> <div class="code-toggle"><ul class="code-language-switcher"><li><a class="active">C++</a></li><li><a>Python</a></li><li><a>Shell</a></li></ul> <div><div class="language-cpp extra-class"><pre class="language-cpp"><code>EC_Salinity<span class="token operator">::</span><span class="token function">measureTemp</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre></div></div><div><!----></div><div><!----></div></div> <h4>Example</h4> <div class="code-toggle"><ul class="code-language-switcher"><li><a class="active">C++</a></li><li><a>Python</a></li></ul> <div><div class="language-cpp extra-class"><pre class="language-cpp"><code><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;ECSalinity.h&gt;</span></span>
@@ -157,6 +157,6 @@ EC_Salinity ec<span class="token punctuation">;</span>
         ← <a href="/ECSalinity/" class="prev router-link-active">
           API Reference
         </a></span> <!----></p></div> </div></div></div>
-    <script src="/ECSalinity/assets/js/4.e6aa4c9e.js" defer></script><script src="/ECSalinity/assets/js/app.da32b27e.js" defer></script>
+    <script src="/ECSalinity/assets/js/4.3f65ec58.js" defer></script><script src="/ECSalinity/assets/js/app.27fd0b8d.js" defer></script>
   </body>
 </html>

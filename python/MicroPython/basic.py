@@ -10,10 +10,8 @@ print("\tK: " + str(ec.getK()))
 print("\toffset: " + str(ec.getCalibrateOffset()))
 print("\tdry: " + str(ec.getCalibrateDry()))
 print("\tdual point: " + str(ec.usingDualPoint()))
-print("\tlow reference / read: " + str(ec.getCalibrateLowReference()) +
-      " / " + str(ec.getCalibrateLowReading()))
-print("\thigh reference / reading: " + str(ec.getCalibrateHighReference()) +
-      " / " + str(ec.getCalibrateHighReading()))
+print("\tlow reference / read: " + str(ec.getCalibrateLowReference()) + " / " + str(ec.getCalibrateLowReading()))
+print("\thigh reference / reading: " + str(ec.getCalibrateHighReference()) + " / " + str(ec.getCalibrateHighReading()))
 print("\ttemp. compensation: " + str(ec.usingTemperatureCompensation()))
 print("\t\tconstant: " + str(ec.getTempConstant()))
 print("\tversion: " + (hex(ec.getVersion())))

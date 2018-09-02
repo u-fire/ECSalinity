@@ -30,14 +30,14 @@ void setup()
 
   // the actual temperature of the solution, as provided by some other source of temperature
   // other than the sensor attached to the board. This allows you to only have one temperature
-  // sensor attached to the controller. 
+  // sensor attached to the controller.
   ec.setTemp(actualTemp);
 }
 
 void loop()
 {
   // the parameters mean to use the freshwater/hydroponics temperature coefficient and to not
-  // take a temperatur reading from the sensor on the board.
+  // take a temperature reading from the sensor on the board.
   ec.measureEC(ec.tempCoefEC, false);
   Serial.print("mS: "); Serial.println(ec.mS);
   Serial.println("-----");

@@ -5,7 +5,7 @@
 
    This example is compatible with hardware board version 1c.
 
-   It demonstrates the minimal amount of code and setup to take a reading. 
+   It demonstrates the minimal amount of code and setup to take a reading.
  */
 
 #include <ECSalinity.h>

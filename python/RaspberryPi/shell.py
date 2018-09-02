@@ -96,8 +96,7 @@ class ECShell(cmd.Cmd):
     def do_sal(self, a):
         """measures salinity\nparameters: none"""
         ec.measureSalinity()
-        print("salinity PSU / PPT: " + str(ec.salinityPSU) +
-              " / " + str(ec.salinityPPT))
+        print("salinity PSU / PPT: " + str(ec.salinityPSU) + " / " + str(ec.salinityPPT))
 
     def do_calk(self, solution_mS):
         """calculates the K value for attached probe\nparameters\n\tcalibration solution in mS"""

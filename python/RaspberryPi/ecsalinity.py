@@ -175,13 +175,13 @@ class ecsalinity(object):
 
     def reset(self):
         n = float('nan')
-        self._write_register(EC_K_REGISTER,                  n)
-        self._write_register(EC_CALIBRATE_OFFSET_REGISTER,   n)
-        self._write_register(EC_CALIBRATE_REFHIGH_REGISTER,  n)
-        self._write_register(EC_CALIBRATE_REFLOW_REGISTER,   n)
+        self._write_register(EC_K_REGISTER, n)
+        self._write_register(EC_CALIBRATE_OFFSET_REGISTER, n)
+        self._write_register(EC_CALIBRATE_REFHIGH_REGISTER, n)
+        self._write_register(EC_CALIBRATE_REFLOW_REGISTER, n)
         self._write_register(EC_CALIBRATE_READHIGH_REGISTER, n)
-        self._write_register(EC_CALIBRATE_READLOW_REGISTER,  n)
-        self._write_register(EC_DRY_REGISTER,  n)
+        self._write_register(EC_CALIBRATE_READLOW_REGISTER, n)
+        self._write_register(EC_DRY_REGISTER, n)
         self.setTempConstant(0)
         self.useDualPoint(False)
         self.useTemperatureCompensation(False)
@@ -190,9 +190,9 @@ class ecsalinity(object):
         self._write_register(EC_CALIBRATE_OFFSET_REGISTER, offset)
 
     def setDualPointCalibration(self, refLow, refHigh, readLow, readHigh):
-        self._write_register(EC_CALIBRATE_REFLOW_REGISTER,   refLow)
-        self._write_register(EC_CALIBRATE_REFHIGH_REGISTER,  refHigh)
-        self._write_register(EC_CALIBRATE_READLOW_REGISTER,  readLow)
+        self._write_register(EC_CALIBRATE_REFLOW_REGISTER, refLow)
+        self._write_register(EC_CALIBRATE_REFHIGH_REGISTER, refHigh)
+        self._write_register(EC_CALIBRATE_READLOW_REGISTER, readLow)
         self._write_register(EC_CALIBRATE_READHIGH_REGISTER, readHigh)
 
     def setTempConstant(self, b):
