@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Justin Decker
+// Copyright (c) 2018 Justin Decker
 
 //
 // MIT License
@@ -39,13 +39,17 @@ const float EC_Salinity::tempCoefSalinity = 0.021;
 EC_Salinity::EC_Salinity(uint8_t i2c_address)
 {
   _address = i2c_address;
+  #ifndef ARDUINO_SAMD_ZERO
   Wire.begin();
+  #endif // ifndef ARDUINO_SAMD_ZERO
 }
 
 EC_Salinity::EC_Salinity()
 {
   _address = EC_SALINITY;
+  #ifndef ARDUINO_SAMD_ZERO
   Wire.begin();
+  #endif // ifndef ARDUINO_SAMD_ZERO
 }
 
 #ifdef ESP32
@@ -104,22 +108,19 @@ float EC_Salinity::measureEC(float tempCoefficient, bool newTemp)
     uS      = mS * 1000;
     S       = mS / 1000;
 
+    raw         = _read_register(EC_RAW_REGISTER);
     salinityPSU = _read_register(EC_SALINITY_PSU);
-    salinityPPT = salinityPSU * PSU_TO_PPT_CONVERSION;
-    salinityPPM = salinityPPT * 1000;
   }
   else
   {
-    mS      = -1;
-    PPM_500 = -1;
-    PPM_640 = -1;
-    PPM_700 = -1;
-    uS      = -1;
-    S       = -1;
-
+    mS          = -1;
+    PPM_500     = -1;
+    PPM_640     = -1;
+    PPM_700     = -1;
+    uS          = -1;
+    S           = -1;
     salinityPSU = -1;
-    salinityPPT = -1;
-    salinityPPM = -1;
+    raw         = -1;
   }
 
   return mS;
@@ -209,7 +210,7 @@ void EC_Salinity::calibrateProbe(float solutionEC, float tempCoef)
   _write_register(EC_TEMPCOEF_REGISTER, tempCoef);
   _write_register(EC_SOLUTION_REGISTER, solutionEC);
   _send_command(EC_CALIBRATE_PROBE);
-  delay(EC_EC_MEASUREMENT_TIME + 750);
+  delay(EC_EC_MEASUREMENT_TIME);
   useDualPoint(dualpoint);
 }
 
@@ -231,7 +232,7 @@ void EC_Salinity::calibrateProbeLow(float solutionEC, float tempCoef)
   _write_register(EC_TEMPCOEF_REGISTER, tempCoef);
   _write_register(EC_SOLUTION_REGISTER, solutionEC);
   _send_command(EC_CALIBRATE_LOW);
-  delay(EC_EC_MEASUREMENT_TIME + 750);
+  delay(EC_EC_MEASUREMENT_TIME);
   useDualPoint(dualpoint);
 }
 
@@ -253,34 +254,8 @@ void EC_Salinity::calibrateProbeHigh(float solutionEC, float tempCoef)
   _write_register(EC_TEMPCOEF_REGISTER, tempCoef);
   _write_register(EC_SOLUTION_REGISTER, solutionEC);
   _send_command(EC_CALIBRATE_HIGH);
-  delay(EC_EC_MEASUREMENT_TIME + 750);
+  delay(EC_EC_MEASUREMENT_TIME);
   useDualPoint(dualpoint);
-}
-
-/*!
-    \code
-      EC_Salinity::calibrateDry();
-    \endcode
-
-   \brief Determines the dry reading of the probe and saves the result in EEPROM.
-
- */
-void EC_Salinity::calibrateDry()
-{
-  _send_command(EC_DRY);
-  delay(EC_EC_MEASUREMENT_TIME + 750);
-}
-
-/*!
-    \code
-      EC_Salinity::getCalibrateDry();
-    \endcode
-
-   \brief Gets the dry reading of the probe and saves the result in EEPROM
- */
-float EC_Salinity::getCalibrateDry()
-{
-  return _read_register(EC_DRY_REGISTER);
 }
 
 /*!
@@ -304,33 +279,6 @@ void EC_Salinity::setDualPointCalibration(float refLow,
   _write_register(EC_CALIBRATE_REFHIGH_REGISTER,  refHigh);
   _write_register(EC_CALIBRATE_READLOW_REGISTER,  readLow);
   _write_register(EC_CALIBRATE_READHIGH_REGISTER, readHigh);
-  delay(750);
-}
-
-/*!
-   \code
-    EC_Salinity::setK(1.121);
-   \endcode
-
-   \brief Updates the device with a new cell constant and saves it in EEPROM
-   \param k   the new cell constant
- */
-void EC_Salinity::setK(float k)
-{
-  _write_register(EC_K_REGISTER, k);
-}
-
-/*!
-   \code
-    float k = EC_Salinity::getK();
-   \endcode
-
-   \brief Retrieves the cell constant from the device.
-   \return   the new cell constant
- */
-float EC_Salinity::getK()
-{
-  return _read_register(EC_K_REGISTER);
 }
 
 /*!
@@ -429,8 +377,8 @@ void EC_Salinity::useDualPoint(bool b)
 }
 
 /*!
-   \brief Retrieves the firmware version of the device
-   \return   version of firmware
+   \brief Retrieves the hardware version of the device
+   \return   version of hardware
  */
 uint8_t EC_Salinity::getVersion()
 {
@@ -438,18 +386,31 @@ uint8_t EC_Salinity::getVersion()
 }
 
 /*!
+   \brief Retrieves the firmware version of the device
+   \return   version of firmware
+ */
+uint8_t EC_Salinity::getFirmware()
+{
+  return _read_byte(EC_FW_VERSION_REGISTER);
+}
+
+/*!
    \brief Resets all the stored calibration information.
  */
 void EC_Salinity::reset()
 {
-  _write_register(EC_K_REGISTER,                  NAN);
-  _write_register(EC_CALIBRATE_OFFSET_REGISTER,   NAN);
-  _write_register(EC_CALIBRATE_REFHIGH_REGISTER,  NAN);
-  _write_register(EC_CALIBRATE_REFLOW_REGISTER,   NAN);
+  _write_register(EC_CALIBRATE_OFFSET_REGISTER, NAN);
+  delay(10);
+  _write_register(EC_CALIBRATE_REFHIGH_REGISTER, NAN);
+  delay(10);
+  _write_register(EC_CALIBRATE_REFLOW_REGISTER, NAN);
+  delay(10);
   _write_register(EC_CALIBRATE_READHIGH_REGISTER, NAN);
-  _write_register(EC_CALIBRATE_READLOW_REGISTER,  NAN);
-  _write_register(EC_DRY_REGISTER,                NAN);
-  setTempConstant(0);
+  delay(10);
+  _write_register(EC_CALIBRATE_READLOW_REGISTER, NAN);
+  delay(10);
+  setTempConstant(25);
+  delay(10);
   useDualPoint(false);
   useTemperatureCompensation(false);
 }
@@ -528,6 +489,23 @@ bool EC_Salinity::usingDualPoint()
 
   retval = _read_byte(EC_CONFIG_REGISTER);
   return (retval >> 0)  & 0x01;
+}
+
+/*!
+   \brief Determines if the device is connected
+   \return   true or false
+ */
+bool EC_Salinity::connected()
+{
+  uint8_t retval;
+
+  retval = _read_byte(EC_VERSION_REGISTER);
+  if (retval != 0xFF) {
+    return true;
+  }
+  else {
+    return false;
+  }
 }
 
 void EC_Salinity::_change_register(uint8_t r)

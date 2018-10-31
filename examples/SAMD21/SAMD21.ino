@@ -5,8 +5,11 @@
 
    This example is compatible with hardware board version 2.
 
-   It demonstrates the minimal amount of code and setup to take a reading
-   using temperature compensation.
+   It demonstrates the minimal amount of code and setup to take a reading.
+
+   There is a slight difference in the SAMD21 core. The only difference
+   between this example and all the others is that `Wire.begin();` is
+   called in setup().
  */
 
 #include <ECSalinity.h>
@@ -15,21 +18,15 @@ EC_Salinity ec;
 
 void setup()
 {
+  Wire.begin();
   Serial.begin(9600);
-
-  // tell the device to use temperature compensation
-  ec.useTemperatureCompensation(true);
-
-  // the temperature to adjust the readings to
-  ec.setTempConstant(25);
 }
 
 void loop()
 {
-  // Calling measureEC with no parameters will automatically take a temperature reading
-  // if useTemperatureCompensation has been set to true.
   ec.measureEC();
   Serial.print("mS/cm: "); Serial.println(ec.mS);
+  Serial.print("TDS: "); Serial.println(ec.PPM_500);
   Serial.println("-----");
   delay(1000);
 }

@@ -3,9 +3,9 @@
    github.com/u-fire for feature requests, bug reports, and  questions
    questions@ufire.co to get in touch with someone
 
-   This example is compatible with hardware board version 1c.
+   This example is compatible with hardware board version 2.
 
-   It demonstrates the minimal amount of code to take a temperature reading. 
+   It demonstrates the minimal amount of code to take a temperature reading.
  */
 
 #include <ECSalinity.h>
@@ -20,8 +20,8 @@ void setup()
 void loop()
 {
   ec.measureTemp();
-  Serial.print("Temp C/F: "); 
-  Serial.print(ec.tempC); 
+  Serial.print("Temp C/F: ");
+  Serial.print(ec.tempC);
   Serial.print("/");
   Serial.println(ec.tempF);
   Serial.println("-----");

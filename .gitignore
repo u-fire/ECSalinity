@@ -2,3 +2,4 @@ documentation.sh
 Doxyfile
 api.md
 ./rust/target/
+./javascript/
