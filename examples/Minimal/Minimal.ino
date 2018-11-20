@@ -5,7 +5,8 @@
 
    This example is compatible with hardware board version 2.
 
-   It demonstrates the minimal amount of code and setup to take a reading.
+   It demonstrates the minimal amount of code and setup to take a reading from 
+   a calibrated device.
  */
 
 #include <ECSalinity.h>
@@ -15,16 +16,15 @@ EC_Salinity ec;
 void setup()
 {
   Serial.begin(9600);
-
-  // the minimal configuration is setting the cell constant, referred to as K
-  ec.calibrateProbe(1.0, ec.tempCoefEC);
 }
 
 void loop()
 {
   ec.measureEC();
-  Serial.print("mS/cm: "); Serial.println(ec.mS);
-  Serial.print("TDS: "); Serial.println(ec.PPM_500);
+  Serial.print("mS/cm: ");
+  Serial.println(ec.mS);
+  Serial.print("TDS: ");
+  Serial.println(ec.PPM_500);
   Serial.println("-----");
   delay(1000);
 }

@@ -45,28 +45,6 @@ void uFire_EC_BLE::startBLE() {
   ptemp_Characteristic->addDescriptor(temp_Descriptor);
   pService->addCharacteristic(ptemp_Characteristic);
 
-  // setup the K characteristic
-  pk_Characteristic = pService->createCharacteristic(
-    K_UUID,
-    BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE
-    );
-  BLEDescriptor *k_Descriptor = new BLEDescriptor((uint16_t)0x2901);
-  k_Descriptor->setValue("K");
-  pk_Characteristic->addDescriptor(k_Descriptor);
-  pk_Characteristic->setCallbacks(new kCallback());
-  pService->addCharacteristic(pk_Characteristic);
-
-  // setup the offset characteristic
-  poffset_Characteristic = pService->createCharacteristic(
-    OFFSET_UUID,
-    BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE
-    );
-  BLEDescriptor *offset_Descriptor = new BLEDescriptor((uint16_t)0x2901);
-  offset_Descriptor->setValue("offset");
-  poffset_Characteristic->addDescriptor(offset_Descriptor);
-  poffset_Characteristic->setCallbacks(new offsetCallback());
-  pService->addCharacteristic(poffset_Characteristic);
-
   // setup the high ref characteristic
   phigh_ref_Characteristic = pService->createCharacteristic(
     HIGH_REF_UUID,
@@ -121,17 +99,6 @@ void uFire_EC_BLE::startBLE() {
   ptc_Characteristic->addDescriptor(tc_Descriptor);
   ptc_Characteristic->setCallbacks(new tcCallback());
   pService->addCharacteristic(ptc_Characteristic);
-
-  // add dual point characteristic
-  pdp_Characteristic = pService->createCharacteristic(
-    DUAL_POINT_UUID,
-    BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE
-    );
-  BLEDescriptor *dp_Descriptor = new BLEDescriptor((uint16_t)0x2901);
-  dp_Descriptor->setValue("dual point");
-  pdp_Characteristic->addDescriptor(dp_Descriptor);
-  pdp_Characteristic->setCallbacks(new dpCallback());
-  pService->addCharacteristic(pdp_Characteristic);
 
   // add version chracteristic
   pversion_Characteristic = pService->createCharacteristic(

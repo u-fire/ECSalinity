@@ -21,6 +21,7 @@ void setup()
   ec.useTemperatureCompensation(true);
 
   // the temperature to adjust the readings to
+  // 25 C is the initial default
   ec.setTempConstant(25);
 }
 
@@ -29,7 +30,8 @@ void loop()
   // Calling measureEC with no parameters will automatically take a temperature reading
   // if useTemperatureCompensation has been set to true.
   ec.measureEC();
-  Serial.print("mS/cm: "); Serial.println(ec.mS);
+  Serial.print("mS/cm: ");
+  Serial.println(ec.mS);
   Serial.println("-----");
   delay(1000);
 }

@@ -11,20 +11,19 @@
 
  */
 
-#include "uFire_EC_BLE.h"
+#include <uFire_EC_BLE.h>
 
 // On the ESP32, the I2C pins can be chosen. In this case, sda=19 and scl=23
 uFire_EC_BLE ec_ble(19, 23);
 
-void setup() {
-  // minimal setup of the EC_Salinity interface
-  ec_ble.setK(1.0);
-
+void setup()
+{
   // start the BLE server
   ec_ble.startBLE();
 }
 
-void loop() {
+void loop()
+{
   // loop through and take continous measurements
   ec_ble.measureEC();
   ec_ble.measureTemp();

@@ -19,7 +19,7 @@ void setup()
 
 void loop()
 {
-  ec.measureSalinity();
+  ec.measureSW();
   Serial.print("PSU: ");
   Serial.println(ec.salinityPSU);
   Serial.println("-----");

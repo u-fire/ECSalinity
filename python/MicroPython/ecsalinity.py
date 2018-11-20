@@ -8,86 +8,69 @@ global i2c
 
 EC_SALINITY = 0x3c                  # EC Salinity probe I2C address
 
-EC_MEASURE_EC = 80                  # Command to start an EC measure
-EC_MEASURE_TEMP = 40                # Command to measure temperature
-EC_CALIBRATE_PROBE = 20             # Command to calibrate the probe
-EC_CALIBRATE_LOW = 10               # Command to calibrate the low point of the probe
-EC_CALIBRATE_HIGH = 8               # Command to calibrate the high point of the probe
-EC_I2C = 1                          # Command to change the i2c address
-EC_DRY = 81                         # Command to calibrate the probe for being dry
+EC_MEASURE_EC = 80
+EC_MEASURE_SW = 40
+EC_MEASURE_TEMP = 20
+EC_CALIBRATE_EC = 10
+EC_CALIBRATE_SW = 8
+EC_I2C = 4
+EC_READ = 2
+EC_WRITE = 1
 
-EC_VERSION_REGISTER = 0             # version register
-EC_MS_REGISTER = 1                  # mS register
-EC_TEMP_REGISTER = 5                # temperature in C register
-EC_K_REGISTER = 9                   # cell constant register
-EC_SOLUTION_REGISTER = 13           # calibration solution register
-EC_TEMPCOEF_REGISTER = 17           # temperatue coefficient register
-EC_CALIBRATE_REFHIGH_REGISTER = 21  # reference low register
-EC_CALIBRATE_REFLOW_REGISTER = 25   # reference high register
-EC_CALIBRATE_READHIGH_REGISTER = 29  # reading low register
-EC_CALIBRATE_READLOW_REGISTER = 33  # reading high register
-EC_CALIBRATE_OFFSET_REGISTER = 37   # caliration offset
-EC_SALINITY_PSU = 41                # Salinity register
-EC_DRY_REGISTER = 45                # Dry calibration register
-EC_TEMP_COMPENSATION_REGISTER = 49  # temperature compensation register
-EC_CONFIG_REGISTER = 50             # config register
-EC_TASK_REGISTER = 51               # task register
+EC_VERSION_REGISTER = 0             # version register */
+EC_FW_VERSION_REGISTER = 1          # firmware version register */
+EC_MS_REGISTER = 2                  # mS register */
+EC_SALINITY_PSU = 6                 # salinity register */
+EC_TEMP_REGISTER = 10               # temperature in C register */
+EC_RAW_REGISTER = 14                # raw count register */
+EC_SOLUTION_REGISTER = 18           # calibration solution register */
+EC_CALIBRATE_EC_REGISTER = 22       # temperatue coefficient register */
+EC_CALIBRATE_SW_REGISTER = 26       # reference low register */
+EC_TEMP_COMPENSATION_REGISTER = 30  # temperature compensation register */
+EC_BUFFER_REGISTER = 34             # buffer register */
+EC_CONFIG_REGISTER = 38             # config register */
+EC_TASK_REGISTER = 39               # task register */
 
-EC_EC_MEASUREMENT_TIME = 250          # delay between EC measurements
+EC_EC_MEASUREMENT_TIME = 250        # delay between EC measurements
 EC_TEMP_MEASURE_TIME = 750          # delay for temperature measurement
 
-EC_DUALPOINT_CONFIG_BIT = 0         # dual point config bit
-EC_TEMP_COMPENSATION_CONFIG_BIT = 1  # temperature compensation config bit
-
-PSU_TO_PPT_CONVERSION = 1.004715    # conversion factor for PSU to PPT
+EC_TEMP_COMPENSATION_CONFIG_BIT = 0  # temperature compensation config bit
 
 
 class ecsalinity(object):
     S = 0
     mS = 0
     uS = 0
+    raw = 0
     PPM_500 = 0
     PPM_640 = 0
     PPM_700 = 0
     salinityPSU = 0
-    salinityPPT = 0
-    salinityPPM = 0
     tempC = 0
     tempF = 0
-    tempCoefEC = 0.019
-    tempCoefSalinity = 0.021
     address = EC_SALINITY
 
-    def __init__(self, i2c_bus, scl, sda, **kwargs):
+    def __init__(self, sda, scl, address=EC_SALINITY, **kwargs):
         global i2c
-        i2c = I2C(i2c_bus, Pin(scl), Pin(sda))
+        self.address = address
+        i2c = I2C(-1, Pin(scl), Pin(sda))
 
-    def measureTemp(self):
-        self._send_command(EC_MEASURE_TEMP)
-        time.sleep(EC_TEMP_MEASURE_TIME / 1000.0)
-        self.tempC = self._read_register(EC_TEMP_REGISTER)
-        self.tempF = ((self.tempC * 9) / 5) + 32
-        return self.tempC
-
-    def setTemp(self, temp_C):
-        self._write_register(EC_TEMP_REGISTER, temp_C)
-        self.tempC = temp_C
-        self.tempF = ((self.tempC * 9) / 5) + 32
-
-    def measureEC(self, tempCoefficient=None, newTemp=None):
-        if tempCoefficient is None:
-            tempCoefficient = self.tempCoefEC
-
+# measurements
+    def _measure(self, EC, newTemp=None):
         if newTemp is True:
             self.measureTemp()
 
-        if self.usingTemperatureCompensation() is True:
-            self.measureTemp()
+        if EC is True:
+            self._send_command(EC_MEASURE_EC)
+        else:
+            self._send_command(EC_MEASURE_SW)
 
-        self._write_register(EC_TEMPCOEF_REGISTER, tempCoefficient)
-        self._send_command(EC_MEASURE_EC)
         time.sleep(EC_EC_MEASUREMENT_TIME / 1000.0)
         self.mS = self._read_register(EC_MS_REGISTER)
+        self.raw = self._read_register(EC_RAW_REGISTER)
+
+        if self.raw == 0:
+            self.mS = float('inf')
 
         if math.isinf(self.mS) is not True:
             self.PPM_500 = self.mS * 500
@@ -95,6 +78,8 @@ class ecsalinity(object):
             self.PPM_700 = self.mS * 700
             self.uS = self.mS * 1000
             self.S = self.mS / 1000
+
+            self.salinityPSU = self._read_register(EC_SALINITY_PSU)
         else:
             self.mS = -1
             self.PPM_500 = -1
@@ -102,98 +87,56 @@ class ecsalinity(object):
             self.PPM_700 = -1
             self.uS = -1
             self.S = -1
+            self.salinityPSU = -1
 
-        self.salinityPSU = self._read_register(EC_SALINITY_PSU)
-        self.salinityPPT = self.salinityPSU * PSU_TO_PPT_CONVERSION
-        self.salinityPPM = self.salinityPPT * 1000
         return self.mS
 
-    def measureSalinity(self):
-        self.measureEC(self.tempCoefSalinity, self.usingTemperatureCompensation())
-        return self.salinityPSU
+    def measureEC(self, newTemp=None):
+        if newTemp is None:
+            return self._measure(True, self.usingTemperatureCompensation())
+        else:
+            return self._measure(True, newTemp)
 
-    def calibrateProbe(self, solutionEC, tempCoef):
-        dualpoint = self.usingDualPoint()
+    def measureSW(self, newTemp=None):
+        if newTemp is None:
+            return self._measure(False, self.usingTemperatureCompensation())
+        else:
+            return self._measure(False, newTemp)
 
-        self.useDualPoint(0)
-        self._write_register(EC_TEMPCOEF_REGISTER, tempCoef)
+    def measureTemp(self):
+        self._send_command(EC_MEASURE_TEMP)
+        time.sleep(EC_TEMP_MEASURE_TIME / 1000.0)
+        self.tempC = self._read_register(EC_TEMP_REGISTER)
+
+        if self.tempC == -127.0:
+            self.tempF = -127.0
+        else:
+            self.tempF = ((self.tempC * 9) / 5) + 32
+
+        return self.tempC
+
+# calibration
+    def calibrateEC(self, solutionEC):
         self._write_register(EC_SOLUTION_REGISTER, solutionEC)
-        self._send_command(EC_CALIBRATE_PROBE)
-        time.sleep(EC_EC_MEASUREMENT_TIME / 1000.0)
-        self.useDualPoint(dualpoint)
+        self._send_command(EC_CALIBRATE_EC)
+        time.sleep(EC_TEMP_MEASURE_TIME / 1000.0)
 
-    def calibrateProbeLow(self, solutionEC, tempCoef):
-        dualpoint = self.usingDualPoint()
+    def getCalibrationEC(self):
+        return self._read_register(EC_CALIBRATE_EC_REGISTER)
 
-        self.useDualPoint(0)
-        self._write_register(EC_TEMPCOEF_REGISTER, tempCoef)
-        self._write_register(EC_SOLUTION_REGISTER, solutionEC)
-        self._send_command(EC_CALIBRATE_LOW)
-        time.sleep(EC_EC_MEASUREMENT_TIME / 1000.0)
-        self.useDualPoint(dualpoint)
+    def calibrateSW(self, solutionSW):
+        self._write_register(EC_SOLUTION_REGISTER, solutionSW)
+        self._send_command(EC_CALIBRATE_SW)
+        time.sleep(EC_TEMP_MEASURE_TIME / 1000.0)
 
-    def calibrateProbeHigh(self, solutionEC, tempCoef):
-        dualpoint = self.usingDualPoint()
+    def getCalibrationSW(self):
+        return self._read_register(EC_CALIBRATE_SW_REGISTER)
 
-        self.useDualPoint(0)
-        self._write_register(EC_TEMPCOEF_REGISTER, tempCoef)
-        self._write_register(EC_SOLUTION_REGISTER, solutionEC)
-        self._send_command(EC_CALIBRATE_HIGH)
-        time.sleep(EC_EC_MEASUREMENT_TIME / 1000.0)
-        self.useDualPoint(dualpoint)
-
-    def calibrateDry(self):
-        self._send_command(EC_DRY)
-        time.sleep(EC_EC_MEASUREMENT_TIME / 1000.0)
-
-    def setK(self, k):
-        self._write_register(EC_K_REGISTER, k)
-
-    def getK(self):
-        return self._read_register(EC_K_REGISTER)
-
-    def getVersion(self):
-        return self._read_byte(EC_VERSION_REGISTER)
-
-    def getCalibrateOffset(self):
-        return self._read_register(EC_CALIBRATE_OFFSET_REGISTER)
-
-    def getCalibrateHighReference(self):
-        return self._read_register(EC_CALIBRATE_REFHIGH_REGISTER)
-
-    def getCalibrateLowReference(self):
-        return self._read_register(EC_CALIBRATE_REFLOW_REGISTER)
-
-    def getCalibrateHighReading(self):
-        return self._read_register(EC_CALIBRATE_READHIGH_REGISTER)
-
-    def getCalibrateLowReading(self):
-        return self._read_register(EC_CALIBRATE_READLOW_REGISTER)
-
-    def getCalibrateDry(self):
-        return self._read_register(EC_DRY_REGISTER)
-
-    def reset(self):
-        n = float('nan')
-        self._write_register(EC_K_REGISTER, n)
-        self._write_register(EC_CALIBRATE_OFFSET_REGISTER, n)
-        self._write_register(EC_CALIBRATE_REFHIGH_REGISTER, n)
-        self._write_register(EC_CALIBRATE_REFLOW_REGISTER, n)
-        self._write_register(EC_CALIBRATE_READHIGH_REGISTER, n)
-        self._write_register(EC_CALIBRATE_READLOW_REGISTER, n)
-        self._write_register(EC_DRY_REGISTER, n)
-        self.setTempConstant(0)
-        self.useDualPoint(False)
-        self.useTemperatureCompensation(False)
-
-    def setCalibrateOffset(self, offset):
-        self._write_register(EC_CALIBRATE_OFFSET_REGISTER, offset)
-
-    def setDualPointCalibration(self, refLow, refHigh, readLow, readHigh):
-        self._write_register(EC_CALIBRATE_REFLOW_REGISTER, refLow)
-        self._write_register(EC_CALIBRATE_REFHIGH_REGISTER, refHigh)
-        self._write_register(EC_CALIBRATE_READLOW_REGISTER, readLow)
-        self._write_register(EC_CALIBRATE_READHIGH_REGISTER, readHigh)
+# temperature
+    def setTemp(self, temp_C):
+        self._write_register(EC_TEMP_REGISTER, temp_C)
+        self.tempC = temp_C
+        self.tempF = ((self.tempC * 9) / 5) + 32
 
     def setTempConstant(self, b):
         self._write_byte(EC_TEMP_COMPENSATION_REGISTER, b)
@@ -201,30 +144,52 @@ class ecsalinity(object):
     def getTempConstant(self):
         return self._read_byte(EC_TEMP_COMPENSATION_REGISTER)
 
-    def setI2CAddress(self, i2cAddress):
-        self._write_register(EC_SOLUTION_REGISTER, int(i2cAddress))
-        self._send_command(EC_I2C)
-        self.address = int(i2cAddress)
-
     def useTemperatureCompensation(self, b):
         retval = self._read_byte(EC_CONFIG_REGISTER)
 
         retval = self._bit_set(retval, EC_TEMP_COMPENSATION_CONFIG_BIT, b)
         self._write_byte(EC_CONFIG_REGISTER, retval)
 
-    def useDualPoint(self, b):
-        retval = self._read_byte(EC_CONFIG_REGISTER)
-
-        retval = self._bit_set(retval, EC_DUALPOINT_CONFIG_BIT, b)
-        self._write_byte(EC_CONFIG_REGISTER, retval)
-
     def usingTemperatureCompensation(self):
         retval = self._read_byte(EC_CONFIG_REGISTER)
-        return (retval >> 1) & 0x01
+        return (retval >> EC_TEMP_COMPENSATION_CONFIG_BIT) & 0x01
 
-    def usingDualPoint(self):
-        retval = self._read_byte(EC_CONFIG_REGISTER)
-        return (retval >> 0) & 0x01
+# utilities
+    def getVersion(self):
+        return self._read_byte(EC_VERSION_REGISTER)
+
+    def getFirmware(self):
+        return self._read_byte(EC_FW_VERSION_REGISTER)
+
+    def reset(self):
+        n = float('nan')
+        self._write_register(EC_CALIBRATE_EC_REGISTER, n)
+        self._write_register(EC_CALIBRATE_SW_REGISTER, n)
+        self.setTempConstant(25)
+        self.useTemperatureCompensation(False)
+
+    def setI2CAddress(self, i2cAddress):
+        self._write_register(EC_BUFFER_REGISTER, float(i2cAddress))
+        self._send_command(EC_I2C)
+        self.address = int(i2cAddress)
+
+    def connected(self):
+        retval = self._read_byte(EC_VERSION_REGISTER)
+
+        if retval != 0xFF:
+            return True
+        else:
+            return False
+
+    def readEEPROM(self, address):
+        self._write_register(EC_SOLUTION_REGISTER, int(address))
+        self._send_command(EC_READ)
+        return self._read_register(EC_BUFFER_REGISTER)
+
+    def writeEEPROM(self, address, val):
+        self._write_register(EC_SOLUTION_REGISTER, int(address))
+        self._write_register(EC_BUFFER_REGISTER, float(val))
+        self._send_command(EC_WRITE)
 
     def _bit_set(self, v, index, x):
         mask = 1 << index

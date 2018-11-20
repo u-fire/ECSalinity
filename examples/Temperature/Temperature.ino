@@ -20,9 +20,9 @@ void setup()
 void loop()
 {
   ec.measureTemp();
-  Serial.print("Temp C/F: ");
+  Serial.print("Temp C|F: ");
   Serial.print(ec.tempC);
-  Serial.print("/");
+  Serial.print("|");
   Serial.println(ec.tempF);
   Serial.println("-----");
   delay(1000);

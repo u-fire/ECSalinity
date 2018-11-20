@@ -5,32 +5,60 @@
 
    This example is compatible with hardware board version 2.
 
-   It demonstrates the minimal amount of code to use single point calibration.
+   It show's a user interactive dual point calibration routine.
  */
 
 #include <ECSalinity.h>
 
 EC_Salinity ec;
 
-float calibrationSolution_mS = 2.0;
+void calibrateLow()
+{
+  Serial.println("Put the probe in the reference low solution and wait for the readings to stabilize.");
+  Serial.println("Enter what the low solution's measurement should be in mS/cm and press enter.");
+
+  while (Serial.available() == 0)
+  {
+    ec.measureEC();
+    delay(500);
+    Serial.print("low mS/cm: ");
+    Serial.println(ec.mS);
+  }
+
+  float low_mS = Serial.readStringUntil('/r').toFloat();
+  ec.calibrateProbeLow(low_mS, ec.tempCoefEC);
+}
+
+void calibrateHigh()
+{
+  Serial.println("Put the probe in the reference high solution and wait for the readings to stabilize.");
+  Serial.println("Enter what the high solution's measurement should be in mS/cm and press enter.");
+
+  while (Serial.available() == 0)
+  {
+    ec.measureEC();
+    delay(500);
+    Serial.print("high mS/cm: ");
+    Serial.println(ec.mS);
+  }
+
+  float high_mS = Serial.readStringUntil('/r').toFloat();
+  ec.calibrateProbeHigh(high_mS, ec.tempCoefEC);
+}
 
 void setup()
 {
   Serial.begin(9600);
-
-  // Put the probe in the calibration solution for around 5 minutes. This example is for freshwater/hydroponics,
-  // and uses the temperature coefficient for that (tempCoefEC) rather than for salinity (tempCoefSalinity).
-  ec.calibrateProbe(calibrationSolution_mS, ec.tempCoefEC);
-
-  // The probe will now automatically correct the readings it takes. Single point is best for when you are only
-  // expecting to measure across a small range. Your calibration solution should ideally be in the
-  // middle of your range.
+  Serial.flush();
+  ec.reset();
+  calibrateLow();
+  calibrateHigh();
 }
 
 void loop()
 {
   ec.measureEC();
-  Serial.print("mS/cm: "); Serial.println(ec.mS);
-  Serial.println("-----");
+  Serial.print("mS/cm: ");
+  Serial.println(ec.mS);
   delay(1000);
 }

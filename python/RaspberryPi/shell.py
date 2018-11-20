@@ -10,16 +10,15 @@ class ECShell(cmd.Cmd):
 
     def do_config(self, a):
         """prints out all the configuration data\nparameters: none"""
-        print("config: ")
-        print("\tK: " + str(ec.getK()))
-        print("\toffset: " + str(ec.getCalibrateOffset()))
-        print("\tdry: " + str(ec.getCalibrateDry()))
-        print("\tdual point: " + str(ec.usingDualPoint()))
-        print("\tlow reference / read: " + str(ec.getCalibrateLowReference()) + " / " + str(ec.getCalibrateLowReading()))
-        print("\thigh reference / reading: " + str(ec.getCalibrateHighReference()) + " / " + str(ec.getCalibrateHighReading()))
+        print("EC Interface Config: " +
+              'connected' if ec.connected() else '**disconnected**')
+        print("\tcalibration: ")
+        print("\t  EC: " + str(ec.getCalibrationEC()))
+        print("\t  SW: " + str(ec.getCalibrationSW()))
         print("\ttemp. compensation: " + str(ec.usingTemperatureCompensation()))
         print("\t\tconstant: " + str(ec.getTempConstant()))
-        print("\tversion: " + (hex(ec.getVersion())))
+        print("\tversion: " + (str(ec.getVersion())) +
+              "." + (str(ec.getFirmware())))
 
     def do_reset(self, a):
         """reset all saved values\nparameters: none"""
@@ -32,40 +31,18 @@ class ECShell(cmd.Cmd):
         else:
             ec.measureTemp()
 
+        ec.measureTemp()
         print("C/F: " + str(ec.tempC) + " / " + str(ec.tempF))
 
-    def do_cal(self, solution_mS):
-        """calibrates the device\nparameters:\n\tcalibration solution in mS"""
-        if solution_mS:
-            ec.calibrateProbe(float(solution_mS), ec.tempCoefEC)
-
-        print("offset: " + str(ec.getCalibrateOffset()))
-
-    def do_k(self, k):
-        """returns or sets K\nparameters\n\tnew value for K"""
-        if k:
-            ec.setK(float(k))
-
-        print(ec.getK())
+    def do_raw(self, a):
+        """starts an EC measurement\nparameters: none"""
+        ec.measureEC()
+        print("raw: " + str(ec.raw))
 
     def do_ec(self, a):
         """starts an EC measurement\nparameters: none"""
         ec.measureEC()
         print("mS: " + str(ec.mS))
-
-    def do_low(self, low_reference_mS):
-        """returns or sets the low reference/reading values\nparameters\n\tlow reference solution in mS"""
-        if low_reference_mS:
-            ec.calibrateProbeLow(float(low_reference_mS), ec.tempCoefEC)
-
-        print("\tlow reference / read: " + str(ec.getCalibrateLowReference()) + " / " + str(ec.getCalibrateLowReading()))
-
-    def do_high(self, high_reference_mS):
-        """returns or sets the high referencen/reading values\nparameters\n\thigh reference solution in mS"""
-        if high_reference_mS:
-            ec.calibrateProbeHigh(float(high_reference_mS), ec.tempCoefEC)
-
-        print("\thigh reference / reading: " + str(ec.getCalibrateHighReference()) + " / " + str(ec.getCalibrateHighReading()))
 
     def do_tc(self, arg):
         """returns or sets temperature compensation information\nparameters\n\tbool to use compensation\n\ttemperature constant to use (255 for actual)"""
@@ -80,50 +57,39 @@ class ECShell(cmd.Cmd):
         print("\ttemp. compensation: " + str(ec.usingTemperatureCompensation()))
         print("\t\tconstant: " + str(ec.getTempConstant()))
 
-    def do_dp(self, useDP):
-        """returns or sets dual point use\nparameters\n\tbool 0/1"""
-        if useDP:
-            ec.useDualPoint(int(useDP))
-
-        print("\tdual point: " + str(ec.usingDualPoint()))
-
-    def do_dry(self, a):
-        """Determines the probes dry reading"""
-        ec.calibrateDry()
-
-        print("\tdry: " + str(ec.getCalibrateDry()))
-
-    def do_sal(self, a):
+    def do_sw(self, a):
         """measures salinity\nparameters: none"""
-        ec.measureSalinity()
-        print("salinity PSU / PPT: " + str(ec.salinityPSU) + " / " + str(ec.salinityPPT))
-
-    def do_calk(self, solution_mS):
-        """calculates the K value for attached probe\nparameters\n\tcalibration solution in mS"""
-        if solution_mS:
-            ec.calculateK(float(solution_mS), ec.tempCoefEC)
-
-        print("\tK: " + str(ec.getK()))
+        ec.measureSW()
+        print("salinity PSU: " + str(ec.salinityPSU))
 
     def do_data(self, a):
         """prints all the data registers"""
+        print("raw: " + str(ec.raw))
         print("S: " + str(ec.S))
         print("mS: " + str(ec.mS))
         print("uS: " + str(ec.uS))
-        print("TDS 500 / 640 / 700: " + str(ec.PPM_500) + " / " + str(ec.PPM_640) + " / " + str(ec.PPM_700))
-        print("salinity PSU / PPT: " + str(ec.salinityPSU) + " / " + str(ec.salinityPPT))
+        print("TDS 500 | 640 | 700: " + str(ec.PPM_500) +
+              " | " + str(ec.PPM_640) + " | " + str(ec.PPM_700))
+        print("salinity PSU: " + str(ec.salinityPSU))
 
     def do_version(self, a):
         """prints the version register"""
-        print("\tversion: " + (hex(ec.getVersion())))
+        print("\tversion: " + (str(ec.getVersion())) +
+              "." + (str(ec.getFirmware())))
 
     def do_i2c(self, i2cAddress):
         """changes the I2C address"""
         ec.setI2CAddress(i2cAddress)
 
+    def do_read(self, address):
+        print(ec.readEEPROM(address))
+
+    def do_write(self, arg):
+        a = arg.split()
+        ec.writeEEPROM(a[0], a[1])
+
     def do_EOF(self, line):
         return True
 
 
-if __name__ == '__main__':
-    ECShell().cmdloop()
+ECShell().cmdloop()
