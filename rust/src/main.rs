@@ -6,7 +6,7 @@ fn main() {
     let mut ec = EcProbe::new("/dev/i2c-3", 0x3c).unwrap();
 
     println!("Config:");
-    println!("	calibration: {}");
+    println!("	calibration:");
     println!(
         "	EC: {}",
         ec.get_calibration_ec().unwrap()
@@ -25,7 +25,7 @@ fn main() {
     );
 
     loop {
-        let ms = ec.measure_ec(0.019).unwrap();
+        let ms = ec.measure_ec(true).unwrap();
         let temp = ec.measure_temp().unwrap();
 
         println!("mS: {}", ms);

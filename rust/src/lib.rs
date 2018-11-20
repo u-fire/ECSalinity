@@ -69,8 +69,7 @@ impl EcProbe {
     /// ec.measure_temp();
     /// ```
     pub fn measure_temp(&mut self) -> Result<(f32), Box<LinuxI2CError>> {
-        self.dev
-            .smbus_write_byte_data(EC_TASK_REGISTER, EC_MEASURE_TEMP)?;
+        self.dev.smbus_write_byte_data(EC_TASK_REGISTER, EC_MEASURE_TEMP)?;
         thread::sleep(Duration::from_millis(EC_TEMP_MEASURE_TIME));
 
         Ok(self._read_register(EC_TEMP_REGISTER)?)
@@ -89,57 +88,69 @@ impl EcProbe {
         Ok(())
     }
 
-    /// Calibrates the dual-point values for the low reading, in mS, and saves them in the
+    /// Calibrates the EC range of measurement, in mS, and saves them in the
     /// devices's EEPROM.
     ///
     /// # Example
     /// ```
     /// let mut ec = ufire_ec::EcProbe::new("/dev/i2c-3", 0x3c).unwrap();
-    /// ec.calibrate_probe_low(50.0);
+    /// ec.calibrate_ec(2.0);
     /// ```
     pub fn calibrate_ec(&mut self, solution_ec: f32) -> Result<(), Box<LinuxI2CError>> {
         self._write_register(EC_SOLUTION_REGISTER, solution_ec)?;
-        self.dev
-            .smbus_write_byte_data(EC_TASK_REGISTER, EC_CALIBRATE_EC)?;
+        self.dev.smbus_write_byte_data(EC_TASK_REGISTER, EC_CALIBRATE_EC)?;
         thread::sleep(Duration::from_millis(EC_EC_MEASUREMENT_TIME));
         Ok(())
     }
 
-    /// Calibrates the dual-point values for the high reading, in mS, and saves them in the
+    /// Calibrates the SW range of measurements, in mS, and saves them in the
     /// devices's EEPROM.
     ///
     /// # Example
     /// ```
     /// let mut ec = ufire_ec::EcProbe::new("/dev/i2c-3", 0x3c).unwrap();
-    /// ec.calibrate_probe_high(56.0);
+    /// ec.calibrate_sw(53.0);
     /// ```
     pub fn calibrate_sw(&mut self, solution_sw: f32) -> Result<(), Box<LinuxI2CError>> {
         self._write_register(EC_SOLUTION_REGISTER, solution_sw)?;
-        self.dev
-            .smbus_write_byte_data(EC_TASK_REGISTER, EC_CALIBRATE_SW)?;
+        self.dev.smbus_write_byte_data(EC_TASK_REGISTER, EC_CALIBRATE_SW)?;
         thread::sleep(Duration::from_millis(EC_EC_MEASUREMENT_TIME));
         Ok(())
     }
 
-    /// Starts an EC measurement.
+    /// Starts an EC measurement, taking a new temp measurement if true passed
     ///
-    /// # ExampleHIGHHIGH
+    /// # Example
     /// ```
     /// let mut ec = ufire_ec::EcProbe::new("/dev/i2c-3", 0x3c).unwrap();
-    /// ec.measure_ec(0.019);
+    /// ec.measure_ec(true);
     /// ```
-    pub fn measure_ec(&mut self, temp_coef: f32) -> Result<(f32), Box<LinuxI2CError>> {
-        self.dev
-            .smbus_write_byte_data(EC_TASK_REGISTER, EC_MEASURE_EC)?;
+    pub fn measure_ec(&mut self, new_temp: bool) -> Result<(f32), Box<LinuxI2CError>> {
+        self.dev.smbus_write_byte_data(EC_TASK_REGISTER, EC_MEASURE_EC)?;
         thread::sleep(Duration::from_millis(EC_EC_MEASUREMENT_TIME));
 
-        if self.using_temperature_compensation()? == 1 {
+        if new_temp == true {
             self.measure_temp()?;
         }
         Ok(self._read_register(EC_MS_REGISTER)?)
     }
 
-    /// Starts an EC measurement and returns the salinity in PSU.
+
+    /// Starts a raw measurement.
+    ///
+    /// # Example
+    /// ```
+    /// let mut ec = ufire_ec::EcProbe::new("/dev/i2c-3", 0x3c).unwrap();
+    /// ec.measure_raw(true);
+    /// ```
+    pub fn measure_raw(&mut self) -> Result<(f32), Box<LinuxI2CError>> {
+        self.dev.smbus_write_byte_data(EC_TASK_REGISTER, EC_MEASURE_EC)?;
+        thread::sleep(Duration::from_millis(EC_EC_MEASUREMENT_TIME));
+
+        Ok(self._read_register(EC_RAW_REGISTER)?)
+    }
+
+    /// Starts an SW measurement and returns the salinity in PSU.
     ///
     /// # Example
     /// ```
@@ -203,6 +214,35 @@ impl EcProbe {
         Ok(self._read_register(EC_CALIBRATE_SW_REGISTER)?)
     }
 
+    /// Returns the dual-point calibration low reference value.
+    ///
+    /// # Example
+    /// ```
+    /// let mut ec = ufire_ec::EcProbe::new("/dev/i2c-3", 0x3c).unwrap();
+    /// ec.set_dual_point_calibration(50.0, 0.0, 0.0, 0.0);
+    /// assert_eq!(50.0, ec.get_calibrate_low_reference().unwrap());
+    /// ```
+    pub fn read_eeprom(&mut self, address: f32) -> Result<(f32), Box<LinuxI2CError>> {
+        self._write_register(EC_SOLUTION_REGISTER, address)?;
+        self.dev.smbus_write_byte_data(EC_TASK_REGISTER, EC_READ)?;
+        Ok(self._read_register(EC_BUFFER_REGISTER)?)
+    }
+
+    /// Returns the dual-point calibration low reference value.
+    ///
+    /// # Example
+    /// ```
+    /// let mut ec = ufire_ec::EcProbe::new("/dev/i2c-3", 0x3c).unwrap();
+    /// ec.set_dual_point_calibration(50.0, 0.0, 0.0, 0.0);
+    /// assert_eq!(50.0, ec.get_calibrate_low_reference().unwrap());
+    /// ```
+    pub fn write_eeprom(&mut self, address: f32, value: f32) -> Result<(f32), Box<LinuxI2CError>> {
+        self._write_register(EC_SOLUTION_REGISTER, address)?;
+        self._write_register(EC_BUFFER_REGISTER, value)?;
+        self.dev.smbus_write_byte_data(EC_TASK_REGISTER, EC_WRITE)?;
+        Ok(self._read_register(EC_BUFFER_REGISTER)?)
+    }
+
     /// Configures the device to use temperature compensation or not.
     ///
     /// # Example
@@ -234,7 +274,6 @@ impl EcProbe {
     /// ```
     pub fn get_version(&mut self) -> Result<(u8), Box<LinuxI2CError>> {
         self._change_register(EC_VERSION_REGISTER)?;
-        //thread::sleep(Duration::from_millis(25));
         Ok(self.dev.smbus_read_byte()?)
     }
 
@@ -247,7 +286,6 @@ impl EcProbe {
     /// ```
     pub fn get_firmware(&mut self) -> Result<(u8), Box<LinuxI2CError>> {
         self._change_register(EC_FW_VERSION_REGISTER)?;
-        //thread::sleep(Duration::from_millis(25));
         Ok(self.dev.smbus_read_byte()?)
     }
 
@@ -291,7 +329,7 @@ impl EcProbe {
     /// // ec.set_i2c_address(0x4f);
     /// ```
     pub fn set_i2c_address(&mut self, i2c_address: u8) -> Result<(), Box<LinuxI2CError>> {
-        self._write_register(EC_SOLUTION_REGISTER, i2c_address as f32)?;
+        self._write_register(EC_BUFFER_REGISTER, i2c_address as f32)?;
         self.dev.smbus_write_byte_data(EC_TASK_REGISTER, EC_I2C)?;
 
         Ok(())
