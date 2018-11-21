@@ -6,22 +6,12 @@ fn main() {
     let mut ec = EcProbe::new("/dev/i2c-3", 0x3c).unwrap();
 
     println!("Config:");
-    println!("	calibration:");
-    println!(
-        "	EC: {}",
-        ec.get_calibration_ec().unwrap()
-    );
-    println!(
-        "	SW: {}",
-        ec.get_calibration_sw().unwrap()
-    );
-    println!(
-        "	temp. compensation: {}",
-        ec.using_temperature_compensation().unwrap()
-    );
-    println!("	temp. constant: {}", ec.get_temp_constant().unwrap());
-    println!("	version: {}.{}", ec.get_version().unwrap(),
-            ec.get_firmware().unwrap()
+    println!(" calibration:");
+    println!("  EC: {}", ec.get_calibration_ec().unwrap());
+    println!("  SW: {}", ec.get_calibration_sw().unwrap());
+    println!(" temp. compensation: {}", ec.using_temperature_compensation().unwrap());
+    println!(" temp. constant: {}", ec.get_temp_constant().unwrap());
+    println!(" version: {}.{}", ec.get_version().unwrap(),ec.get_firmware().unwrap()
     );
 
     loop {
