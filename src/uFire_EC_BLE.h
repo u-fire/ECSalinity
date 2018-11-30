@@ -49,52 +49,6 @@ class tempCallback : public BLECharacteristicCallbacks, EC_Salinity {
   }
 };
 
-class highRefCallback : public BLECharacteristicCallbacks, EC_Salinity {
-  void onWrite(BLECharacteristic *pCharacteristic) {
-    std::string shighRef = pCharacteristic->getValue();
-    float highRef        = ::atof(shighRef.c_str());
-
-    EC_Salinity::calibrateProbeHigh(highRef, EC_Salinity::tempCoefEC);
-  }
-
-  void onRead(BLECharacteristic *pCharacteristic) {
-    String sHighRef = String(EC_Salinity::getCalibrateHighReference());
-
-    pCharacteristic->setValue(sHighRef.c_str());
-  }
-};
-
-class lowRefCallback : public BLECharacteristicCallbacks, EC_Salinity {
-  void onWrite(BLECharacteristic *pCharacteristic) {
-    std::string s = pCharacteristic->getValue();
-    float f       = ::atof(s.c_str());
-
-    EC_Salinity::calibrateProbeLow(f, EC_Salinity::tempCoefEC);
-  }
-
-  void onRead(BLECharacteristic *pCharacteristic) {
-    String s = String(EC_Salinity::getCalibrateLowReference());
-
-    pCharacteristic->setValue(s.c_str());
-  }
-};
-
-class highReadCallback : public BLECharacteristicCallbacks, EC_Salinity {
-  void onRead(BLECharacteristic *pCharacteristic) {
-    String s = String(EC_Salinity::getCalibrateHighReading());
-
-    pCharacteristic->setValue(s.c_str());
-  }
-};
-
-class lowReadCallback : public BLECharacteristicCallbacks, EC_Salinity {
-  void onRead(BLECharacteristic *pCharacteristic) {
-    String s = String(EC_Salinity::getCalibrateLowReading());
-
-    pCharacteristic->setValue(s.c_str());
-  }
-};
-
 class tcCallback : public BLECharacteristicCallbacks, EC_Salinity {
   void onWrite(BLECharacteristic *pCharacteristic) {
     std::string s = pCharacteristic->getValue();
@@ -138,10 +92,6 @@ private:
   BLEService *pService;
   BLECharacteristic *pmS_Characteristic;
   BLECharacteristic *ptemp_Characteristic;
-  BLECharacteristic *phigh_ref_Characteristic;
-  BLECharacteristic *plow_ref_Characteristic;
-  BLECharacteristic *phigh_read_Characteristic;
-  BLECharacteristic *plow_read_Characteristic;
   BLECharacteristic *ptc_Characteristic;
   BLECharacteristic *pversion_Characteristic;
 };

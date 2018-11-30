@@ -45,50 +45,6 @@ void uFire_EC_BLE::startBLE() {
   ptemp_Characteristic->addDescriptor(temp_Descriptor);
   pService->addCharacteristic(ptemp_Characteristic);
 
-  // setup the high ref characteristic
-  phigh_ref_Characteristic = pService->createCharacteristic(
-    HIGH_REF_UUID,
-    BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE
-    );
-  BLEDescriptor *highRef_Descriptor = new BLEDescriptor((uint16_t)0x2901);
-  highRef_Descriptor->setValue("high reference");
-  phigh_ref_Characteristic->addDescriptor(highRef_Descriptor);
-  phigh_ref_Characteristic->setCallbacks(new highRefCallback());
-  pService->addCharacteristic(phigh_ref_Characteristic);
-
-  // add low reference
-  plow_ref_Characteristic = pService->createCharacteristic(
-    LOW_REF_UUID,
-    BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE
-    );
-  BLEDescriptor *lowRef_Descriptor = new BLEDescriptor((uint16_t)0x2901);
-  lowRef_Descriptor->setValue("low reference");
-  plow_ref_Characteristic->addDescriptor(lowRef_Descriptor);
-  plow_ref_Characteristic->setCallbacks(new lowRefCallback());
-  pService->addCharacteristic(plow_ref_Characteristic);
-
-  // add high read characteristic
-  phigh_read_Characteristic = pService->createCharacteristic(
-    HIGH_READ_UUID,
-    BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE
-    );
-  BLEDescriptor *highRead_Descriptor = new BLEDescriptor((uint16_t)0x2901);
-  highRead_Descriptor->setValue("high reading");
-  phigh_read_Characteristic->addDescriptor(highRead_Descriptor);
-  phigh_read_Characteristic->setCallbacks(new highReadCallback());
-  pService->addCharacteristic(phigh_read_Characteristic);
-
-  // add low read chracteristic
-  plow_read_Characteristic = pService->createCharacteristic(
-    LOW_READ_UUID,
-    BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE
-    );
-  BLEDescriptor *lowread_Descriptor = new BLEDescriptor((uint16_t)0x2901);
-  lowread_Descriptor->setValue("low reading");
-  plow_read_Characteristic->addDescriptor(lowread_Descriptor);
-  plow_read_Characteristic->setCallbacks(new lowReadCallback());
-  pService->addCharacteristic(plow_read_Characteristic);
-
   // temp. comp.
   ptc_Characteristic = pService->createCharacteristic(
     TEMP_COMP_UUID,

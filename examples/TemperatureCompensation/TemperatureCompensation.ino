@@ -21,7 +21,6 @@ void setup()
   ec.useTemperatureCompensation(true);
 
   // the temperature to adjust the readings to
-  // 25 C is the initial default
   ec.setTempConstant(25);
 }
 

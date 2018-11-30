@@ -32,9 +32,7 @@ void setup()
 
 void loop()
 {
-  // the parameters mean to use the freshwater/hydroponics temperature coefficient and to not
-  // take a temperature reading from the sensor on the board.
-  ec.measureEC(false);
+  ec.measureEC(false); // take a new temperatur reading = false
   Serial.print("mS/cm: ");
   Serial.println(ec.mS);
   Serial.println("-----");
