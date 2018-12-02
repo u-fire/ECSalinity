@@ -73,7 +73,7 @@ float EC_Salinity::_measure(bool EC, bool newTemp)
   }
 
   delay(EC_EC_MEASUREMENT_TIME);
-  mS = _read_register(EC_MS_REGISTER);
+  mS  = _read_register(EC_MS_REGISTER);
   raw = _read_register(EC_RAW_REGISTER);
 
   if (raw == 0.0)
@@ -86,19 +86,19 @@ float EC_Salinity::_measure(bool EC, bool newTemp)
     PPM_500 = mS * 500;
     PPM_640 = mS * 640;
     PPM_700 = mS * 700;
-    uS = mS * 1000;
-    S = mS / 1000;
+    uS      = mS * 1000;
+    S       = mS / 1000;
 
     salinityPSU = _read_register(EC_SALINITY_PSU);
   }
   else
   {
-    mS = -1;
-    PPM_500 = -1;
-    PPM_640 = -1;
-    PPM_700 = -1;
-    uS = -1;
-    S = -1;
+    mS          = -1;
+    PPM_500     = -1;
+    PPM_640     = -1;
+    PPM_700     = -1;
+    uS          = -1;
+    S           = -1;
     salinityPSU = -1;
   }
 
@@ -132,7 +132,7 @@ float EC_Salinity::measureTemp()
   _send_command(EC_MEASURE_TEMP);
   delay(EC_TEMP_MEASURE_TIME);
   tempC = _read_register(EC_TEMP_REGISTER);
-  if (tempC == -127)
+  if (tempC == -127.0)
   {
     tempF = -127;
   }
@@ -265,7 +265,7 @@ float EC_Salinity::readEEPROM(uint8_t address)
 void EC_Salinity::writeEEPROM(uint8_t address, float value)
 {
   _write_register(EC_SOLUTION_REGISTER, address);
-  _write_register(EC_BUFFER_REGISTER, value);
+  _write_register(EC_BUFFER_REGISTER,   value);
   _send_command(EC_WRITE);
 }
 
@@ -291,7 +291,7 @@ void EC_Salinity::_send_command(uint8_t command)
 void EC_Salinity::_write_register(uint8_t reg, float f)
 {
   uint8_t b[5];
-  float f_val = f;
+  float   f_val = f;
 
   b[0] = reg;
   b[1] = *((uint8_t *)&f_val);
