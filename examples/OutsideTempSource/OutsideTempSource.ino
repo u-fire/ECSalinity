@@ -24,6 +24,7 @@ void setup()
   ec.useTemperatureCompensation(true);
 
   // the temperature to adjust the readings to
+  // the factor-set default is 25
   ec.setTempConstant(25);
 
   // the actual temperature of the solution
@@ -32,7 +33,7 @@ void setup()
 
 void loop()
 {
-  ec.measureEC(false); // take a new temperatur reading = false
+  ec.measureEC(false); // take a new temperature reading = false
   Serial.print("mS/cm: ");
   Serial.println(ec.mS);
   Serial.println("-----");

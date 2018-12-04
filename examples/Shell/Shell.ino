@@ -19,8 +19,8 @@
     tc 0 <to disable compensation>
 
    Calibration:
-    cal-ec 2.0 <to calibrate for the hydroponic or pool range>
-    cal-sw 53.0 <to calibrate for seawater>
+    cal-ec 2.0 <to calibrate using 2.0 mS solution>
+    cal-sw 53.0 <to calibrate using 53 mS solution>
 
    Set a temperature to use:
     t 20 <to use 20 C as the temperature rather than using the attached temp. sensor>
@@ -30,7 +30,7 @@
 
    Measure EC:
     ec
-    ec x <take an EC measurement every x milliseconds>
+    ec x <take an EC measurement every x milliseconds, press any key to stop>
 
    Measure saltwater:
     sw
@@ -78,7 +78,7 @@ void config()
   Serial.println(EC.getFirmware(), HEX);
 }
 
-void reset()
+void reset_config()
 {
   EC.reset();
   config();
@@ -274,7 +274,7 @@ void cmd_run()
   if ((cmd == "conf") || (cmd == "config") || (cmd == "c"))
     config();
   if ((cmd == "reset") || (cmd == "r"))
-    reset();
+    reset_config();
   if ((cmd == "temp") || (cmd == "t"))
     temperature();
   if ((cmd == "data") || (cmd == "d"))

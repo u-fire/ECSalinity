@@ -1,6 +1,6 @@
 ### EC Salinity Probe Interface for Micropython
 
-The examples only differ from the [documentation](http://ufire.co/ECSalinity/) in the class initialization; `ec = ecsalinity(-1, 5, 4)` creates a new I2C instance using SCL pin 5 and SDA pin 4, -1 indicates software implementation of I2C.
+The examples only differ from the [documentation](http://ufire.co/ECSalinity/) in the class initialization; `ec = ecsalinity(4, 5)` creates a new I2C instance using SDA pin 4 and SCL pin 5.
 
 This library was developed on the ESP32 platform using a generic board. There isn't enough memory to run the shell file on an ESP8266. Other platforms haven't been tested.
 
