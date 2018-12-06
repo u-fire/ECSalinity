@@ -41,7 +41,7 @@
     tds x <take a measurement every x milliseconds>
 
    Change the I2C address:
-    i2c 3d <address is a interpreted as a hex number without the 0x>
+    i2c 3d <address is interpreted as a hex number without the 0x>
 
    Read/Write custom EEPROM data:
     read 300 <returns a float stored at address 300>
