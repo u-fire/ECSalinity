@@ -178,7 +178,7 @@ void EC_Salinity::setTemp(float temp_C)
 
 void EC_Salinity::setTempConstant(float b)
 {
-  _write_byte(EC_TEMP_COMPENSATION_REGISTER, b);
+  _write_register(EC_TEMP_COMPENSATION_REGISTER, b);
 }
 
 float EC_Salinity::getTempConstant()
